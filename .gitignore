@@ -1,0 +1,3 @@
+# ignore sub repos
+data
+*__pycache__
