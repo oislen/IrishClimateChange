@@ -9,7 +9,11 @@ census_2016_dir = os.path.join(data_dir, 'Census_2016')
 met_eireann_dir = os.path.join(data_dir, 'Met_Eireann')
 
 # set data files
-dublin_airport_fpath = os.path.join(met_eireann_dir, 'Dublin_Airport', 'dly532.csv')
+dublin_airport_fpath = os.path.join(data_dir, 'dublin_airport.xlsx')
+johnstone_castle_fpath = os.path.join(data_dir, 'johnstone_castle.xlsx')
+wexford_wildflower_reserve_fpath = os.path.join(data_dir, 'wexford_wildflower_reserve.xlsx')
+met_eireann_fpaths = [dublin_airport_fpath, johnstone_castle_fpath, wexford_wildflower_reserve_fpath]
+
 
 # set dictionary of hyperlinks to download data files
 census_2011 = {'Census2011_Province_generalised20m':'http://census.cso.ie/censusasp/saps/boundaries/Census2011_Province_generalised20m.zip',
