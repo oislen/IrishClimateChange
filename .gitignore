@@ -1,3 +1,4 @@
 # ignore sub repos
-data
+data/Met_Eireann
+*.xlsx
 *__pycache__
