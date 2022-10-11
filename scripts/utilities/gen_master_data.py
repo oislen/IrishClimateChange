@@ -1,7 +1,10 @@
+import os
 import pandas as pd
 
-def gen_master_data(met_eireann_fpaths, master_data_fpath):
+def gen_master_data(met_eireann_fdir, master_data_fpath):
     """"""
+    # load data files from file directory
+    met_eireann_fpaths = [os.path.join(met_eireann_fdir, fpath) for fpath in os.listdir(met_eireann_fdir) if '.xlsx' in fpath]
     dtypes = {'date':'str'}
     data = pd.DataFrame()
     for fpath in met_eireann_fpaths:
