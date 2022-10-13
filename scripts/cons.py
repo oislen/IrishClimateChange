@@ -57,3 +57,7 @@ FIG_SETTING = {'plot_height':800,
                'min_border_bottom': 20, 
                'tools':'pan,wheel_zoom, box_zoom,reset,save'
                }
+
+# bokeh selctor settings
+agg_level_options = ['year', 'year-month', 'month']
+agg_level_default = agg_level_options[0]
