@@ -3,10 +3,11 @@ import pandas as pd
 
 def time_data(data, agg_dict, time_span = None, counties = None, strftime = None):
     """"""
-    agg_data = data.assign(date = data['date'].dt.strftime(strftime)).copy()
-    agg_data['date'] = pd.to_datetime(agg_data['date'], format = strftime)
-    group_cols = ['county', 'date']
-    agg_data = agg_data.groupby(group_cols, as_index = False).agg(agg_dict).reset_index()
+    agg_data = data.copy()
+    agg_data['date_str'] = agg_data['date'].dt.strftime(strftime)
+    agg_data['date'] = pd.to_datetime(agg_data['date_str'], format = strftime)
+    group_cols = ['county', 'date', 'date_str']
+    agg_data = agg_data.groupby(group_cols, as_index = False).agg(agg_dict)
     # if filtering date with respect to timespan
     if time_span != None:
         time_span_lb = (agg_data['date'] >= datetime.datetime.strptime(time_span[0], strftime))
@@ -15,4 +16,6 @@ def time_data(data, agg_dict, time_span = None, counties = None, strftime = None
     # if filtering data with respect to counties
     if counties != None:
         agg_data = agg_data.loc[agg_data['county'].isin(counties)]
+    agg_data = agg_data.reset_index(drop = True)
+    agg_data['index'] = agg_data.groupby('county')['date'].rank(ascending = True).astype(int)
     return agg_data
