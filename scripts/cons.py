@@ -47,3 +47,13 @@ census_2016 = {'Census2016_Constituencies_2017':'https://opendata.arcgis.com/dat
 
 # met eireann weather data
 met_eireann = {'dublin_airport':'https://cli.fusio.net/cli/climate_data/webdata/dly532.zip'}
+
+# bokeh figure settings
+FIG_SETTING = {'plot_height':800, 
+               'plot_width':1400, 
+               'min_border_left':50, 
+               'min_border_right':50,
+               'min_border_top':50, 
+               'min_border_bottom': 20, 
+               'tools':'pan,wheel_zoom, box_zoom,reset,save'
+               }
