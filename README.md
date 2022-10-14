@@ -1,1 +1,1 @@
-# IrishClimateChange
+# IrishClimateApp
