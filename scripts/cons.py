@@ -2,7 +2,7 @@
 import os
 
 # set directories
-root_dir = 'E:\\GitHub\\IrishClimateChange'
+root_dir = 'E:\\GitHub\\IrishClimateApp'
 data_dir = os.path.join(root_dir, 'data')
 census_2011_dir = os.path.join(data_dir, 'Census_2011')
 census_2016_dir = os.path.join(data_dir, 'Census_2016')
