@@ -4,7 +4,7 @@ from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 # import custom modules
 from utilities.time_data import time_data
 
-def bokeh_data(data, option):
+def bokeh_line_data(data, option):
     """"""
     # create dictionary to hold data results
     bokeh_data_dict = {}

@@ -1,14 +1,17 @@
 # import relevant libraries
 from bokeh.plotting import figure
-from bokeh.models import DatetimeTickFormatter
+from bokeh.models import Span, DatetimeTickFormatter
 
 # import custom modules
 import cons
 
-def bokeh_plot(bokeh_data_dict):
+def bokeh_line_plot(bokeh_data_dict):
     """"""
     # create plot figure object
-    plot = figure(title="Line Plot", toolbar_location='below', output_backend="webgl", **cons.FIG_SETTING)
+    plot = figure(toolbar_location='below', output_backend="webgl", **cons.FIG_SETTING)
+    # create a horizontal line around the average
+    hline = Span(location=bokeh_data_dict['datasource'].to_df()['maxtp'].mean(), line_dash='dashed', line_color='red', line_width=3, line_alpha=0.3, name='National Average')
+    plot.renderers.extend([hline])
 
     #plot2.x_range.min_interval = 1
     #plot2.x_range.max_interval = 47.5
