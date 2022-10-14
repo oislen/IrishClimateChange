@@ -7,9 +7,11 @@ data_dir = os.path.join(root_dir, 'data')
 census_2011_dir = os.path.join(data_dir, 'Census_2011')
 census_2016_dir = os.path.join(data_dir, 'Census_2016')
 met_eireann_dir = os.path.join(data_dir, 'Met_Eireann')
+gis_dir = os.path.join(data_dir, "gis")
 
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
+counties_data_fpath = os.path.join(gis_dir, "countries.shp")
 
 # set dictionary of hyperlinks to download data files
 census_2011 = {'Census2011_Province_generalised20m':'http://census.cso.ie/censusasp/saps/boundaries/Census2011_Province_generalised20m.zip',
@@ -49,15 +51,21 @@ census_2016 = {'Census2016_Constituencies_2017':'https://opendata.arcgis.com/dat
 met_eireann = {'dublin_airport':'https://cli.fusio.net/cli/climate_data/webdata/dly532.zip'}
 
 # bokeh figure settings
-FIG_SETTING = {'plot_height':800, 
-               'plot_width':1400, 
-               'min_border_left':50, 
-               'min_border_right':50,
-               'min_border_top':50, 
-               'min_border_bottom': 20, 
+FIG_SETTING = {'plot_height':640, 
+               'plot_width':640, 
+               'min_border_left':40, 
+               'min_border_right':40,
+               'min_border_top':40, 
+               'min_border_bottom': 16, 
                'tools':'pan,wheel_zoom, box_zoom,reset,save'
                }
 
+# bokeh map settings
+MAP_SETTINGS = {'line_color':'gray', 
+                'line_width':0.25, 
+                'fill_alpha':1
+                }
+
 # bokeh selctor settings
-agg_level_options = ['year', 'year-month', 'month']
+agg_level_options = ['year', 'month']
 agg_level_default = agg_level_options[0]
