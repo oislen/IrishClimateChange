@@ -1,5 +1,4 @@
 # ignore sub repos
 data/Met_Eireann
-*.xlsx
 *__pycache__
 scripts/.ipynb_checkpoints
