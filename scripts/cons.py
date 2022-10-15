@@ -66,6 +66,10 @@ MAP_SETTINGS = {'line_color':'gray',
                 'fill_alpha':1
                 }
 
-# bokeh selctor settings
-agg_level_options = ['year', 'month']
-agg_level_default = agg_level_options[0]
+# bokeh line selector settings
+line_agg_level_options = ['year', 'month']
+line_agg_level_default = line_agg_level_options[0]
+line_col_options = ['maxtp', 'mintp', 'wdsp', 'sun', 'evap', 'rain']
+line_col_default = line_col_options[0]
+line_stat_options = ['mean', 'median', 'max', 'min']
+line_stat_default = line_stat_options[0]
