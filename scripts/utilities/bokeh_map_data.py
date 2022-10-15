@@ -1,15 +1,16 @@
+import cons
 import pandas as pd
 import geopandas as gpd
 from bokeh.models import GeoJSONDataSource
 
-def bokeh_map_data(data, counties):
+def bokeh_map_data(data, counties, stat):
     """"""
     bokeh_data_dict = {}
     # filter data to be between 2010 and 2019
     data_filt = data.loc[(data['date'].dt.year >= 2010) & (data['date'].dt.year >= 2010), :]
     # aggregate to county level
     groupby_cols = ['county']
-    agg_dict = {'maxtp':'mean', 'mintp':'mean', 'wdsp':'mean', 'sun':'mean', 'evap':'mean', 'rain':'mean'}
+    agg_dict = {col:stat for col in cons.col_options}
     agg_data = data_filt.groupby(groupby_cols, as_index = False).agg(agg_dict)
     # join aggregated county level data to counties gis data
     map_data = gpd.GeoDataFrame(pd.merge(left = counties, right = agg_data, on = 'county', how = 'left'), crs="EPSG:2157")

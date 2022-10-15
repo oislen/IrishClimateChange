@@ -13,7 +13,7 @@ def bokeh_line_data(data, agg_level, stat):
     date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
     counties = ['dublin', 'wexford']
     # create line data aggregation dictionary
-    agg_dict = {col:stat for col in cons.line_col_options}
+    agg_dict = {col:stat for col in cons.col_options}
     date_strftime = date_strftime_dict[agg_level]
     if agg_level == 'year':
         time_span = ['2010', '2019']

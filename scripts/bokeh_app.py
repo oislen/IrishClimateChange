@@ -25,15 +25,41 @@ from utilities.bokeh_line_plot import bokeh_line_plot
 data = pd.read_feather(cons.master_data_fpath)
 counties = gpd.read_file(cons.counties_data_fpath)
 
+#################
+##-- Map Plot --#
+#################
+
 # generate bokeh data for map plot
-bokeh_map_data_dict = bokeh_map_data(data, counties)
+bokeh_map_data_dict = bokeh_map_data(data = data, counties = counties, stat = cons.stat_default)
 # create bokeh map plot
-map_plot = bokeh_map_plot(bokeh_map_data_dict)
+map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default)
+
+# create call back function for bokeh dashboard interaction
+def callback_map_plot(attr, old, new):
+    # extract new selector value
+    col = map_col_selector.value
+    stat = map_stat_selector.value
+    # update bokeh data
+    bokeh_map_data_dict = bokeh_map_data(data = data, counties = counties, stat = stat)
+    # update bokeh plot
+    map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col)
+    # reassign bokeh plot to bokeh dashboard
+    dashboard_map.children[0] = map_plot
+
+# set up selectors for bokeh map plot
+map_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=120, height=60, aspect_ratio=10)
+map_stat_selector = Select(title='Statistic:', value=cons.stat_default, options=cons.stat_options, width=120, height=60, aspect_ratio=10)
+map_col_selector.on_change('value', callback_map_plot)  
+map_stat_selector.on_change('value', callback_map_plot) 
+
+###################
+##-- Line Plot --##
+###################
 
 # generate bokeh data for line plot
-bokeh_line_data_dict = bokeh_line_data(data = data, agg_level = cons.line_agg_level_default, stat = cons.line_stat_default)
+bokeh_line_data_dict = bokeh_line_data(data = data, agg_level = cons.line_agg_level_default, stat = cons.stat_default)
 # create bokeh plot
-line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.line_col_default, stat = cons.line_stat_default)
+line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default)
 
 # create call back function for bokeh dashboard interaction
 def callback_line_plot(attr, old, new):
@@ -48,16 +74,20 @@ def callback_line_plot(attr, old, new):
     # reassign bokeh plot to bokeh dashboard
     dashboard_line.children[0] = line_plot
 
-# set up selectors for bokeh dashboard
+# set up selectors for bokeh line plot
 line_agg_level_selector = Select(title='Aggregate Level:', value=cons.line_agg_level_default, options=cons.line_agg_level_options, width=120, height=60, aspect_ratio=10)
-line_col_selector = Select(title='Column:', value=cons.line_col_default, options=cons.line_col_options, width=120, height=60, aspect_ratio=10)
-line_stat_selector = Select(title='Statistic:', value=cons.line_stat_default, options=cons.line_stat_options, width=120, height=60, aspect_ratio=10)
+line_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=120, height=60, aspect_ratio=10)
+line_stat_selector = Select(title='Statistic:', value=cons.stat_default, options=cons.stat_options, width=120, height=60, aspect_ratio=10)
 line_agg_level_selector.on_change('value', callback_line_plot)  
 line_col_selector.on_change('value', callback_line_plot)  
 line_stat_selector.on_change('value', callback_line_plot)  
 
+############################
+##-- Dashboard Structure --#
+############################
+
 # structure dashboard map plot
-dashboard_map = column(map_plot)
+dashboard_map = column(map_plot, row(map_col_selector, map_stat_selector))
 panel_map = Panel(child = dashboard_map, title = 'GIS Map')
 tab_map = Tabs(tabs=[panel_map])
 # structure dashboard line plot
