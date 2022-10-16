@@ -1,3 +1,4 @@
+import cons
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -11,7 +12,7 @@ def time_plot(data, y, x = 'index', hue = None, strftime = None, refline = None,
     # initiate subplots
     fig, ax = plt.subplots()
     # create line plot
-    chart = sns.lineplot(x = x, y = y, hue = hue, data = tmp_data, ax = ax)
+    chart = sns.lineplot(x = x, y = y, hue = hue, data = tmp_data, ax = ax, palette = cons.county_line_colors)
     # add horizontal reference line
     if refline != None:
         plt.axhline(y = refline, color = 'red', linestyle = '--')
