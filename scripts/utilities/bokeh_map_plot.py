@@ -1,4 +1,5 @@
 import cons
+from colour import Color
 from bokeh.models import LinearColorMapper, ColorBar, HoverTool
 from bokeh.plotting import figure
 
@@ -6,7 +7,10 @@ from bokeh.plotting import figure
 def bokeh_map_plot(bokeh_map_data_dict, col, stat):
     """"""
     # define a blue color palette
-    palette = ("lightblue", "steelblue")
+    lightblue = Color("lightblue")
+    steelblue = Color("steelblue")
+    palette = tuple([col.get_hex() for col in lightblue.range_to(steelblue,100)])
+    #palette = ("lightblue", "steelblue")
     # instantiate LinearColorMapper that linearly maps numbers in a range, into a sequence of colors.
     nonmiss_map_data = bokeh_map_data_dict[stat]['nonmiss_map_data']
     color_mapper = LinearColorMapper(palette=palette, low = nonmiss_map_data[col].min(), high = nonmiss_map_data[col].max())
