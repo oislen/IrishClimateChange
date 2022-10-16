@@ -3,11 +3,11 @@ import pickle
 import pandas as pd
 import geopandas as gpd
 
-def gen_counties_data(rep_counties_fpath, ni_counties_fpath):
+def gen_counties_data():
     """"""
     # load in county shape files
-    rep_counties = gpd.read_file(rep_counties_fpath)[['ENGLISH', 'geometry']].rename(columns = {'ENGLISH':'county'}).to_crs(epsg = 2157)
-    ni_counties = gpd.read_file(ni_counties_fpath)[['county', 'geometry']].to_crs(epsg = 2157)
+    rep_counties = gpd.read_file(cons.rep_counties_fpath)[['ENGLISH', 'geometry']].rename(columns = {'ENGLISH':'county'}).to_crs(epsg = 2157)
+    ni_counties = gpd.read_file(cons.ni_counties_fpath)[['county', 'geometry']].to_crs(epsg = 2157)
     # load preaggregated data
     with open(cons.preaggregate_data_fpath, "rb") as f:
         pre_agg_data_dict = pickle.load(f)
