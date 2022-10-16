@@ -12,7 +12,7 @@ def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level):
     # create plot figure object
     plot = figure(toolbar_location='below', output_backend="webgl", **cons.FIG_SETTING)
     # create a horizontal line around the average
-    stat_value = agg_data_dict['datasource'].to_df().agg({col:stat}).values[0]
+    stat_value = agg_data_dict['datasource'].to_df().agg({col:'mean'}).values[0]
     hline = Span(location=stat_value, line_dash='dashed', line_color='red', line_width=3, line_alpha=0.3, name='National Average')
     plot.renderers.extend([hline])
 

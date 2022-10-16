@@ -14,8 +14,6 @@ def bokeh_line_data(pre_agg_data_dict):
         for agg_level in cons.line_agg_level_options:
             tmp_level_dict = {}
             # generate time data aggregated by year
-            counties = ['dublin', 'wexford']
-            # create line data aggregation dictionary
             agg_dict = {col:stat for col in cons.col_options}
             date_strftime = cons.date_strftime_dict[agg_level]
             if agg_level == 'year':
@@ -24,17 +22,15 @@ def bokeh_line_data(pre_agg_data_dict):
                 time_span = ['2010-01', '2019-12']
             elif agg_level == 'month':
                 time_span = ['01', '12']
-            agg_data = time_data(data = pre_agg_data_dict[stat], agg_dict = agg_dict, time_span = time_span, counties = counties, strftime = date_strftime)
+            agg_data = time_data(data = pre_agg_data_dict[stat], agg_dict = agg_dict, time_span = time_span, counties = cons.counties, strftime = date_strftime)
             # create bokeh data source
             datasource = ColumnDataSource(agg_data)
             # create filtered column data source views
             dataview_dict = {}
-            line_colors = ['blue', 'orange']
-            county_line_colors = dict(zip(counties, line_colors))
-            for county in counties:
+            for county in cons.counties:
                 county_filter = [True if x == county else False for x in datasource.data['county']]
                 dataview = CDSView(source = datasource, filters=[BooleanFilter(county_filter)])
-                cfg_dict = {'dataview':dataview, 'color':county_line_colors[county]}
+                cfg_dict = {'dataview':dataview, 'color':cons.county_line_colors[county]}
                 dataview_dict[county] = cfg_dict
             # update results dictionary
             tmp_level_dict['agg_data'] = agg_data
