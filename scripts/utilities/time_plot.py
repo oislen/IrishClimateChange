@@ -1,7 +1,7 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def time_plot(data, y, x, hue = None, strftime = None, refline = None, title = None, xlabel = None, ylabel = None):
+def time_plot(data, y, x = 'index', hue = None, strftime = None, refline = None, title = None, xlabel = None, ylabel = None):
     """"""
     # take deep copy of data
     tmp_data = data.copy()
@@ -16,10 +16,9 @@ def time_plot(data, y, x, hue = None, strftime = None, refline = None, title = N
     if refline != None:
         plt.axhline(y = refline, color = 'red', linestyle = '--')
     # set x axis ticks and labels
-    chart.set_xticks(tmp_data[x])
-    if strftime != None:
-        tmp_data[x] = tmp_data[x].dt.strftime(strftime)
-    chart.set_xticklabels(tmp_data[x], rotation = 45)
+    axis_data_dict = tmp_data[['index', 'date_str']].drop_duplicates().sort_values(by = 'index').set_index('index').to_dict()['date_str']
+    chart.set_xticks(list(axis_data_dict.keys()))
+    chart.set_xticklabels(list(axis_data_dict.values()), rotation = 45)
     # add title and axis labels to plot
     if title != None:
         chart.set(title = title)
