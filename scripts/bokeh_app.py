@@ -22,19 +22,19 @@ from utilities.bokeh_map_plot import bokeh_map_plot
 from utilities.bokeh_line_data import bokeh_line_data
 from utilities.bokeh_line_plot import bokeh_line_plot
 
-# load input datasets
-data = pd.read_feather(cons.master_data_fpath)
 # load preaggregated data
 with open(cons.preaggregate_data_fpath, "rb") as f:
     pre_agg_data_dict = pickle.load(f)
-counties = gpd.read_file(cons.counties_data_fpath)
+# load map data
+with open(cons.map_data_fpath, "rb") as f:
+    map_data_dict = pickle.load(f)
 
 #################
 ##-- Map Plot --#
 #################
 
 # generate bokeh data for map plot
-bokeh_map_data_dict = bokeh_map_data(data = data, counties = counties, stat = cons.stat_default)
+bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict, stat = cons.stat_default)
 # create bokeh map plot
 map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default)
 
@@ -44,7 +44,7 @@ def callback_map_plot(attr, old, new):
     col = map_col_selector.value
     stat = map_stat_selector.value
     # update bokeh data
-    bokeh_map_data_dict = bokeh_map_data(data = data, counties = counties, stat = stat)
+    bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict, stat = stat)
     # update bokeh plot
     map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col)
     # reassign bokeh plot to bokeh dashboard
