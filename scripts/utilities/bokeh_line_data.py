@@ -5,23 +5,22 @@ from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 # import custom modules
 from utilities.time_data import time_data
 
-def bokeh_line_data(data, agg_level, stat):
+def bokeh_line_data(pre_agg_data_dict, agg_level, stat):
     """"""
     # create dictionary to hold data results
     bokeh_data_dict = {}
     # generate time data aggregated by year
-    date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
     counties = ['dublin', 'wexford']
     # create line data aggregation dictionary
     agg_dict = {col:stat for col in cons.col_options}
-    date_strftime = date_strftime_dict[agg_level]
+    date_strftime = cons.date_strftime_dict[agg_level]
     if agg_level == 'year':
         time_span = ['2010', '2019']
     elif agg_level == 'year-month':
         time_span = ['2010-01', '2019-12']
     elif agg_level == 'month':
         time_span = ['01', '12']
-    agg_data = time_data(data = data, agg_dict = agg_dict, time_span = time_span, counties = counties, strftime = date_strftime)
+    agg_data = time_data(data = pre_agg_data_dict[stat], agg_dict = agg_dict, time_span = time_span, counties = counties, strftime = date_strftime)
     # create bokeh data source
     datasource = ColumnDataSource(agg_data)
     # create filtered column data source views

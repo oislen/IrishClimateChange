@@ -11,6 +11,7 @@ Created on Thu Jun 23 11:45:02 2022
 from bokeh.io import curdoc
 from bokeh.models import Select, Panel, Tabs
 from bokeh.layouts import column, row
+import pickle
 import pandas as pd
 import geopandas as gpd
 
@@ -23,6 +24,9 @@ from utilities.bokeh_line_plot import bokeh_line_plot
 
 # load input datasets
 data = pd.read_feather(cons.master_data_fpath)
+# load preaggregated data
+with open(cons.preaggregate_data_fpath, "rb") as f:
+    pre_agg_data_dict = pickle.load(f)
 counties = gpd.read_file(cons.counties_data_fpath)
 
 #################
@@ -57,7 +61,7 @@ map_stat_selector.on_change('value', callback_map_plot)
 ###################
 
 # generate bokeh data for line plot
-bokeh_line_data_dict = bokeh_line_data(data = data, agg_level = cons.line_agg_level_default, stat = cons.stat_default)
+bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict, agg_level = cons.line_agg_level_default, stat = cons.stat_default)
 # create bokeh plot
 line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default)
 
@@ -68,7 +72,7 @@ def callback_line_plot(attr, old, new):
     col = line_col_selector.value
     stat = line_stat_selector.value
     # update bokeh data
-    bokeh_line_data_dict = bokeh_line_data(data = data, agg_level = agg_level, stat = stat)
+    bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict, agg_level = agg_level, stat = stat)
     # update bokeh plot
     line_plot = bokeh_line_plot(bokeh_line_data_dict, col = col, stat = stat)
     # reassign bokeh plot to bokeh dashboard
