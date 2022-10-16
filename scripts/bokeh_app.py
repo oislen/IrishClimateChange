@@ -9,9 +9,6 @@ Created on Thu Jun 23 11:45:02 2022
 from bokeh.io import curdoc
 from bokeh.models import Select, Panel, Tabs
 from bokeh.layouts import column, row
-import pickle
-import pandas as pd
-import geopandas as gpd
 
 # import custom modules
 import cons
@@ -20,19 +17,12 @@ from utilities.bokeh_map_plot import bokeh_map_plot
 from utilities.bokeh_line_data import bokeh_line_data
 from utilities.bokeh_line_plot import bokeh_line_plot
 
-# load preaggregated data
-with open(cons.preaggregate_data_fpath, "rb") as f:
-    pre_agg_data_dict = pickle.load(f)
-# load map data
-with open(cons.map_data_fpath, "rb") as f:
-    map_data_dict = pickle.load(f)
-
 #################
 ##-- Map Plot --#
 #################
 
 # generate bokeh data for map plot
-bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict)
+bokeh_map_data_dict = bokeh_map_data()
 # create bokeh map plot
 map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default, stat = cons.stat_default)
 
@@ -57,7 +47,7 @@ map_stat_selector.on_change('value', callback_map_plot)
 ###################
 
 # generate bokeh data for line plot
-bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict)
+bokeh_line_data_dict = bokeh_line_data()
 # create bokeh plot
 line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default, agg_level = cons.line_agg_level_default)
 

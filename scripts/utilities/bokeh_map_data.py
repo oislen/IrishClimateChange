@@ -1,11 +1,16 @@
 import cons
+import pickle
 import pandas as pd
 import geopandas as gpd
 from bokeh.models import GeoJSONDataSource
 
-def bokeh_map_data(map_data_dict):
+def bokeh_map_data():
     """"""
-    bokeh_data_dict = {}
+    print('~~~ Generating bokeh map data ...')
+    # load map data
+    with open(cons.map_data_fpath, "rb") as f:
+        map_data_dict = pickle.load(f)
+    bokeh_map_data_dict = {}
     for stat, map_data in map_data_dict.items():
         tmp_data_dict = {}
         # split data into missing and nonmissing
@@ -21,5 +26,8 @@ def bokeh_map_data(map_data_dict):
         tmp_data_dict['missgeosource'] = missgeosource
         tmp_data_dict['nonmissgeosource'] = nonmissgeosource
         # assign temp data dict to bokeh data dict
-        bokeh_data_dict[stat] = tmp_data_dict
-    return bokeh_data_dict
+        bokeh_map_data_dict[stat] = tmp_data_dict
+    # pickle the bokeh map data dictionary to disk
+    #with open(cons.bokeh_map_data_fpath, 'wb') as f:
+    #    pickle.dump(bokeh_map_data_dict, f, protocol = pickle.HIGHEST_PROTOCOL)
+    return bokeh_map_data_dict

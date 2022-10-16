@@ -1,14 +1,19 @@
 # import relevant libraries
 import cons
+import pickle
 from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 
 # import custom modules
 from utilities.time_data import time_data
 
-def bokeh_line_data(pre_agg_data_dict):
+def bokeh_line_data():
     """"""
+    print('~~~ Generating bokeh line data ...')
+    # load preaggregated data
+    with open(cons.preaggregate_data_fpath, "rb") as f:
+        pre_agg_data_dict = pickle.load(f)
     # create dictionary to hold data results
-    bokeh_data_dict = {}
+    bokeh_line_data_dict = {}
     for stat, agg_data_dict in pre_agg_data_dict.items():
         stat_level_dict = {}
         for agg_level in cons.line_agg_level_options:
@@ -37,5 +42,8 @@ def bokeh_line_data(pre_agg_data_dict):
             tmp_level_dict['datasource'] = datasource
             tmp_level_dict['dataview_dict'] = dataview_dict
             stat_level_dict[agg_level] = tmp_level_dict
-        bokeh_data_dict[stat] = stat_level_dict
-    return bokeh_data_dict
+        bokeh_line_data_dict[stat] = stat_level_dict
+    # pickle the bokeh line data dictionary to disk
+    #with open(cons.bokeh_line_data_fpath, 'wb') as f:
+    #    pickle.dump(bokeh_line_data_dict, f, protocol = pickle.HIGHEST_PROTOCOL)
+    return bokeh_line_data_dict
