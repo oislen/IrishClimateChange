@@ -12,6 +12,8 @@ gis_dir = os.path.join(data_dir, "gis")
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.pickle")
+bokeh_line_data_fpath = os.path.join(data_dir, "bokeh_line_data.pickle")
+bokeh_map_data_fpath = os.path.join(data_dir, "bokeh_map_data.pickle")
 rep_counties_fpath = os.path.join(data_dir, 'gis\\arch\\Counties_-_OSi_National_Statutory_Boundaries_-_2019\\Counties___OSi_National_Statutory_Boundaries_.shp')
 ni_counties_fpath = os.path.join(data_dir, 'gis\\arch\\northern_ireland_counties\\northern_ireland_counties.shp')
 counties_data_fpath = os.path.join(gis_dir, "counties.shp")
@@ -79,5 +81,5 @@ line_agg_level_options = ['year', 'month']
 line_agg_level_default = line_agg_level_options[0]
 col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain']
 col_default = col_options[0]
-stat_options = ['mean', 'median', 'max', 'min']
+stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
 stat_default = stat_options[0]
