@@ -5,8 +5,6 @@ Created on Thu Jun 23 11:45:02 2022
 @author: OisinLeonard
 """
 
-# bokeh serve --show bokeh_app.py
-
 # load relevant libraries
 from bokeh.io import curdoc
 from bokeh.models import Select, Panel, Tabs
@@ -34,19 +32,17 @@ with open(cons.map_data_fpath, "rb") as f:
 #################
 
 # generate bokeh data for map plot
-bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict, stat = cons.stat_default)
+bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict)
 # create bokeh map plot
-map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default)
+map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default, stat = cons.stat_default)
 
 # create call back function for bokeh dashboard interaction
 def callback_map_plot(attr, old, new):
     # extract new selector value
     col = map_col_selector.value
     stat = map_stat_selector.value
-    # update bokeh data
-    bokeh_map_data_dict = bokeh_map_data(map_data_dict = map_data_dict, stat = stat)
     # update bokeh plot
-    map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col)
+    map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col, stat = stat)
     # reassign bokeh plot to bokeh dashboard
     dashboard_map.children[0] = map_plot
 
@@ -61,9 +57,9 @@ map_stat_selector.on_change('value', callback_map_plot)
 ###################
 
 # generate bokeh data for line plot
-bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict, agg_level = cons.line_agg_level_default, stat = cons.stat_default)
+bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict)
 # create bokeh plot
-line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default)
+line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default, agg_level = cons.line_agg_level_default)
 
 # create call back function for bokeh dashboard interaction
 def callback_line_plot(attr, old, new):
@@ -71,10 +67,8 @@ def callback_line_plot(attr, old, new):
     agg_level = line_agg_level_selector.value
     col = line_col_selector.value
     stat = line_stat_selector.value
-    # update bokeh data
-    bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict = pre_agg_data_dict, agg_level = agg_level, stat = stat)
     # update bokeh plot
-    line_plot = bokeh_line_plot(bokeh_line_data_dict, col = col, stat = stat)
+    line_plot = bokeh_line_plot(bokeh_line_data_dict, col = col, stat = stat, agg_level = agg_level)
     # reassign bokeh plot to bokeh dashboard
     dashboard_line.children[0] = line_plot
 
