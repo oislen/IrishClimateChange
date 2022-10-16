@@ -11,6 +11,7 @@ gis_dir = os.path.join(data_dir, "gis")
 
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
+preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.pickle")
 counties_data_fpath = os.path.join(gis_dir, "countries.shp")
 
 # set dictionary of hyperlinks to download data files
@@ -67,6 +68,7 @@ MAP_SETTINGS = {'line_color':'gray',
                 }
 
 # bokeh line selector settings
+date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
 line_agg_level_options = ['year', 'month']
 line_agg_level_default = line_agg_level_options[0]
 col_options = ['maxtp', 'mintp', 'wdsp', 'sun', 'evap', 'rain']
