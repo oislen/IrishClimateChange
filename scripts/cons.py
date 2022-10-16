@@ -12,7 +12,10 @@ gis_dir = os.path.join(data_dir, "gis")
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.pickle")
-counties_data_fpath = os.path.join(gis_dir, "countries.shp")
+rep_counties_fpath = os.path.join(data_dir, 'gis\\arch\\Counties_-_OSi_National_Statutory_Boundaries_-_2019\\Counties___OSi_National_Statutory_Boundaries_.shp')
+ni_counties_fpath = os.path.join(data_dir, 'gis\\arch\\northern_ireland_counties\\northern_ireland_counties.shp')
+counties_data_fpath = os.path.join(gis_dir, "counties.shp")
+map_data_fpath = os.path.join(gis_dir, "map_data.pickle")
 
 # set dictionary of hyperlinks to download data files
 census_2011 = {'Census2011_Province_generalised20m':'http://census.cso.ie/censusasp/saps/boundaries/Census2011_Province_generalised20m.zip',
