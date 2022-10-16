@@ -46,7 +46,6 @@ def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level):
         county_line = plot.line(x = 'index', y = col, color = cfg_dict['color'], source = datasource, view = cfg_dict['dataview'], line_width  = 2)
         # create hover tools
         plot.add_tools(HoverTool(renderers=[county_point], tooltips=[('County', '@county'), ('Date', '@date_str'), ('Value', f'@{col}')], attachment='left'))
-        plot.add_tools(HoverTool(renderers=[county_line], tooltips=[('County', '@county'), ('Date', '@date_str'), ('Value', f'@{col}')], attachment='left'))
         legend_it.append((county, [county_line]))
     
     legend = Legend(items=legend_it)
