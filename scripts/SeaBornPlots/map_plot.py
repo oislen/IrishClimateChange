@@ -10,7 +10,7 @@ def map_plot(map_data_dict, stat, col):
     plt.axis('off')
     plt.title('Irish Climate App', size = 20)
     # plot counties of the island of Ireland
-    map_data['geometry'].boundary.plot(ax = ax, color = 'grey')
+    map_data['geometry'].boundary.plot(ax = ax, color = 'grey', linewidth = 0.9)
     # create custom colour map
     cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lightblue", "steelblue"])
     norm = plt.Normalize(map_data[col].min(),map_data[col].max())
