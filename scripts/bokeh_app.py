@@ -12,10 +12,10 @@ from bokeh.layouts import column, row
 
 # import custom modules
 import cons
-from utilities.bokeh_map_data import bokeh_map_data
-from utilities.bokeh_map_plot import bokeh_map_plot
-from utilities.bokeh_line_data import bokeh_line_data
-from utilities.bokeh_line_plot import bokeh_line_plot
+from BokehApp.bokeh_map_data import bokeh_map_data
+from BokehApp.bokeh_map_plot import bokeh_map_plot
+from BokehApp.bokeh_line_data import bokeh_line_data
+from BokehApp.bokeh_line_plot import bokeh_line_plot
 
 #################
 ##-- Map Plot --#
