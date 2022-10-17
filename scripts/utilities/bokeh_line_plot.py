@@ -6,7 +6,7 @@ from bokeh.models import Span, DatetimeTickFormatter, HoverTool, Legend
 # import custom modules
 import cons
 
-def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level):
+def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level, selection):
     """"""
     # extract out data for bokeh plot
     agg_data_dict = bokeh_data_dict[stat][agg_level]
@@ -41,12 +41,13 @@ def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level):
 
     # overlay timelines and points
     for county, cfg_dict in agg_data_dict['dataview_dict'].items():
-        # add county line
-        county_point = plot.scatter(x = 'index', y = col, color = cfg_dict['color'], source = datasource, view = cfg_dict['dataview'], size = 8)
-        county_line = plot.line(x = 'index', y = col, color = cfg_dict['color'], source = datasource, view = cfg_dict['dataview'], line_width  = 2)
-        # create hover tools
-        plot.add_tools(HoverTool(renderers=[county_point], tooltips=[('County', '@county'), ('Date', '@date_str'), ('Value', f'@{col}')], attachment='left'))
-        legend_it.append((county, [county_line]))
+        if county in selection:
+            # add county line
+            county_point = plot.scatter(x = 'index', y = col, color = cfg_dict['color'], source = datasource, view = cfg_dict['dataview'], size = 8)
+            county_line = plot.line(x = 'index', y = col, color = cfg_dict['color'], source = datasource, view = cfg_dict['dataview'], line_width  = 2)
+            # create hover tools
+            plot.add_tools(HoverTool(renderers=[county_point], tooltips=[('County', '@county'), ('Date', '@date_str'), ('Value', f'@{col}')], attachment='left'))
+            legend_it.append((county, [county_line]))
     
     legend = Legend(items=legend_it)
     legend.click_policy="mute"
