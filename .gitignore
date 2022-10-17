@@ -1,4 +1,4 @@
 # ignore sub repos
 data/Met_Eireann/arch
 *__pycache__
-scripts/.ipynb_checkpoints
+*.ipynb_checkpoints
