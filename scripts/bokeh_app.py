@@ -71,7 +71,7 @@ def callback_line_plot(attr, old, new):
 line_agg_level_selector = Select(title='Aggregate Level:', value=cons.line_agg_level_default, options=cons.line_agg_level_options, width=120, height=60, aspect_ratio=10)
 line_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=120, height=60, aspect_ratio=10)
 line_stat_selector = Select(title='Statistic:', value=cons.stat_default, options=cons.stat_options, width=120, height=60, aspect_ratio=10)
-line_county_checkboxgroup = CheckboxGroup(labels=cons.counties, active = [])
+line_county_checkboxgroup = CheckboxGroup(labels=cons.counties, active = list(range(len(cons.counties))))
 line_agg_level_selector.on_change('value', callback_line_plot)  
 line_col_selector.on_change('value', callback_line_plot)  
 line_stat_selector.on_change('value', callback_line_plot)
@@ -82,12 +82,13 @@ line_county_checkboxgroup.on_change('active', callback_line_plot)
 ############################
 
 # structure dashboard map plot
-widgets_map = column(map_col_selector, Div(), Div(), map_stat_selector)
+space_div = Div(width = 30, height = 30)
+widgets_map = column(map_col_selector, space_div, map_stat_selector)
 dashboard_map = row(map_plot, widgets_map)
 panel_map = Panel(child = dashboard_map, title = 'GIS Map')
 tab_map = Tabs(tabs=[panel_map])
 # structure dashboard line plot
-widgets_line = column(line_agg_level_selector, Div(), Div(), line_col_selector, Div(), Div(), line_stat_selector, Div(), Div(), line_county_checkboxgroup)
+widgets_line = column(line_agg_level_selector, space_div, line_col_selector, space_div, line_stat_selector, space_div, line_county_checkboxgroup)
 dashboard_line = row(line_plot, widgets_line)
 panel_line = Panel(child = dashboard_line, title = 'Time Series')
 tab_line = Tabs(tabs=[panel_line])

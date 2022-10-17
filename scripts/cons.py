@@ -73,11 +73,11 @@ MAP_SETTINGS = {'line_color':'gray',
                 }
 
 # bokeh line selector settings
-counties = ['dublin', 'wexford', 'kilkenny', 'mayo']
-line_colors = ['blue', 'purple', 'yellow', 'green']
-county_line_colors = dict(zip(counties, line_colors))
+county_line_colors = {'dublin':'blue', 'kilkenny':'yellow', 'mayo':'green', 'wexford':'purple'}
+counties = list(county_line_colors.keys())
+line_colors = list(county_line_colors.values())
 date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
-line_agg_level_options = ['year', 'month']
+line_agg_level_options = list(date_strftime_dict.keys())
 line_agg_level_default = line_agg_level_options[0]
 col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain']
 col_default = col_options[0]
