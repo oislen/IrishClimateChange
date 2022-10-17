@@ -20,7 +20,7 @@ def bokeh_map_dash():
         # update bokeh plot
         map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col, stat = stat)
         # reassign bokeh plot to bokeh dashboard
-        dashboard_map.children[0] = map_plot
+        dashboard_map.children[1] = map_plot
 
     # set up selectors for bokeh map plot
     map_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=120, height=60, aspect_ratio=10)
@@ -31,6 +31,6 @@ def bokeh_map_dash():
     # structure dashboard map plot
     space_div = Div(width = 30, height = 30)
     widgets_map = column(map_col_selector, space_div, map_stat_selector)
-    dashboard_map = row(map_plot, widgets_map)
+    dashboard_map = row(widgets_map, map_plot)
 
     return dashboard_map

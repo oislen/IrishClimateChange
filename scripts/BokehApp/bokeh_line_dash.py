@@ -27,13 +27,13 @@ def bokeh_line_dash():
         # update bokeh plot
         line_plot = bokeh_line_plot(bokeh_line_data_dict, col = col, stat = stat, agg_level = agg_level, selection = selection)
         # reassign bokeh plot to bokeh dashboard
-        dashboard_line.children[0] = line_plot
+        dashboard_line.children[1] = line_plot
 
     # set up selectors for bokeh line plot
-    line_agg_level_selector = Select(title='Aggregate Level:', value=cons.line_agg_level_default, options=cons.line_agg_level_options, width=120, height=60, aspect_ratio=10)
-    line_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=120, height=60, aspect_ratio=10)
-    line_stat_selector = Select(title='Statistic:', value=cons.stat_default, options=cons.stat_options, width=120, height=60, aspect_ratio=10)
-    line_county_checkboxgroup = CheckboxGroup(labels=cons.counties, active = list(range(len(cons.counties))))
+    line_agg_level_selector = Select(title='Aggregate Level:', value=cons.line_agg_level_default, options=cons.line_agg_level_options, width=130, height=60, aspect_ratio=10)
+    line_col_selector = Select(title='Column:', value=cons.col_default, options=cons.col_options, width=130, height=60, aspect_ratio=10)
+    line_stat_selector = Select(title='Statistic:', value=cons.stat_default, options=cons.stat_options, width=130, height=60, aspect_ratio=10)
+    line_county_checkboxgroup = CheckboxGroup(labels=cons.counties, active = list(range(len(cons.counties))), width = 130)
     line_agg_level_selector.on_change('value', callback_line_plot)  
     line_col_selector.on_change('value', callback_line_plot)  
     line_stat_selector.on_change('value', callback_line_plot)
@@ -42,6 +42,6 @@ def bokeh_line_dash():
     # structure dashboard line plot
     space_div = Div(width = 30, height = 30)
     widgets_line = column(line_agg_level_selector, space_div, line_col_selector, space_div, line_stat_selector, space_div, line_county_checkboxgroup)
-    dashboard_line = row(line_plot, widgets_line)
+    dashboard_line = row(widgets_line, line_plot)
 
     return dashboard_line
