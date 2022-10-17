@@ -1,1 +1,1 @@
-call bokeh serve --show bokeh_app.py
+call bokeh serve --show bokeh_line_app.py bokeh_map_app.py
