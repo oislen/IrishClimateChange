@@ -7,7 +7,7 @@ def time_plot(data, y, x = 'index', hue = None, strftime = None, refline = None,
     # take deep copy of data
     tmp_data = data.copy()
     # set plot size and style
-    sns.set(rc={'figure.figsize':(11.7,8.27)})
+    sns.set(rc=cons.sns_fig_settings)
     sns.set_style("white")
     # initiate subplots
     fig, ax = plt.subplots()

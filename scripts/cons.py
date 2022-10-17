@@ -56,6 +56,9 @@ census_2016 = {'Census2016_Constituencies_2017':'https://opendata.arcgis.com/dat
 # met eireann weather data
 met_eireann = {'dublin_airport':'https://cli.fusio.net/cli/climate_data/webdata/dly532.zip'}
 
+# seaborn plot settings
+sns_fig_settings = {'figure.figsize':(7, 7)}
+
 # bokeh figure settings
 FIG_SETTING = {'plot_height':640, 
                'plot_width':640, 

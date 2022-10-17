@@ -1,3 +1,4 @@
+import cons
 import matplotlib.pyplot as plt
 import matplotlib.colors
 
@@ -5,7 +6,7 @@ def map_plot(map_data_dict, stat, col):
     """"""
     # create map of ireland
     map_data = map_data_dict[stat]
-    fig, ax = plt.subplots(figsize=(12, 12))
+    fig, ax = plt.subplots(figsize=cons.sns_fig_settings['figure.figsize'])
     plt.axis('off')
     plt.title('Irish Climate App', size = 20)
     # plot counties of the island of Ireland
