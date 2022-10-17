@@ -17,5 +17,5 @@ def time_data(data, agg_dict, time_span = None, counties = None, strftime = None
     if counties != None:
         agg_data = agg_data.loc[agg_data['county'].isin(counties)]
     agg_data = agg_data.reset_index(drop = True)
-    agg_data['index'] = agg_data.groupby('county')['date'].rank(ascending = True).astype(int)
+    agg_data['index'] = agg_data.groupby('county')['date'].rank(ascending = True).astype(int).subtract(1)
     return agg_data
