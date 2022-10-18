@@ -5,8 +5,6 @@ import pandas as pd
 
 def gen_preaggregate_data(master_data = None, preaggregate_data_fpath = None, return_data = True):
     """"""
-    master_data
-    print('~~~ Preaggregating master data ...')
     if type(master_data) == type(None):
         # load master data
         master_data = pd.read_feather(cons.master_data_fpath)
@@ -25,7 +23,6 @@ def gen_preaggregate_data(master_data = None, preaggregate_data_fpath = None, re
     if preaggregate_data_fpath != None:
         if os.path.exists(preaggregate_data_fpath):
             # pickle the preaggregated data dictionary to disk
-            print('pickling preaggregated data ...')
             with open(cons.preaggregate_data_fpath, 'wb') as f:
                 pickle.dump(pre_agg_data_dict, f, protocol = pickle.HIGHEST_PROTOCOL)
         else:
