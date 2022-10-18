@@ -2,6 +2,7 @@
 import cons
 import pickle
 from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
+from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
 
 # import custom modules
 from utilities.time_data import time_data
@@ -10,8 +11,9 @@ def bokeh_line_data():
     """"""
     print('~~~ Generating bokeh line data ...')
     # load preaggregated data
-    with open(cons.preaggregate_data_fpath, "rb") as f:
-        pre_agg_data_dict = pickle.load(f)
+    #with open(cons.preaggregate_data_fpath, "rb") as f:
+    #    pre_agg_data_dict = pickle.load(f)
+    pre_agg_data_dict = gen_preaggregate_data(return_data = True)
     # create dictionary to hold data results
     bokeh_line_data_dict = {}
     for stat, agg_data_dict in pre_agg_data_dict.items():
