@@ -3,7 +3,7 @@ import os
 import pickle
 import pandas as pd
 
-def preaggregate_data(preaggregate_data_fpath = None, return_data = True):
+def gen_preaggregate_data(preaggregate_data_fpath = None, return_data = True):
     """"""
     print('~~~ Preaggregating master data ...')
     # load master data
