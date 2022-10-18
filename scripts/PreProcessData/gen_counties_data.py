@@ -1,9 +1,10 @@
 import cons
+import os
 import pickle
 import pandas as pd
 import geopandas as gpd
 
-def gen_counties_data():
+def gen_counties_data(map_data_fpath = None, return_data = True):
     """"""
     # load in county shape files
     rep_counties = gpd.read_file(cons.rep_counties_fpath)[['ENGLISH', 'geometry']].rename(columns = {'ENGLISH':'county'}).to_crs(epsg = 2157)
@@ -31,7 +32,17 @@ def gen_counties_data():
         county_data = pre_agg_data.groupby(group_cols, as_index = False).agg(agg_dict)
         # join county level data to map data
         map_data_dict[stat] = gpd.GeoDataFrame(pd.merge(left = counties, right = county_data, on = 'county', how = 'left'), crs="EPSG:2157")
-    # pickle the preaggregated data dictionary to disk
-    with open(cons.map_data_fpath, 'wb') as f:
-        pickle.dump(map_data_dict, f, protocol = pickle.HIGHEST_PROTOCOL)
-    return 0
+    # if the output
+    if map_data_fpath != None:
+        if os.path.exists(map_data_fpath):
+            # pickle the preaggregated data dictionary to disk
+            with open(map_data_fpath, 'wb') as f:
+                pickle.dump(map_data_dict, f, protocol = pickle.HIGHEST_PROTOCOL)
+        else:
+            raise ValueError(f'{map_data_fpath} does not exist')
+    # if returning data
+    if return_data:
+        res = map_data_dict
+    else:
+        res = 0
+    return res

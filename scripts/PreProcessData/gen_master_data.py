@@ -2,7 +2,7 @@ import os
 import cons
 import pandas as pd
 
-def gen_master_data():
+def gen_master_data(master_data_fpath = None, return_data = True):
     """"""
     print('~~~ Generating master data ...')
     # load data files from file directory
@@ -14,7 +14,17 @@ def gen_master_data():
         tmp_data = pd.read_excel(fpath, dtype = dtypes, na_values = [' '])
         data = pd.concat(objs = [data, tmp_data], ignore_index = True, axis = 0)
     data['date'] = pd.to_datetime(data['date'])
-    # save concatenated data to disk and reread
-    print('outputting feather file ...')
-    data.to_feather(cons.master_data_fpath)
-    return 0
+    # if the output
+    if master_data_fpath != None:
+        if os.path.exists(master_data_fpath):
+            # save concatenated data to disk and reread
+            print('outputting feather file ...')
+            data.to_feather(master_data_fpath)
+        else:
+            raise ValueError(f'{master_data_fpath} does not exist')
+    # if returning data
+    if return_data:
+        res = data
+    else:
+        res = 0
+    return res
