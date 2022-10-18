@@ -1,0 +1,12 @@
+numpy
+pyarrow
+pyexcel
+openpyxl
+pandas
+geopandas
+colour
+matplotlib
+seaborn
+bokeh
+ipywidgets
+jupyterlab
