@@ -3,15 +3,17 @@ import os
 import pickle
 import pandas as pd
 
-def gen_preaggregate_data(preaggregate_data_fpath = None, return_data = True):
+def gen_preaggregate_data(master_data = None, preaggregate_data_fpath = None, return_data = True):
     """"""
+    master_data
     print('~~~ Preaggregating master data ...')
-    # load master data
-    data = pd.read_feather(cons.master_data_fpath)
+    if type(master_data) == type(None):
+        # load master data
+        master_data = pd.read_feather(cons.master_data_fpath)
     # preaggregate the data to year-month level for each available stat
     pre_agg_data_dict = {}
     strftime = cons.date_strftime_dict['year-month']
-    agg_data = data.copy()
+    agg_data = master_data.copy()
     agg_data['date_str'] = agg_data['date'].dt.strftime(strftime)
     agg_data['date'] = pd.to_datetime(agg_data['date_str'], format = strftime)
     group_cols = ['county', 'date', 'date_str']

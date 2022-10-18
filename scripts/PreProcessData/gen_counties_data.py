@@ -4,14 +4,15 @@ import pickle
 import pandas as pd
 import geopandas as gpd
 
-def gen_counties_data(map_data_fpath = None, return_data = True):
+def gen_counties_data(pre_agg_data_dict = None, map_data_fpath = None, return_data = True):
     """"""
     # load in county shape files
     rep_counties = gpd.read_file(cons.rep_counties_fpath)[['ENGLISH', 'geometry']].rename(columns = {'ENGLISH':'county'}).to_crs(epsg = 2157)
     ni_counties = gpd.read_file(cons.ni_counties_fpath)[['county', 'geometry']].to_crs(epsg = 2157)
-    # load preaggregated data
-    with open(cons.preaggregate_data_fpath, "rb") as f:
-        pre_agg_data_dict = pickle.load(f)
+    if type(pre_agg_data_dict)  == type(None):
+        # load preaggregated data
+        with open(cons.preaggregate_data_fpath, "rb") as f:
+            pre_agg_data_dict = pickle.load(f)
     # concatenate county shape files
     counties = gpd.GeoDataFrame(pd.concat([rep_counties, ni_counties], ignore_index=True), crs="EPSG:2157")
     # simplify the granularity of the geometry column
