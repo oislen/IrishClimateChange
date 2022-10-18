@@ -24,5 +24,8 @@ call conda install -c conda-forge bokeh --yes
 call conda install -c conda-forge ipywidgets --yes
 call conda install -c conda-forge jupyterlab --yes
 
+:: export environment to .yml file
+call conda env export > environment.yml
+
 :: deactivate new environment
 call conda deactivate
