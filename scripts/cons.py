@@ -42,7 +42,7 @@ MAP_SETTINGS = {'line_color':'gray',
                 }
 
 # bokeh line selector settings
-county_line_colors = {'dublin':'blue', 'kilkenny':'yellow', 'mayo':'green', 'wexford':'purple'}
+county_line_colors = {'dublin':'blue', 'galway':'maroon', 'kilkenny':'yellow', 'mayo':'green', 'wexford':'purple'}
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
 date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
