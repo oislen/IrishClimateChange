@@ -1,15 +1,22 @@
+import pickle
 from bokeh.models import Select, CheckboxGroup, Div
 from bokeh.layouts import column, row
 
 # import custom modules
 import cons
+from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
 from BokehApp.bokeh_line_data import bokeh_line_data
 from BokehApp.bokeh_line_plot import bokeh_line_plot
 
-def bokeh_line_dash():
+def bokeh_line_dash(load_data_dict = True):
     """"""
+    if load_data_dict:
+        with open(cons.preaggregate_data_fpath, 'rb') as handle:
+            pre_agg_data_dict = pickle.load(handle)
+    else:
+        pre_agg_data_dict = gen_preaggregate_data(return_data = True)
     # generate bokeh data for line plot
-    bokeh_line_data_dict = bokeh_line_data()
+    bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict)
     # create bokeh plot
     line_plot = bokeh_line_plot(bokeh_line_data_dict, col = cons.col_default, stat = cons.stat_default, agg_level = cons.line_agg_level_default, selection = cons.counties)
 

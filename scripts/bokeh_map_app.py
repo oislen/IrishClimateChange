@@ -14,7 +14,7 @@ from bokeh.layouts import column, row
 from BokehApp.bokeh_map_dash import bokeh_map_dash
 
 # initialise and structure bokeh map dashboard
-dashboard_map = bokeh_map_dash()
+dashboard_map = bokeh_map_dash(load_data_dict = True)
 panel_map = Panel(child = dashboard_map, title = 'GIS Map')
 tab_map = Tabs(tabs=[panel_map])
 
