@@ -52,6 +52,7 @@ county_line_colors = {'donegal':'greenyellow', 'dublin':'blue',
                       'limerick':'olivedrab', 
                       'mayo':'green', 
                       'sligo':'indianred', 
+                      'tipperary':'royalblue',
                       'waterford':'whitesmoke', 'wexford':'purple'}
 
 counties = list(county_line_colors.keys())
