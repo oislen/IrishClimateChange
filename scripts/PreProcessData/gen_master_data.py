@@ -12,8 +12,11 @@ def gen_master_data(master_data_fpath = None, return_data = True):
     for fpath in met_eireann_fpaths:
         print(f'loading {fpath} ...')
         tmp_data = pd.read_excel(fpath, dtype = dtypes, na_values = [' '])
-        data = pd.concat(objs = [data, tmp_data], ignore_index = True, axis = 0)
+        tmp_data_sub = tmp_data[tmp_data.columns[~tmp_data.columns.str.contains('ind')]]
+        data = pd.concat(objs = [data, tmp_data_sub], ignore_index = True, axis = 0)
     data['date'] = pd.to_datetime(data['date'])
+    # order results by county and station alphabetically
+    data = data.sort_values(by = ['county', 'station']).reset_index(drop = True)
     # if the output
     if master_data_fpath != None:
         if os.path.exists(master_data_fpath):
@@ -22,8 +25,6 @@ def gen_master_data(master_data_fpath = None, return_data = True):
             data.to_feather(master_data_fpath)
         else:
             raise ValueError(f'{master_data_fpath} does not exist')
-    # order results by county and station alphabetically
-    data = data.sort_values(by = ['county', 'station'])
     # if returning data
     if return_data:
         res = data
