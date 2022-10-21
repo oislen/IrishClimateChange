@@ -22,6 +22,8 @@ def gen_master_data(master_data_fpath = None, return_data = True):
             data.to_feather(master_data_fpath)
         else:
             raise ValueError(f'{master_data_fpath} does not exist')
+    # order results by county and station alphabetically
+    data = data.sort_values(by = ['county', 'station'])
     # if returning data
     if return_data:
         res = data
