@@ -25,6 +25,9 @@ met_eireann = {'dublin_airport':'https://cli.fusio.net/cli/climate_data/webdata/
 # seaborn plot settings
 sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
 
+# set whether to load in pickle data for bokeh app or generate from master file
+load_data_dict = True
+
 # bokeh figure settings
 FIG_SETTING = {'plot_height':640, 
                'plot_width':640, 

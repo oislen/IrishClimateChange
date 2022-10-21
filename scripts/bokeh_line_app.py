@@ -6,6 +6,7 @@ Created on Thu Jun 23 11:45:02 2022
 """
 
 # load relevant libraries
+import cons
 from bokeh.io import curdoc
 from bokeh.models import Panel, Tabs
 
@@ -13,7 +14,7 @@ from bokeh.models import Panel, Tabs
 from BokehApp.bokeh_line_dash import bokeh_line_dash
 
 # initialise and structure bokeh line dashboard
-dashboard_line = bokeh_line_dash(load_data_dict = True)
+dashboard_line = bokeh_line_dash(load_data_dict = cons.load_data_dict)
 panel_line = Panel(child = dashboard_line, title = 'Time Series')
 layout = Tabs(tabs=[panel_line])
 

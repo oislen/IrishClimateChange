@@ -6,6 +6,7 @@ Created on Thu Jun 23 11:45:02 2022
 """
 
 # load relevant libraries
+import cons
 from bokeh.io import curdoc
 from bokeh.models import Panel, Tabs
 from bokeh.layouts import column, row
@@ -14,7 +15,7 @@ from bokeh.layouts import column, row
 from BokehApp.bokeh_map_dash import bokeh_map_dash
 
 # initialise and structure bokeh map dashboard
-dashboard_map = bokeh_map_dash(load_data_dict = True)
+dashboard_map = bokeh_map_dash(load_data_dict = cons.load_data_dict)
 panel_map = Panel(child = dashboard_map, title = 'GIS Map')
 tab_map = Tabs(tabs=[panel_map])
 
