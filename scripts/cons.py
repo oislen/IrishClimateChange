@@ -51,6 +51,7 @@ county_line_colors = {'donegal':'greenyellow', 'dublin':'blue',
                       'kerry':'gold', 'kilkenny':'black', 
                       'limerick':'olivedrab', 
                       'mayo':'green', 
+                      'roscommon':'cornsilk',
                       'sligo':'indianred', 
                       'tipperary':'royalblue',
                       'waterford':'whitesmoke', 'wexford':'purple'}
