@@ -45,7 +45,7 @@ MAP_SETTINGS = {'line_color':'gray',
                 }
 
 # bokeh line selector settings
-county_line_colors = {'donegal':'greenyellow', 'dublin':'blue', 
+county_line_colors = {'donegal':'greenyellow', 'dublin':'lightblue', 
                       'carlow':'sandybrown', 'clare':'yellow', 'cork':'red', 
                       'galway':'maroon', 
                       'kerry':'gold', 'kilkenny':'black', 
@@ -54,7 +54,7 @@ county_line_colors = {'donegal':'greenyellow', 'dublin':'blue',
                       'roscommon':'cornsilk',
                       'sligo':'indianred', 
                       'tipperary':'royalblue',
-                      'waterford':'whitesmoke', 'wexford':'purple'}
+                      'waterford':'whitesmoke', 'wexford':'purple', 'wicklow':'darkblue'}
 
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
