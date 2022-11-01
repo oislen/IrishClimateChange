@@ -55,7 +55,7 @@ county_line_colors = {'donegal':'greenyellow', 'dublin':'lightblue',
                       'roscommon':'cornsilk',
                       'sligo':'indianred', 
                       'tipperary':'royalblue',
-                      'waterford':'whitesmoke', 'wexford':'purple', 'wicklow':'darkblue'
+                      'waterford':'whitesmoke', 'westmeath':'darkred', 'wexford':'purple', 'wicklow':'darkblue'
                       }
 
 counties = list(county_line_colors.keys())
