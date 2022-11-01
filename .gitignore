@@ -2,3 +2,4 @@
 data/Met_Eireann/arch
 *__pycache__
 *.ipynb_checkpoints
+*.xlsx
