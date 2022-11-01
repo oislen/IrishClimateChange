@@ -51,10 +51,12 @@ county_line_colors = {'donegal':'greenyellow', 'dublin':'lightblue',
                       'kerry':'gold', 'kildare':'lavender', 'kilkenny':'black', 
                       'laois':'fuchsia', 'leitrim':'khaki', 'limerick':'olivedrab', 
                       'mayo':'green', 
+                      'offaly':'lightgreen',
                       'roscommon':'cornsilk',
                       'sligo':'indianred', 
                       'tipperary':'royalblue',
-                      'waterford':'whitesmoke', 'wexford':'purple', 'wicklow':'darkblue'}
+                      'waterford':'whitesmoke', 'wexford':'purple', 'wicklow':'darkblue'
+                      }
 
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
