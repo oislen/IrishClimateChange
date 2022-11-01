@@ -46,7 +46,7 @@ MAP_SETTINGS = {'line_color':'gray',
 
 # bokeh line selector settings
 county_line_colors = {'donegal':'greenyellow', 'dublin':'lightblue', 
-                      'carlow':'sandybrown', 'clare':'yellow', 'cork':'red', 
+                      'carlow':'sandybrown', 'cavan':'dodgerblue', 'clare':'yellow', 'cork':'red', 
                       'galway':'maroon', 
                       'kerry':'gold', 'kildare':'lavender', 'kilkenny':'black', 
                       'laois':'fuchsia', 'leitrim':'khaki', 'limerick':'olivedrab', 'longford':'blueviolet',
