@@ -20,6 +20,9 @@ conda install -c conda-forge matplotlib --yes
 conda install -c conda-forge seaborn --yes
 conda install -c conda-forge bokeh --yes
 
+# install boto3 for aws connection
+conda install -c conda-forge boto3
+
 # install jupyterlab
 conda install -c conda-forge ipywidgets --yes
 conda install -c conda-forge jupyterlab --yes
