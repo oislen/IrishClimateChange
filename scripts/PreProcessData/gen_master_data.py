@@ -1,13 +1,14 @@
 import io
 import os
 import cons
+from aws_rootkey import aws_rootkey_fpath
 import pandas as pd
 import boto3
 
 def gen_boto3_excel(bucket = 'irishclimateapp', prefix = 'data/Met_Eireann'):
     """"""
     # load aws root key
-    rootkey = pd.read_csv('C:\\Users\\\oisin\\.aws\\rootkey.csv', sep='=', header = None, index_col = 0)[1]
+    rootkey = pd.read_csv(aws_rootkey_fpath, sep='=', header = None, index_col = 0)[1]
     # generate boto3 s3 connection
     client = boto3.client('s3', aws_access_key_id=rootkey['AWSAccessKeyId'], aws_secret_access_key= rootkey['AWSSecretKey'])
     # create a paginator to list all objects
