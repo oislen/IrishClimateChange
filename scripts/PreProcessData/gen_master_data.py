@@ -18,7 +18,6 @@ def gen_boto3_excel(bucket = 'irishclimateapp', prefix = 'data/Met_Eireann'):
     # filter down contents keys with .xlsx
     filtered_iterator = page_iterator.search("Contents[?contains(Key,'.xlsx')].Key")
     # extract out the file keys
-    #file_keys = [f's3//{bucket}' + f'/{content_key}' for content_key in filtered_iterator]
     file_keys = [content_key for content_key in filtered_iterator]
     # load s3 objects into list
     objs_list = [client.get_object(Bucket = bucket, Key = file_key) for file_key in file_keys]
