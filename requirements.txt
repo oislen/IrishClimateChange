@@ -2,12 +2,12 @@ numpy
 pyarrow
 pyexcel
 openpyxl
-pandas
+pandas<2.0.0
 geopandas
 colour
 matplotlib
 seaborn
-bokeh
+bokeh==2.4.0
 boto3
 ipywidgets
 jupyterlab
