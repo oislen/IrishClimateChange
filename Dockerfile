@@ -21,5 +21,4 @@ RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 RUN git clone https://github.com/oislen/IrishClimateApp.git /home/ubuntu/IrishClimateApp
 
 WORKDIR /home/${user}/IrishClimateApp/scripts
-#ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
-ENTRYPOINT ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
+CMD ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
