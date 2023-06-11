@@ -8,5 +8,6 @@ colour
 matplotlib
 seaborn
 bokeh
+boto3
 ipywidgets
 jupyterlab
