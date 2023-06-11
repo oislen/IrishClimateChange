@@ -22,4 +22,4 @@ RUN git clone https://github.com/oislen/IrishClimateApp.git /home/ubuntu/IrishCl
 
 WORKDIR /home/${user}/IrishClimateApp/scripts
 #ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
-CMD ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
+ENTRYPOINT ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
