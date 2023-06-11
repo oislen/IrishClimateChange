@@ -9,12 +9,12 @@ docker container prune -f
 docker rm -f %DOCKER_IMAGE%
 
 :: build docker image
-call docker build --no-cache -t %DOCKER_IMAGE% . 
-::call docker build -t %DOCKER_IMAGE% .
+::call docker build --no-cache -t %DOCKER_IMAGE% . 
+call docker build -t %DOCKER_IMAGE% .
 
 :: run docker container
 SET UBUNTU_DIR=/home/ubuntu
-call docker run --shm-size=512m -p 8889:8888 -it %DOCKER_IMAGE%
+call docker run --shm-size=512m -p 5006:5006 -it %DOCKER_IMAGE%
 
 :: useful docker commands
 :: docker images
