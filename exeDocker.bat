@@ -9,8 +9,8 @@ docker container prune -f
 docker rm -f %DOCKER_IMAGE%
 
 :: build docker image
-::call docker build --no-cache -t %DOCKER_IMAGE% . 
-call docker build -t %DOCKER_IMAGE% .
+call docker build --no-cache -t %DOCKER_IMAGE% . 
+::call docker build -t %DOCKER_IMAGE% .
 
 :: run docker container
 SET UBUNTU_DIR=/home/ubuntu
