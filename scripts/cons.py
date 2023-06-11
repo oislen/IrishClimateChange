@@ -2,7 +2,7 @@
 import os
 import platform
 
-root_dir = 'E:\\GitHub\\IrishClimateApp' if platform.system() == 'Windows' else '/home/ubuntu/'
+root_dir = 'E:\\GitHub\\IrishClimateApp' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateApp'
 # set directories
 data_dir = os.path.join(root_dir, 'data')
 census_2011_dir = os.path.join(data_dir, 'Census_2011')
