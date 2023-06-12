@@ -18,7 +18,7 @@ def gen_counties_data(pre_agg_data_dict = None, map_data_fpath = None, return_da
     # simplify the granularity of the geometry column
     counties['geometry'] = counties['geometry'].simplify(tolerance = 1000)
     # clean up county column
-    counties['county'] = counties['county'].str.lower().str.replace(pat = 'county ', repl = '', regex = False)
+    counties['county'] = counties['county'].str.title().str.replace(pat = 'County ', repl = '', regex = False)
     # sort data by county
     counties = counties.sort_values(by = 'county')
     # create a dictionary to contain map data

@@ -47,17 +47,17 @@ MAP_SETTINGS = {'line_color':'gray',
                 }
 
 # bokeh line selector settings
-county_line_colors = {'donegal':'greenyellow', 'dublin':'lightblue', 
-                      'carlow':'sandybrown', 'cavan':'dodgerblue', 'clare':'yellow', 'cork':'red', 
-                      'galway':'maroon', 
-                      'kerry':'gold', 'kildare':'lavender', 'kilkenny':'black', 
-                      'laois':'fuchsia', 'leitrim':'khaki', 'limerick':'olivedrab', 'longford':'blueviolet',
-                      'mayo':'green',  'meath':'lawngreen', 'monaghan':'slateblue',
-                      'offaly':'lightgreen',
-                      'roscommon':'cornsilk',
-                      'sligo':'indianred', 
-                      'tipperary':'royalblue',
-                      'waterford':'whitesmoke', 'westmeath':'darkred', 'wexford':'purple', 'wicklow':'darkblue'
+county_line_colors = {'Donegal':'greenyellow', 'Dublin':'lightblue', 
+                      'Carlow':'sandybrown', 'Cavan':'dodgerblue', 'Clare':'yellow', 'Cork':'red', 
+                      'Galway':'maroon', 
+                      'Kerry':'gold', 'Kildare':'lavender', 'Kilkenny':'black', 
+                      'Laois':'fuchsia', 'Leitrim':'khaki', 'Limerick':'olivedrab', 'Longford':'blueviolet',
+                      'Mayo':'green',  'Meath':'lawngreen', 'Monaghan':'slateblue',
+                      'Offaly':'lightgreen',
+                      'Roscommon':'cornsilk',
+                      'Sligo':'indianred', 
+                      'Tipperary':'royalblue',
+                      'Waterford':'whitesmoke', 'Westmeath':'darkred', 'Wexford':'purple', 'Wicklow':'darkblue'
                       }
 
 counties = list(county_line_colors.keys())

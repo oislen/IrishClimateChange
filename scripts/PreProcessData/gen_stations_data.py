@@ -13,7 +13,9 @@ def gen_stations_data(points_data_fpath = None, return_data = True):
     # extract out station ids from mater file
     master_station_ids = master_data['id'].unique()
     # filter master data with station ids
-    master_stations = stations_data.loc[stations_data['station_id'].isin(master_station_ids), :]
+    master_stations = stations_data.loc[stations_data['station_id'].isin(master_station_ids), :].copy()
+    master_stations['county'] = master_stations['county'].str.title()
+    master_stations['name'] = master_stations['name'].str.title()
     # create gis data
     geo_master_stations = gpd.GeoDataFrame(master_stations, geometry=gpd.points_from_xy(master_stations.longitude, master_stations.latitude), crs="EPSG:4326").to_crs(epsg = 2157)
     # if the output

@@ -20,6 +20,7 @@ def gen_master_data(met_eireann_fpaths = None, master_data_fpath = None, return_
     data = pd.concat(objs = data_list, ignore_index = True, axis = 0)
     data = data[data.columns[~data.columns.str.contains('ind')]]
     data['date'] = pd.to_datetime(data['date'])
+    data['county'] = data['county'].str.title()
     # order results by county and station alphabetically
     data = data.sort_values(by = ['county', 'station']).reset_index(drop = True)
     # if the output

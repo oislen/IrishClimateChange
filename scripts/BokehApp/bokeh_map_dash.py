@@ -5,6 +5,7 @@ from bokeh.layouts import column, row
 import cons
 from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
 from PreProcessData.gen_counties_data import gen_counties_data
+from PreProcessData.gen_stations_data import gen_stations_data
 from BokehApp.bokeh_map_data import bokeh_map_data
 from BokehApp.bokeh_map_plot import bokeh_map_plot
 
@@ -13,13 +14,16 @@ def bokeh_map_dash(load_data_dict = True):
     if load_data_dict:
         with open(cons.map_data_fpath, 'rb') as handle:
             map_data_dict = pickle.load(handle)
+        with open(cons.points_data_fpath, 'rb') as handle:
+            station_data = pickle.load(handle)
     else:
         pre_agg_data_dict = gen_preaggregate_data(return_data = True)
         map_data_dict = gen_counties_data(pre_agg_data_dict = pre_agg_data_dict, return_data = True)
+        station_data = gen_stations_data(points_data_fpath = cons.points_data_fpath, return_data = True)
     # generate bokeh data for map plot
-    bokeh_map_data_dict = bokeh_map_data(map_data_dict)
+    bokeh_map_data_dict, pointgeosource = bokeh_map_data(map_data_dict, station_data)
     # create bokeh map plot
-    map_plot = bokeh_map_plot(bokeh_map_data_dict, col = cons.col_default, stat = cons.stat_default)
+    map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, pointgeosource = pointgeosource, col = cons.col_default, stat = cons.stat_default)
 
     # create call back function for bokeh dashboard interaction
     def callback_map_plot(attr, old, new):
@@ -27,7 +31,7 @@ def bokeh_map_dash(load_data_dict = True):
         col = map_col_selector.value
         stat = map_stat_selector.value
         # update bokeh plot
-        map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, col = col, stat = stat)
+        map_plot = bokeh_map_plot(bokeh_map_data_dict = bokeh_map_data_dict, pointgeosource = pointgeosource, col = col, stat = stat)
         # reassign bokeh plot to bokeh dashboard
         dashboard_map.children[1] = map_plot
 
