@@ -18,6 +18,7 @@ rep_counties_fpath = os.path.join(data_dir, 'gis', 'arch', 'Counties_-_OSi_Natio
 ni_counties_fpath = os.path.join(data_dir, 'gis', 'arch', 'northern_ireland_counties', 'northern_ireland_counties.shp')
 counties_data_fpath = os.path.join(gis_dir, "counties.shp")
 map_data_fpath = os.path.join(gis_dir, "map_data.pickle")
+points_data_fpath = os.path.join(gis_dir, "points_data.pickle")
 stations_fpath = os.path.join(met_eireann_dir, 'ref', 'StationDetails.csv')
 
 # met eireann weather data
