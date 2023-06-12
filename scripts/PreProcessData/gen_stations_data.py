@@ -15,7 +15,7 @@ def gen_stations_data(points_data_fpath = None, return_data = True):
     # filter master data with station ids
     master_stations = stations_data.loc[stations_data['station_id'].isin(master_station_ids), :]
     # create gis data
-    geo_master_stations = gpd.GeoDataFrame(master_stations, geometry=gpd.points_from_xy(master_stations.longitude, master_stations.latitude), crs="EPSG:2157")
+    geo_master_stations = gpd.GeoDataFrame(master_stations, geometry=gpd.points_from_xy(master_stations.longitude, master_stations.latitude), crs="EPSG:4326").to_crs(epsg = 2157)
     # if the output
     if points_data_fpath != None:
         if os.path.exists(points_data_fpath):
