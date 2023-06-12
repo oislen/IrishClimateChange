@@ -17,8 +17,8 @@ def gen_preaggregate_data(master_data = None, preaggregate_data_fpath = None, re
     group_cols = ['county', 'date', 'date_str']
     for stat in cons.stat_options:
         agg_dict = {col:stat for col in cons.col_options}
-        agg_data = agg_data.groupby(group_cols, as_index = False).agg(agg_dict)
-        pre_agg_data_dict[stat] = agg_data
+        tmp_agg_data = agg_data.groupby(group_cols, as_index = False).agg(agg_dict)
+        pre_agg_data_dict[stat] = tmp_agg_data
     # if the output
     if preaggregate_data_fpath != None:
         if os.path.exists(preaggregate_data_fpath):
