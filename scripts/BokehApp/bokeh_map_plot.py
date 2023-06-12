@@ -4,7 +4,7 @@ from bokeh.models import LinearColorMapper, ColorBar, HoverTool
 from bokeh.plotting import figure
 
 
-def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat):
+def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations):
     """"""
     # define a blue color palette
     lightblue = Color("lightblue")
@@ -28,16 +28,15 @@ def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat):
     # add patches to render states with no aggregate data
     missgeosource = bokeh_map_data_dict[stat]['missgeosource']
     misscounties = map_plot.patches('xs', 'ys', source=missgeosource, fill_color='white', **cons.MAP_SETTINGS)
+    map_plot.add_tools(HoverTool(renderers=[misscounties], tooltips=[('County Name', '@county'), ('County Value', 'NA')], attachment='left'))
     # add patches to render states with aggregate data
     nonmissgeosource = bokeh_map_data_dict[stat]['nonmissgeosource']
     nonmisscounties = map_plot.patches('xs', 'ys', source=nonmissgeosource, fill_color={'field': col,'transform': color_mapper}, **cons.MAP_SETTINGS)
-    # add points to render stations
-    stationpoints = map_plot.circle('x', 'y', source=pointgeosource, color='red', size=8, alpha=0.3)
-    # create hover tool for states with no aggregate data
-    map_plot.add_tools(HoverTool(renderers=[misscounties], tooltips=[('County Name', '@county'), ('County Value', 'NA')], attachment='left'))
-    # create hover tool for states with aggregate data
     map_plot.add_tools(HoverTool(renderers=[nonmisscounties], tooltips=[('County Name', '@county'), ('County Value', f'@{col}')], attachment='left'))
-    # create hover tool for stations
-    map_plot.add_tools(HoverTool(renderers=[stationpoints], tooltips=[('County Name', '@county'), ('Station Name', '@name'), ('Latitude', '@latitude'), ('Longitude', '@longitude'), ('Open Year', '@open_year')], attachment='left'))
+    # add points to render stations
+    if show_stations == [1]:
+        stationpoints = map_plot.circle('x', 'y', source=pointgeosource, color='red', size=8, alpha=0.3)
+        map_plot.add_tools(HoverTool(renderers=[stationpoints], tooltips=[('County Name', '@county'), ('Station Name', '@name'), ('Latitude', '@latitude'), ('Longitude', '@longitude'), ('Open Year', '@open_year')], attachment='left'))
+    # set layout of color bar
     map_plot.add_layout(color_bar, 'below')
     return map_plot

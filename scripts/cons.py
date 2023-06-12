@@ -69,6 +69,7 @@ col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain']
 col_default = col_options[0]
 stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
 stat_default = stat_options[0]
+show_stations_default = [1]
 
 # bokeh server execution commands
 bat_execBokehApp = "START /MIN CMD.EXE /C exeBokehApp.bat"
