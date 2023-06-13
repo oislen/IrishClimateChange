@@ -2,8 +2,33 @@ import cons
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def time_plot(data, y, x = 'index', hue = None, strftime = None, refline = None, title = None, xlabel = None, ylabel = None):
-    """"""
+def time_plot(data, y, x = 'index', hue = None, refline = None, title = None, xlabel = None, ylabel = None):
+    """Creates a time series plot for the aggregated Met Eireann dataset
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        The aggregated Met Eireann data to create a time series plot for
+    y : str
+        The aggregated statistic to plot on the vertical y-axis.
+    x : str
+        The time series to plot on the horizontal x-axis, default is 'index' of aggregated Met Eireann data
+    hue : str
+        An additional category column to split the x y time series plot into multiple subplots, default is None
+    refline : float
+        A reference point on the y-axis to plot a horizontal line along, default is None
+    title : str
+        A custom title for the time series plot, default is None
+    xlabel : str
+        A custom x-axis label for the time series plot, default is None
+    ylabel : str
+        A custom y-axis label for the time series plot, default is None
+
+    Returns
+    -------
+    0
+        Successful execution
+    """
     # take deep copy of data
     tmp_data = data.copy()
     # set plot size and style

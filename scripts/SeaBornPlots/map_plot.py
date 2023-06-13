@@ -3,7 +3,24 @@ import matplotlib.pyplot as plt
 import matplotlib.colors
 
 def map_plot(map_data_dict, station_data, stat, col):
-    """"""
+    """Creates a gis heatmap plot for the aggregated Met Eireann dataset given a specific statistic to visualise
+
+    Parameters
+    ----------
+    map_data_dict : dict
+        A dictionary containing the gis map data for each given statistic to plot
+    station_data : geopandas.DataFrame
+        The Met Eireann station data to plot as an overlay of red points over the gis map
+    stat : str
+        The specific statistic to plot the gis map for
+    col : str
+        The climate / whether category to plot the gis map for
+
+    Returns
+    -------
+    0
+        Successful execution
+    """
     # create map of ireland
     map_data = map_data_dict[stat]
     fig, ax = plt.subplots(figsize=cons.sns_fig_settings['figure.figsize'])
