@@ -4,7 +4,20 @@ import pandas as pd
 from aws_rootkey import aws_rootkey_fpath
 
 def gen_boto3_excel(bucket = 'irishclimateapp', prefix = 'data/Met_Eireann'):
-    """"""
+    """Retrieves the raw Met Eireann data from AWS s3
+
+    Parameters
+    ----------
+    bucket : str
+        The s3 bucket containing the Met Eireann data files
+    prefix : str
+        The s3 directory containing the Met Eireann data files
+    
+    Returns
+    -------
+    list
+        The raw Met Eireann data
+    """
     # load aws root key
     rootkey = pd.read_csv(aws_rootkey_fpath, sep='=', header = None, index_col = 0)[1]
     # generate boto3 s3 connection
