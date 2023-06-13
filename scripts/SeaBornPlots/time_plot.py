@@ -2,7 +2,10 @@ import cons
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def time_plot(data, y, x = 'index', hue = None, refline = None, title = None, xlabel = None, ylabel = None):
+
+def time_plot(
+    data, y, x="index", hue=None, refline=None, title=None, xlabel=None, ylabel=None
+):
     """Creates a time series plot for the aggregated Met Eireann dataset
 
     Parameters
@@ -37,25 +40,33 @@ def time_plot(data, y, x = 'index', hue = None, refline = None, title = None, xl
     # initiate subplots
     fig, ax = plt.subplots()
     # create point plot
-    line_chart = sns.pointplot(data = tmp_data, x = x, y = y, hue = hue, ax = ax,  palette = cons.county_line_colors)
-    #point_chart.legend_.remove()
+    line_chart = sns.pointplot(
+        data=tmp_data, x=x, y=y, hue=hue, ax=ax, palette=cons.county_line_colors
+    )
+    # point_chart.legend_.remove()
     # create line plot
-    #line_chart = sns.lineplot(data = tmp_data, x = x, y = y, hue = hue, palette = cons.county_line_colors)
+    # line_chart = sns.lineplot(data = tmp_data, x = x, y = y, hue = hue, palette = cons.county_line_colors)
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     # add horizontal reference line
     if refline != None:
-        plt.axhline(y = refline, color = 'red', linestyle = '--')
+        plt.axhline(y=refline, color="red", linestyle="--")
     # set x axis ticks and labels
-    axis_data_dict = tmp_data[['index', 'date_str']].drop_duplicates().sort_values(by = 'index').set_index('index').to_dict()['date_str']
+    axis_data_dict = (
+        tmp_data[["index", "date_str"]]
+        .drop_duplicates()
+        .sort_values(by="index")
+        .set_index("index")
+        .to_dict()["date_str"]
+    )
     line_chart.set_xticks(list(axis_data_dict.keys()))
-    line_chart.set_xticklabels(list(axis_data_dict.values()), rotation = 45)
+    line_chart.set_xticklabels(list(axis_data_dict.values()), rotation=45)
     # add title and axis labels to plot
     if title != None:
-        line_chart.set(title = title)
+        line_chart.set(title=title)
     if xlabel != None:
-        line_chart.set(xlabel = xlabel)
+        line_chart.set(xlabel=xlabel)
     if ylabel != None:
-        line_chart.set(ylabel = ylabel)
+        line_chart.set(ylabel=ylabel)
     # show and close plot
     plt.show()
     plt.close()

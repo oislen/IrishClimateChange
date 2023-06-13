@@ -1,7 +1,8 @@
 import time
 import numpy as np
 
-def timeit(func, params, itr = 1, digits = 3):
+
+def timeit(func, params, itr=1, digits=3):
     """Wrapper function for timing the execution time of a given function. Runs multiple iterations and returns average execution time.
 
     Parameters
@@ -26,5 +27,5 @@ def timeit(func, params, itr = 1, digits = 3):
         t1 = time.time()
         tres = t1 - t0
     eres = round(np.mean(tres), digits)
-    print(f'Mean Execution Time: {eres} seconds')
+    print(f"Mean Execution Time: {eres} seconds")
     return res
