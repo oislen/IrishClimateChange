@@ -5,7 +5,23 @@ import pandas as pd
 import geopandas as gpd
 
 def gen_counties_data(pre_agg_data_dict = None, map_data_fpath = None, return_data = True):
-    """"""
+    """Generates counties map data for the bokeh map dashboard
+
+    Parameters
+    ----------
+    pre_agg_data_dict : None or dict
+        Either the preaggregated data dictionary or loads the preaggregated data dictionary from disk when None, default is None
+    map_data_fpath : None or str
+        The file location to write the map data to disk, default is None
+    return_data : bool
+        Whether to return the map data, default is True
+    
+    Returns
+    -------
+    
+    0, pandas.DataFrame
+        Depending on return_data parameter, either return zero or map data
+    """
     # load in county shape files
     rep_counties = gpd.read_file(cons.rep_counties_fpath)[['ENGLISH', 'geometry']].rename(columns = {'ENGLISH':'county'}).to_crs(epsg = 2157)
     ni_counties = gpd.read_file(cons.ni_counties_fpath)[['county', 'geometry']].to_crs(epsg = 2157)

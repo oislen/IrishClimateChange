@@ -5,7 +5,20 @@ import geopandas as gpd
 import cons
 
 def gen_stations_data(points_data_fpath = None, return_data = True):
-    """
+    """Generation gis points data for Met Eireann stations
+
+    Parameters
+    ----------
+    points_data_fpath : str
+        The file location to write the gis points data to disk, default is None
+    return_data : bool
+        Whether to return the gis points data, default is True
+    
+    Returns
+    -------
+    
+    0, pandas.DataFrame
+        Depending on return_data parameter, either return zero or gis points data
     """
     # load master and station data
     master_data = pd.read_feather(cons.master_data_fpath)

@@ -4,7 +4,25 @@ import cons
 from utilities.gen_boto3_excel import gen_boto3_excel
 
 def gen_master_data(met_eireann_fpaths = None, master_data_fpath = None, return_data = True, aws_s3 = False):
-    """"""
+    """Generates the master data from the individual raw Met Eireann .xlsx files
+
+    Parameters
+    ----------
+    met_eireann_fpaths : None or list
+        The raw Met Eireann .xlsx file paths, default is None
+    master_data_fpath : None or str
+        The file location to write the master data to disk, default is None
+    return_data : bool
+        Whether to return the master data, default is True
+    aws_s3 : bool
+        Whether to load the taw Met Eireann .xlex files from s3, default is False
+    
+    Returns
+    -------
+    
+    0, pandas.DataFrame
+        Depending on return_data parameter, either return zero or master data
+    """
     # set data type constraints
     dtypes = {'date':'str'}
     # if load data locally

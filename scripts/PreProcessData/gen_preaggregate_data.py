@@ -4,7 +4,23 @@ import pickle
 import pandas as pd
 
 def gen_preaggregate_data(master_data = None, preaggregate_data_fpath = None, return_data = True):
-    """"""
+    """Generates preaggregate data for bokeh dashboard app
+
+    Parameters
+    ----------
+    master_data : None or pd.DataFrame
+        Either the master data as a pandas.DataFrame or loads the master data from disk when None, default is None
+    preaggregate_data_fpath : str
+        The file location to write the preaggregated data to disk, default is None
+    return_data : bool
+        Whether to return the preaggregated data, default is True
+    
+    Returns
+    -------
+    
+    0, pandas.DataFrame
+        Depending on return_data parameter, either return zero or preaggregated data
+    """
     if type(master_data) == type(None):
         # load master data
         master_data = pd.read_feather(cons.master_data_fpath)
