@@ -5,7 +5,7 @@ import geopandas as gpd
 import cons
 
 def gen_stations_data(points_data_fpath = None, return_data = True):
-    """Generation gis points data for Met Eireann stations
+    """Generates gis points data for Met Eireann stations
 
     Parameters
     ----------
