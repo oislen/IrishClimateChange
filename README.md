@@ -33,7 +33,7 @@ The different climate measures include:
 ## Docker Image
 
 The dashboard application is available as a docker image, and is accessible on dockerhub:
-* https://hub.docker.com/repository/docker/oislen/irishclimateapp/general
+* https://hub.docker.com/repository/docker/oislen/irishclimatedashboard/general
 
 ## Hosted Dashboard
 

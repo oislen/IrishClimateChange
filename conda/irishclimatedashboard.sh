@@ -1,8 +1,8 @@
 # create and activate new environment
 conda deactivate
-conda env remove --name irishclimateapp
-conda create --name irishclimateapp python --yes
-conda activate irishclimateapp
+conda env remove --name irishclimatedashboard
+conda create --name irishclimatedashboard python --yes
+conda activate irishclimatedashboard
 
 # update conda version
 conda update -n base conda --yes
@@ -11,4 +11,4 @@ conda update -n base conda --yes
 pip install -r ../requirements.txt
 
 # export environment to .yml file
-conda env export > irishclimateapp.yml
+conda env export > irishclimatedashboard.yml

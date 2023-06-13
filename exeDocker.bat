@@ -1,6 +1,6 @@
 :: set docker settings
 SET DOCKER_USER=oislen
-SET DOCKER_REPO=irishclimateapp
+SET DOCKER_REPO=irishclimatedashboard
 SET DOCKER_TAG=latest
 SET DOCKER_IMAGE=%DOCKER_USER%/%DOCKER_REPO%:%DOCKER_TAG%
 

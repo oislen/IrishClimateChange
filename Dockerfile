@@ -18,7 +18,7 @@ RUN useradd ${user}
 RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 
 # clone git repo
-RUN git clone https://github.com/oislen/IrishClimateApp.git /home/ubuntu/IrishClimateApp
+RUN git clone https://github.com/oislen/IrishClimateDashboard.git /home/ubuntu/IrishClimateDashboard
 
-WORKDIR /home/${user}/IrishClimateApp/scripts
+WORKDIR /home/${user}/IrishClimateDashboard/scripts
 CMD ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
