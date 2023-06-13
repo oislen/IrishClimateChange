@@ -11,3 +11,4 @@ bokeh==2.4.0
 boto3
 ipywidgets
 jupyterlab
+black
