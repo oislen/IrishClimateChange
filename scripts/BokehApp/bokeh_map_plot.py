@@ -5,7 +5,26 @@ from bokeh.plotting import figure
 
 
 def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations):
-    """"""
+    """Generates the data used in the bokeh map plot.
+
+    Parameters
+    ----------
+    bokeh_map_data_dict : dict
+        A dictionary of bokeh aggregated data objects to construct the interactive bokeh heatmap with
+    pointgeosource : geopandas.DataFrame
+        The geospatial Met Eireann station data to overlay was red dots in the interactive bokeh heatmap
+    col : str
+        The climate measure category to plot in the interactive bokeh heatmap
+    stat : str
+        The aggregated statistic to plot in the interactive bokeh heatmap
+    show_stations : bool
+        Whether to toggle the Met Eireann station data overlay in the interactive bokeh heatmap
+
+    Returns
+    -------
+    bokeh.plotting.figure
+        The interactive bokeh heat map
+    """
     # define a blue color palette
     lightblue = Color("lightblue")
     steelblue = Color("steelblue")

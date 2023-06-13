@@ -10,7 +10,18 @@ from BokehApp.bokeh_map_data import bokeh_map_data
 from BokehApp.bokeh_map_plot import bokeh_map_plot
 
 def bokeh_map_dash(load_data_dict = True):
-    """"""
+    """Generates the bokeh map dashboard
+
+    Parameters
+    ----------
+    load_data_dict : bool
+        Whether to load the preaggregated, counties and station geospatial files from disk, or generate them from scratch, default is True
+
+    Returns
+    -------
+    bokeh.layouts.row
+        The interactive bokeh map dashboard
+    """
     if load_data_dict:
         with open(cons.map_data_fpath, 'rb') as handle:
             map_data_dict = pickle.load(handle)

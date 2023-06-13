@@ -5,7 +5,20 @@ import geopandas as gpd
 from bokeh.models import GeoJSONDataSource
 
 def bokeh_map_data(map_data_dict, station_data):
-    """"""
+    """Generates the data used in the bokeh map plot.
+
+    Parameters
+    ----------
+    map_data_dict : dict
+        The aggregated geopandas data to be transformed into aggregated bokeh data objects for visualisation
+    station_data : geopandas.DataFrame
+        The geospatial Met Eireann station data to be transformed into a bokeh data object for visualisation
+
+    Returns
+    -------
+    dict, bokeh.models.GeoJSONDataSource
+        The aggregated and station bokeh data objects to visualise
+    """
     bokeh_map_data_dict = {}
     for stat, map_data in map_data_dict.items():
         tmp_data_dict = {}

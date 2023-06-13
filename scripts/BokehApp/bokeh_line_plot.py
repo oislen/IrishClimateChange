@@ -7,7 +7,26 @@ from bokeh.models import Span, DatetimeTickFormatter, HoverTool, Legend
 import cons
 
 def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level, selection):
-    """"""
+    """Generates the data used in the bokeh map plot.
+
+    Parameters
+    ----------
+    bokeh_data_dict : dict
+        A dictionary of bokeh aggregated data objects to construct the interactive bokeh line plot with
+    col : str
+        The climate measure category to plot in the interactive bokeh line plot
+    stat : str
+        The aggregated statistic to plot in the interactive bokeh line plot
+    agg_level : str
+        The aggregated statistic sub level to plot in the interactive bokeh line plot
+    selection : list
+        The selection of counties to construct lines for in the interactive bokeh line plot
+
+    Returns
+    -------
+    bokeh.plotting.figure
+        The interactive bokeh line plot
+    """
     # extract out data for bokeh plot
     agg_data_dict = bokeh_data_dict[stat][agg_level]
     # create plot figure object

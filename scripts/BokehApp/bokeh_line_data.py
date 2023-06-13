@@ -7,7 +7,18 @@ from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 from utilities.time_data import time_data
 
 def bokeh_line_data(pre_agg_data_dict):
-    """"""
+    """Generates the data used in the bokeh line plot.
+
+    Parameters
+    ----------
+    pre_agg_data_dict : dict
+        The aggregated data to be transformed into aggregated bokeh data objects for visualisation
+
+    Returns
+    -------
+    dict
+        The aggregated bokeh data objects to visualise
+    """
     # create dictionary to hold data results
     bokeh_line_data_dict = {}
     for stat, agg_data_dict in pre_agg_data_dict.items():
