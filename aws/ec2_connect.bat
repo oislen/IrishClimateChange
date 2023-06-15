@@ -1,5 +1,4 @@
 :: set EC2 login info
-::SET KAGGLE_COMP=Predict_Future_Sales
 SET EC2_USER=ec2-user
 SET EC2_PEM_FPATH="C:\Users\oisin\.aws\kaggle.pem"
 SET EC2_CREDS_FDIR=E:\GitHub\IrishClimateDashboard\.creds
@@ -17,5 +16,4 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`type %EC2_DNS_FPATH%`) DO (
 call scp -i %EC2_PEM_FPATH% %EC2_SETUP_FPATH% %EC2_USER%@%EC2_DNS%:~/linux_docker_setup.sh
 :: ssh to EC2
 call ssh -i %EC2_PEM_FPATH% %EC2_USER%@%EC2_DNS%
-::call ssh -i %EC2_PEM_FPATH% -T %EC2_USER%@%EC2_DNS% "bash ~/linux_docker_setup.sh '%KAGGLE_COMP%'"
 ENDLOCAL
