@@ -2,7 +2,7 @@
 ::SET KAGGLE_COMP=Predict_Future_Sales
 SET EC2_USER=ec2-user
 SET EC2_PEM_FPATH="C:\Users\oisin\.aws\kaggle.pem"
-::SET EC2_CREDS_FDIR=E:\GitHub\IrishClimateDashboard\.creds
+SET EC2_CREDS_FDIR=E:\GitHub\IrishClimateDashboard\.creds
 SET EC2_SETUP_FPATH=E:\GitHub\IrishClimateDashboard\aws\linux_docker_setup.sh
 SET EC2_DNS_FPATH=%EC2_CREDS_FDIR%\ec2_dns
 
