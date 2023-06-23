@@ -1,1 +1,1 @@
-call bokeh serve bokeh_line_app.py bokeh_map_app.py
+call bokeh serve bokeh_dash_app.py

@@ -31,8 +31,8 @@ sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
 load_data_dict = True
 
 # bokeh figure settings
-FIG_SETTING = {'plot_height':640, 
-               'plot_width':640, 
+FIG_SETTING = {'height':640, 
+               'width':640, 
                'min_border_left':40, 
                'min_border_right':40,
                'min_border_top':40, 

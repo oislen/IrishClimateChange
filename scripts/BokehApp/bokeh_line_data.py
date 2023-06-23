@@ -51,7 +51,7 @@ def bokeh_line_data(pre_agg_data_dict):
                     True if x == county else False for x in datasource.data["county"]
                 ]
                 dataview = CDSView(
-                    source=datasource, filters=[BooleanFilter(county_filter)]
+                    filter=BooleanFilter(county_filter)
                 )
                 cfg_dict = {
                     "dataview": dataview,
