@@ -84,7 +84,8 @@ def bokeh_map_dash(load_data_dict=True):
     toggle_stations = CheckboxButtonGroup(
         labels=["Toggle Stations"], 
         active=[], 
-        width=30
+        width=120,
+        height=40
     )
     map_col_selector.on_change("value", callback_map_plot)
     map_stat_selector.on_change("value", callback_map_plot)
@@ -92,7 +93,7 @@ def bokeh_map_dash(load_data_dict=True):
 
     # structure dashboard map plot
     widgets_map = column(
-        map_col_selector, map_stat_selector, toggle_stations
+        toggle_stations, map_col_selector, map_stat_selector
     )
     dashboard_map = row(widgets_map, map_plot)
 

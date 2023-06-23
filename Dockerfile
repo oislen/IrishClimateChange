@@ -21,4 +21,4 @@ RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 RUN git clone https://github.com/oislen/IrishClimateDashboard.git /home/ubuntu/IrishClimateDashboard
 
 WORKDIR /home/${user}/IrishClimateDashboard/scripts
-CMD ["bokeh", "serve","bokeh_line_app.py","bokeh_map_app.py"]
+CMD ["bokeh", "serve","bokeh_dash_app.py"]
