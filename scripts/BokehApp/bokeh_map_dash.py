@@ -66,7 +66,7 @@ def bokeh_map_dash(load_data_dict=True):
 
     # set up selectors for bokeh map plot
     map_col_selector = Select(
-        title="Column:",
+        title="Climate Measure:",
         value=cons.col_default,
         options=cons.col_options,
         width=120,
@@ -74,7 +74,7 @@ def bokeh_map_dash(load_data_dict=True):
         aspect_ratio=10,
     )
     map_stat_selector = Select(
-        title="Statistic:",
+        title="Aggregate:",
         value=cons.stat_default,
         options=cons.stat_options,
         width=120,
@@ -82,7 +82,9 @@ def bokeh_map_dash(load_data_dict=True):
         aspect_ratio=10,
     )
     toggle_stations = CheckboxButtonGroup(
-        labels=["Toggle Stations"], active=[], width=30
+        labels=["Toggle Stations"], 
+        active=[], 
+        width=30
     )
     map_col_selector.on_change("value", callback_map_plot)
     map_stat_selector.on_change("value", callback_map_plot)

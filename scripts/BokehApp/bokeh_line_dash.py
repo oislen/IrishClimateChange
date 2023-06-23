@@ -66,7 +66,7 @@ def bokeh_line_dash(load_data_dict=True):
 
     # set up selectors for bokeh line plot
     line_agg_level_selector = Select(
-        title="Aggregate Level:",
+        title="Time Span:",
         value=cons.line_agg_level_default,
         options=cons.line_agg_level_options,
         width=130,
@@ -74,7 +74,7 @@ def bokeh_line_dash(load_data_dict=True):
         aspect_ratio=10,
     )
     line_col_selector = Select(
-        title="Column:",
+        title="Climate Measure:",
         value=cons.col_default,
         options=cons.col_options,
         width=130,
@@ -82,7 +82,7 @@ def bokeh_line_dash(load_data_dict=True):
         aspect_ratio=10,
     )
     line_stat_selector = Select(
-        title="Statistic:",
+        title="Aggregate:",
         value=cons.stat_default,
         options=cons.stat_options,
         width=130,
@@ -90,7 +90,11 @@ def bokeh_line_dash(load_data_dict=True):
         aspect_ratio=10,
     )
     line_county_multiselect = MultiSelect(
-        value=cons.counties_values, options=cons.counties_options, width=130, height=260
+        title="Counties:",
+        value=cons.counties_values, 
+        options=cons.counties_options, 
+        width=130, 
+        height=260
     )
     line_county_selectall_button = Button(label="Select All", width=130)
     line_county_clearall_button = Button(label="Clear All", width=130)
@@ -107,9 +111,9 @@ def bokeh_line_dash(load_data_dict=True):
         line_agg_level_selector,
         line_col_selector,
         line_stat_selector,
+        line_county_multiselect,
         line_county_selectall_button,
         line_county_clearall_button,
-        line_county_multiselect,
     )
     dashboard_line = row(widgets_line, line_plot)
 
