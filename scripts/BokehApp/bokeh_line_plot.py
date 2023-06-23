@@ -98,7 +98,7 @@ def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level, selection):
                     renderers=[county_point],
                     tooltips=[
                         ("County", "@county"),
-                        ("Date", "@date_str"),
+                        (f"{agg_level}".title(), "@date_str"),
                         ("Value", f"@{col}"),
                     ],
                     attachment="left",
