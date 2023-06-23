@@ -89,9 +89,8 @@ def bokeh_map_dash(load_data_dict=True):
     toggle_stations.on_change("active", callback_map_plot)
 
     # structure dashboard map plot
-    space_div = Div(width=30, height=30)
     widgets_map = column(
-        map_col_selector, space_div, map_stat_selector, space_div, toggle_stations
+        map_col_selector, map_stat_selector, toggle_stations
     )
     dashboard_map = row(widgets_map, map_plot)
 

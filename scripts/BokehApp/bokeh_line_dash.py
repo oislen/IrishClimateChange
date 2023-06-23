@@ -105,11 +105,8 @@ def bokeh_line_dash(load_data_dict=True):
     space_div = Div(width=30, height=30)
     widgets_line = column(
         line_agg_level_selector,
-        space_div,
         line_col_selector,
-        space_div,
         line_stat_selector,
-        space_div,
         line_county_selectall_button,
         line_county_clearall_button,
         line_county_multiselect,
