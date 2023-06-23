@@ -62,6 +62,8 @@ county_line_colors = {'Donegal':'greenyellow', 'Dublin':'lightblue',
 
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
+counties_values = [str(i) for i in range(len(counties))]
+counties_options = [(str(i), c) for i, c in enumerate(counties)]
 date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
 line_agg_level_options = list(date_strftime_dict.keys())
 line_agg_level_default = line_agg_level_options[0]

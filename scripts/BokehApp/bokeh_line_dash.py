@@ -1,5 +1,5 @@
 import pickle
-from bokeh.models import Select, CheckboxGroup, Div, Button
+from bokeh.models import Select, CheckboxGroup, Div, Button, MultiSelect
 from bokeh.layouts import column, row
 
 # import custom modules
@@ -45,8 +45,8 @@ def bokeh_line_dash(load_data_dict=True):
         col = line_col_selector.value
         stat = line_stat_selector.value
         selection = list()
-        for i in line_county_checkboxgroup.active:
-            selection.append(cons.counties[i])
+        for i in line_county_multiselect.value:
+            selection.append(cons.counties[int(i)])
         # update bokeh plot
         line_plot = bokeh_line_plot(
             bokeh_line_data_dict,
@@ -58,11 +58,11 @@ def bokeh_line_dash(load_data_dict=True):
         # reassign bokeh plot to bokeh dashboard
         dashboard_line.children[1] = line_plot
 
-    def callback_checkboxgroup_selectall():
-        line_county_checkboxgroup.active = list(range(len(cons.counties)))
+    def callback_multiselect_selectall():
+        line_county_multiselect.value = cons.counties_values
 
-    def callback_checkboxgroup_clearall():
-        line_county_checkboxgroup.active = []
+    def callback_multiselect_clearall():
+        line_county_multiselect.value = []
 
     # set up selectors for bokeh line plot
     line_agg_level_selector = Select(
@@ -89,17 +89,17 @@ def bokeh_line_dash(load_data_dict=True):
         height=60,
         aspect_ratio=10,
     )
-    line_county_checkboxgroup = CheckboxGroup(
-        labels=cons.counties, active=list(range(len(cons.counties))), width=130
+    line_county_multiselect = MultiSelect(
+        value=cons.counties_values, options=cons.counties_options, width=130, height=260
     )
     line_county_selectall_button = Button(label="Select All", width=130)
     line_county_clearall_button = Button(label="Clear All", width=130)
     line_agg_level_selector.on_change("value", callback_line_plot)
     line_col_selector.on_change("value", callback_line_plot)
     line_stat_selector.on_change("value", callback_line_plot)
-    line_county_checkboxgroup.on_change("active", callback_line_plot)
-    line_county_selectall_button.on_click(callback_checkboxgroup_selectall)
-    line_county_clearall_button.on_click(callback_checkboxgroup_clearall)
+    line_county_multiselect.on_change("value", callback_line_plot)
+    line_county_selectall_button.on_click(callback_multiselect_selectall)
+    line_county_clearall_button.on_click(callback_multiselect_clearall)
 
     # structure dashboard line plot
     space_div = Div(width=30, height=30)
@@ -112,7 +112,7 @@ def bokeh_line_dash(load_data_dict=True):
         space_div,
         line_county_selectall_button,
         line_county_clearall_button,
-        line_county_checkboxgroup,
+        line_county_multiselect,
     )
     dashboard_line = row(widgets_line, line_plot)
 
