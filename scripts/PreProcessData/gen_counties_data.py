@@ -1,5 +1,6 @@
 import cons
 import os
+import logging
 import pickle
 import pandas as pd
 import geopandas as gpd
@@ -29,7 +30,7 @@ def gen_counties_data(
     0, pandas.DataFrame
         Depending on return_data parameter, either return zero or map data
     """
-    print("Loading rep / ni counties shape files ...")
+    logging.info("Loading rep / ni counties shape files ...")
     # load in county shape files
     rep_counties = (
         gpd.read_file(cons.rep_counties_fpath)[["ENGLISH", "geometry"]]
@@ -40,32 +41,32 @@ def gen_counties_data(
         epsg=2157
     )
     if type(pre_agg_data_dict) == type(None):
-        print("Loading preaggregated data dictionary ...")
+        logging.info("Loading preaggregated data dictionary ...")
         # load preaggregated data
         with open(cons.preaggregate_data_fpath, "rb") as f:
             pre_agg_data_dict = pickle.load(f)
-    print("Concatenating counties geopandas dataframes ...")
+    logging.info("Concatenating counties geopandas dataframes ...")
     # concatenate county shape files
     counties = gpd.GeoDataFrame(
         pd.concat([rep_counties, ni_counties], ignore_index=True), crs="EPSG:2157"
     )
-    print("Simplifiying counties geometries ...")
+    logging.info("Simplifiying counties geometries ...")
     # simplify the granularity of the geometry column
     counties["geometry"] = counties["geometry"].simplify(tolerance=1000)
-    print("Standardising county names to title case ...")
+    logging.info("Standardising county names to title case ...")
     # clean up county column
     counties["county"] = (
         counties["county"].str.title().str.replace(pat="County ", repl="", regex=False)
     )
-    print("Ordering results by county name ...")
+    logging.info("Ordering results by county name ...")
     # sort data by county
     counties = counties.sort_values(by="county")
-    print("Calculating county level statistics ...")
+    logging.info("Calculating county level statistics ...")
     # create a dictionary to contain map data
     map_data_dict = {}
     # iterate over statistic and pre aggregated data
     for stat, pre_agg_data in pre_agg_data_dict.items():
-        print(f"{stat} ...")
+        logging.info(f"{stat} ...")
         # aggregate data to county level
         group_cols = ["county"]
         agg_dict = {col: stat for col in cons.col_options}
@@ -84,7 +85,7 @@ def gen_counties_data(
     # if the output
     if map_data_fpath != None:
         if os.path.exists(map_data_fpath):
-            print("Writing counties data to disk as pickle file ...")
+            logging.info("Writing counties data to disk as pickle file ...")
             # pickle the preaggregated data dictionary to disk
             with open(map_data_fpath, "wb") as f:
                 pickle.dump(map_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)

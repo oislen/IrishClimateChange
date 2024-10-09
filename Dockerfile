@@ -4,6 +4,9 @@ FROM ubuntu:20.04
 # set environment variables
 ENV user=ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
+# set git branch for cloning
+ARG GIT_BRANCH
+ENV GIT_BRANCH=${GIT_BRANCH}
 
 # install required software and programmes for development environment
 RUN apt-get update 
@@ -14,7 +17,7 @@ RUN useradd ${user}
 RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 
 # clone git repo
-RUN git clone https://github.com/oislen/IrishClimateDashboard.git /home/ubuntu/IrishClimateDashboard
+RUN git clone https://github.com/oislen/IrishClimateDashboard.git --branch ${GIT_BRANCH} /home/ubuntu/IrishClimateDashboard
 
 # install required python packages
 COPY requirements.txt /tmp/

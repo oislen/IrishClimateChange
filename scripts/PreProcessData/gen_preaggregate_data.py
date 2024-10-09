@@ -1,5 +1,6 @@
 import cons
 import os
+import logging
 import pickle
 import pandas as pd
 from beartype import beartype
@@ -29,10 +30,10 @@ def gen_preaggregate_data(
         Depending on return_data parameter, either return zero or preaggregated data
     """
     if type(master_data) == type(None):
-        print("Loading master data from disk ...")
+        logging.info("Loading master data from disk ...")
         # load master data
         master_data = pd.read_feather(cons.master_data_fpath)
-    print("Performing initial data aggregation to year-month level ...")
+    logging.info("Performing initial data aggregation to year-month level ...")
     # preaggregate the data to year-month level for each available stat
     pre_agg_data_dict = {}
     strftime = cons.date_strftime_dict["year-month"]
@@ -40,16 +41,16 @@ def gen_preaggregate_data(
     agg_data["date_str"] = agg_data["date"].dt.strftime(strftime)
     agg_data["date"] = pd.to_datetime(agg_data["date_str"], format=strftime)
     group_cols = ["county", "date", "date_str"]
-    print("Performing final data aggregation to desired statistics ...")
+    logging.info("Performing final data aggregation to desired statistics ...")
     for stat in cons.stat_options:
-        print(f"{stat} ...")
+        logging.info(f"{stat} ...")
         agg_dict = {col: stat for col in cons.col_options}
         tmp_agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
         pre_agg_data_dict[stat] = tmp_agg_data
     # if the output
     if preaggregate_data_fpath != None:
         if os.path.exists(preaggregate_data_fpath):
-            print("Writing preaggregated data to disk as .pickle file ...")
+            logging.info("Writing preaggregated data to disk as .pickle file ...")
             # pickle the preaggregated data dictionary to disk
             with open(cons.preaggregate_data_fpath, "wb") as f:
                 pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)

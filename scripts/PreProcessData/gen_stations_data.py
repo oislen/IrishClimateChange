@@ -1,4 +1,5 @@
 import os
+import logging
 import pickle
 import pandas as pd
 import geopandas as gpd
@@ -26,21 +27,21 @@ def gen_stations_data(
     0, pandas.DataFrame
         Depending on return_data parameter, either return zero or gis points data
     """
-    print("Loading master and stations data from disk ...")
+    logging.info("Loading master and stations data from disk ...")
     # load master and station data
     master_data = pd.read_feather(cons.master_data_fpath)
     stations_data = pd.read_csv(cons.stations_fpath)
-    print("Identifying master station ids ...")
+    logging.info("Identifying master station ids ...")
     # extract out station ids from mater file
     master_station_ids = master_data["id"].unique()
-    print("Filtering corresponding station data ...")
+    logging.info("Filtering corresponding station data ...")
     # filter master data with station ids
     master_stations = stations_data.loc[
         stations_data["station_id"].isin(master_station_ids), :
     ].copy()
     master_stations["county"] = master_stations["county"].str.title()
     master_stations["name"] = master_stations["name"].str.title()
-    print("Creating geopandas DataFrame of station data ...")
+    logging.info("Creating geopandas DataFrame of station data ...")
     # create gis data
     geo_master_stations = gpd.GeoDataFrame(
         master_stations,
@@ -52,7 +53,7 @@ def gen_stations_data(
     # if the output
     if points_data_fpath != None:
         if os.path.exists(points_data_fpath):
-            print("Writing gis stations data to disk as .pickle file ...")
+            logging.info("Writing gis stations data to disk as .pickle file ...")
             # pickle the gis stations data
             with open(points_data_fpath, "wb") as f:
                 pickle.dump(geo_master_stations, f, protocol=pickle.HIGHEST_PROTOCOL)
