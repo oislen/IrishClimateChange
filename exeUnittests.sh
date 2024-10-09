@@ -1,0 +1,1 @@
+python3 -m unittest discover scripts/unittests/utilities
