@@ -1,0 +1,1 @@
+call python -m unittest discover scripts\unittests\utilities
