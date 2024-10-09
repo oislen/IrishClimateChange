@@ -2,8 +2,9 @@ numpy
 pyarrow
 pyexcel
 openpyxl
-pandas<2.0.0
+pandas
 geopandas
+polars
 colour
 matplotlib
 seaborn
