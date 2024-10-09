@@ -23,7 +23,7 @@ def time_data(data, agg_dict, time_span=None, counties=None, strftime=None):
     pandas.DataFrame
         The aggregated and filtered Met Eireann time series data
     """
-    agg_data = data.copy()
+    agg_data = data.copy(deep=True)
     agg_data["date_str"] = agg_data["date"].dt.strftime(strftime)
     agg_data["date"] = pd.to_datetime(agg_data["date_str"], format=strftime)
     group_cols = ["county", "date", "date_str"]
