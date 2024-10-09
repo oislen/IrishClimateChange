@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import logging
 import cons
 from utilities.gen_boto3_excel import gen_boto3_excel
 from beartype import beartype
@@ -36,7 +37,7 @@ def gen_master_data(
     # if load data locally
     if not aws_s3:
         if met_eireann_fpaths == None:
-            print("Retrieving raw met eireann .xlsx file paths from disk ...")
+            logging.info("Retrieving raw met eireann .xlsx file paths from disk ...")
             # load data files from file directory
             met_eireann_fpaths = [
                 os.path.join(cons.met_eireann_dir, fpath)
@@ -45,11 +46,11 @@ def gen_master_data(
             ]
     # otherwise if loading data from aws s3
     else:
-        print("Retrieving raw met eireann .xlsx file paths from aws s3 ...")
+        logging.info("Retrieving raw met eireann .xlsx file paths from aws s3 ...")
         met_eireann_fpaths = gen_boto3_excel(
             bucket="irishclimateapp", prefix="data/Met_Eireann"
         )
-    print("Reading, concatenating and cleaning .xlsx files ...")
+    logging.info("Reading, concatenating and cleaning .xlsx files ...")
     # load and concatenate data files together
     data_list = [
         pd.read_excel(fpath, dtype=dtypes, na_values=[" "])
@@ -59,13 +60,13 @@ def gen_master_data(
     data = data[data.columns[~data.columns.str.contains("ind")]]
     data["date"] = pd.to_datetime(data["date"])
     data["county"] = data["county"].str.title()
-    print("Sorting master file by county and station names ...")
+    logging.info("Sorting master file by county and station names ...")
     # order results by county and station alphabetically
     data = data.sort_values(by=["county", "station"]).reset_index(drop=True)
     # if the output
     if master_data_fpath != None:
         if os.path.exists(master_data_fpath):
-            print("Writing master file to disk as .feather file ...")
+            logging.info("Writing master file to disk as .feather file ...")
             # save concatenated data to disk
             data.to_feather(master_data_fpath)
         else:
