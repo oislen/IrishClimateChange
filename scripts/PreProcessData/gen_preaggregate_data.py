@@ -2,11 +2,15 @@ import cons
 import os
 import pickle
 import pandas as pd
+from beartype import beartype
+from typing import Union
 
-
+@beartype
 def gen_preaggregate_data(
-    master_data=None, preaggregate_data_fpath=None, return_data=True
-):
+    master_data:Union[pd.DataFrame,None]=None, 
+    preaggregate_data_fpath:Union[str,None]=None, 
+    return_data:bool=True
+) -> Union[int,dict]:
     """Generates preaggregate data for bokeh dashboard app
 
     Parameters

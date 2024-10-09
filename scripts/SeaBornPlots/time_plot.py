@@ -1,11 +1,21 @@
 import cons
 import seaborn as sns
+import pandas as pd
 import matplotlib.pyplot as plt
+from beartype import beartype
+from typing import Union
 
-
+@beartype
 def time_plot(
-    data, y, x="index", hue=None, refline=None, title=None, xlabel=None, ylabel=None
-):
+    data:pd.DataFrame, 
+    y:str, 
+    x:str="index", 
+    hue:Union[str, None]=None, 
+    refline:Union[float, None]=None, 
+    title:Union[str, None]=None, 
+    xlabel:Union[str, None]=None, 
+    ylabel:Union[str, None]=None
+) -> int:
     """Creates a time series plot for the aggregated Met Eireann dataset
 
     Parameters

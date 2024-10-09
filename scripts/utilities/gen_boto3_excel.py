@@ -2,9 +2,13 @@ import io
 import boto3
 import pandas as pd
 from aws_rootkey import aws_rootkey_fpath
+from beartype import beartype
 
-
-def gen_boto3_excel(bucket="irishclimateapp", prefix="data/Met_Eireann"):
+@beartype
+def gen_boto3_excel(
+    bucket:str="irishclimateapp", 
+    prefix:str="data/Met_Eireann"
+    ) -> list:
     """Retrieves the raw Met Eireann data from AWS s3
 
     Parameters

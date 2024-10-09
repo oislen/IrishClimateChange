@@ -3,9 +3,13 @@ import pickle
 import pandas as pd
 import geopandas as gpd
 from bokeh.models import GeoJSONDataSource
+from beartype import beartype
 
-
-def bokeh_map_data(map_data_dict, station_data):
+@beartype
+def bokeh_map_data(
+    map_data_dict:dict, 
+    station_data:gpd.GeoDataFrame
+    ):
     """Generates the data used in the bokeh map plot.
 
     Parameters

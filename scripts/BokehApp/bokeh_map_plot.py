@@ -2,9 +2,17 @@ import cons
 from colour import Color
 from bokeh.models import LinearColorMapper, ColorBar, HoverTool
 from bokeh.plotting import figure
+from bokeh.models import GeoJSONDataSource
+from beartype import beartype
 
-
-def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations):
+@beartype
+def bokeh_map_plot(
+    bokeh_map_data_dict:dict, 
+    pointgeosource:GeoJSONDataSource, 
+    col:str, 
+    stat:str, 
+    show_stations:list
+    ) -> figure:
     """Generates the data used in the bokeh map plot.
 
     Parameters
@@ -17,7 +25,7 @@ def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations
         The climate measure category to plot in the interactive bokeh heatmap
     stat : str
         The aggregated statistic to plot in the interactive bokeh heatmap
-    show_stations : bool
+    show_stations : list
         Whether to toggle the Met Eireann station data overlay in the interactive bokeh heatmap
 
     Returns

@@ -7,9 +7,13 @@ import cons
 from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
 from BokehApp.bokeh_line_data import bokeh_line_data
 from BokehApp.bokeh_line_plot import bokeh_line_plot
+from beartype import beartype
+from typing import Union
 
-
-def bokeh_line_dash(load_data_dict=True):
+@beartype
+def bokeh_line_dash(
+    load_data_dict:bool=True
+    ):
     """Generates the bokeh line dashboard
 
     Parameters

@@ -2,12 +2,15 @@
 import cons
 import pickle
 from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
+from beartype import beartype
 
 # import custom modules
 from utilities.time_data import time_data
 
-
-def bokeh_line_data(pre_agg_data_dict):
+@beartype
+def bokeh_line_data(
+    pre_agg_data_dict:dict
+    ) -> dict:
     """Generates the data used in the bokeh line plot.
 
     Parameters

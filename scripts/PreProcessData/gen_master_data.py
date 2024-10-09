@@ -2,11 +2,16 @@ import os
 import pandas as pd
 import cons
 from utilities.gen_boto3_excel import gen_boto3_excel
+from beartype import beartype
+from typing import Union
 
-
+@beartype
 def gen_master_data(
-    met_eireann_fpaths=None, master_data_fpath=None, return_data=True, aws_s3=False
-):
+    met_eireann_fpaths:Union[list,None]=None,
+    master_data_fpath:Union[str,None]=None, 
+    return_data:bool=True, 
+    aws_s3:bool=False
+) -> Union[int, pd.DataFrame]:
     """Generates the master data from the individual raw Met Eireann .xlsx files
 
     Parameters

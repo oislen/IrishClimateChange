@@ -3,9 +3,15 @@ import os
 import pickle
 import pandas as pd
 import geopandas as gpd
+from beartype import beartype
+from typing import Union
 
-
-def gen_counties_data(pre_agg_data_dict=None, map_data_fpath=None, return_data=True):
+@beartype
+def gen_counties_data(
+    pre_agg_data_dict:Union[dict,None]=None,
+     map_data_fpath:Union[str,None]=None, 
+     return_data:Union[bool,None]=True
+     ) -> Union[int, dict]:
     """Generates counties map data for the bokeh map dashboard
 
     Parameters

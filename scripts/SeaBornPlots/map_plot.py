@@ -1,9 +1,16 @@
 import cons
 import matplotlib.pyplot as plt
 import matplotlib.colors
+import geopandas as gpd
+from beartype import beartype
 
-
-def map_plot(map_data_dict, station_data, stat, col):
+@beartype
+def map_plot(
+    map_data_dict:dict, 
+    station_data:gpd.GeoDataFrame, 
+    stat:str, 
+    col:str
+    ) -> int:
     """Creates a gis heatmap plot for the aggregated Met Eireann dataset given a specific statistic to visualise
 
     Parameters
