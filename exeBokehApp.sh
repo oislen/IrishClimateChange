@@ -1,0 +1,1 @@
+bokeh serve scripts/bokeh_dash_app.py

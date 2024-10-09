@@ -1,7 +1,12 @@
+import sys
+import os
 import numpy as np
 import pandas as pd
-import cons
 from datetime import datetime, timedelta
+
+sys.path.append(os.path.join(os.getcwd(), "scripts"))
+
+import cons
 
 def gen_unittest_data(
     unittest_country_station_map=cons.unittest_country_station_map, 

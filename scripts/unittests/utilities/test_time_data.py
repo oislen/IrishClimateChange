@@ -4,6 +4,9 @@ import random
 import pandas as pd
 import unittest
 import numpy as np
+
+sys.path.append(os.path.join(os.getcwd(), "scripts"))
+
 import cons
 from unittests.gen_unittest_data import gen_unittest_data
 from utilities.time_data import time_data
