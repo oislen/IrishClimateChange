@@ -14,7 +14,7 @@ RUN useradd ${user}
 RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 
 # clone git repo
-RUN git clone https://github.com/oislen/IrishClimateDashboard.git /home/ubuntu/IrishClimateDashboard
+RUN git clone https://github.com/oislen/IrishClimateDashboard.git --branch ${GIT_BRANCH} /home/ubuntu/IrishClimateDashboard
 
 # install required python packages
 COPY requirements.txt /tmp/
