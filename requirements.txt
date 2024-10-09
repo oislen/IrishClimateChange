@@ -1,8 +1,8 @@
-numpy
 pyarrow
 pyexcel
 openpyxl
 pandas
+numpy
 geopandas
 polars
 colour
