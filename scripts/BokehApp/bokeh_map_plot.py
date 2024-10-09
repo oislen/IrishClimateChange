@@ -2,9 +2,17 @@ import cons
 from colour import Color
 from bokeh.models import LinearColorMapper, ColorBar, HoverTool
 from bokeh.plotting import figure
+from bokeh.models import GeoJSONDataSource
+from beartype import beartype
 
-
-def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations):
+@beartype
+def bokeh_map_plot(
+    bokeh_map_data_dict:dict, 
+    pointgeosource:GeoJSONDataSource, 
+    col:str, 
+    stat:str, 
+    show_stations:list
+    ) -> figure:
     """Generates the data used in the bokeh map plot.
 
     Parameters
@@ -17,7 +25,7 @@ def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations
         The climate measure category to plot in the interactive bokeh heatmap
     stat : str
         The aggregated statistic to plot in the interactive bokeh heatmap
-    show_stations : bool
+    show_stations : list
         Whether to toggle the Met Eireann station data overlay in the interactive bokeh heatmap
 
     Returns
@@ -55,8 +63,10 @@ def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations
     map_plot.axis.visible = False
     map_plot.xgrid.grid_line_color = None
     map_plot.ygrid.grid_line_color = None
-    map_plot.x_range.min_interval = 1
-    map_plot.x_range.max_interval = 70
+    #map_plot.x_range.min_interval = 1
+    #map_plot.y_range.min_interval = 1
+    #map_plot.x_range.max_interval = 70
+    #map_plot.y_range.max_interval = 70
     map_plot.title.text_font_style = "bold"
     map_plot.title.text_font_size = "22px"
     # add patches to render states with no aggregate data
@@ -91,7 +101,7 @@ def bokeh_map_plot(bokeh_map_data_dict, pointgeosource, col, stat, show_stations
     )
     # add points to render stations
     if show_stations == [0]:
-        stationpoints = map_plot.circle(
+        stationpoints = map_plot.scatter(
             "x", "y", source=pointgeosource, color="red", size=8, alpha=0.3
         )
         map_plot.add_tools(

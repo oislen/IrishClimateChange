@@ -1,6 +1,7 @@
 import pickle
 from bokeh.models import Select, Div, CheckboxButtonGroup
 from bokeh.layouts import column, row
+from beartype import beartype
 
 import cons
 from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
@@ -9,8 +10,10 @@ from PreProcessData.gen_stations_data import gen_stations_data
 from BokehApp.bokeh_map_data import bokeh_map_data
 from BokehApp.bokeh_map_plot import bokeh_map_plot
 
-
-def bokeh_map_dash(load_data_dict=True):
+@beartype
+def bokeh_map_dash(
+    load_data_dict:bool=True
+    ):
     """Generates the bokeh map dashboard
 
     Parameters

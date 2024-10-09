@@ -3,10 +3,10 @@ SET DOCKER_USER=oislen
 SET DOCKER_REPO=irishclimatedashboard
 SET DOCKER_TAG=latest
 SET DOCKER_IMAGE=%DOCKER_USER%/%DOCKER_REPO%:%DOCKER_TAG%
+SET DOCKER_CONTAINER_NAME=icd
 
 :: remove existing docker containers and images
-docker container prune -f
-docker rm -f %DOCKER_IMAGE%
+docker image rm -f %DOCKER_IMAGE%
 
 :: build docker image
 call docker build --no-cache -t %DOCKER_IMAGE% . 
@@ -14,7 +14,7 @@ call docker build --no-cache -t %DOCKER_IMAGE% .
 
 :: run docker container
 SET UBUNTU_DIR=/home/ubuntu
-call docker run --shm-size=512m -p 5006:5006 -it %DOCKER_IMAGE%
+call docker run --name %DOCKER_CONTAINER_NAME% --shm-size=512m -p 5006:5006 -it %DOCKER_IMAGE%
 
 :: useful docker commands
 :: docker images

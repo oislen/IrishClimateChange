@@ -1,7 +1,7 @@
 :: create and activate new environment
 call conda deactivate
 call conda env remove --name irishclimatedashboard
-call conda create --name irishclimatedashboard python --yes
+call conda create --name irishclimatedashboard python=3 --yes
 call conda activate irishclimatedashboard
 
 :: update conda version

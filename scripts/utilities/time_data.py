@@ -1,8 +1,16 @@
 import datetime
 import pandas as pd
+from typing import Union
+from beartype import beartype
 
-
-def time_data(data, agg_dict, time_span=None, counties=None, strftime=None):
+@beartype
+def time_data(
+    data:pd.DataFrame, 
+    agg_dict:dict, 
+    time_span:Union[list, None]=None, 
+    counties:Union[list, None]=None, 
+    strftime:Union[str, None]=None
+    ) -> pd.DataFrame:
     """Aggregates and filters Met Eireann for time series plot
 
     Parameters
@@ -23,7 +31,7 @@ def time_data(data, agg_dict, time_span=None, counties=None, strftime=None):
     pandas.DataFrame
         The aggregated and filtered Met Eireann time series data
     """
-    agg_data = data.copy()
+    agg_data = data.copy(deep=True)
     agg_data["date_str"] = agg_data["date"].dt.strftime(strftime)
     agg_data["date"] = pd.to_datetime(agg_data["date_str"], format=strftime)
     group_cols = ["county", "date", "date_str"]

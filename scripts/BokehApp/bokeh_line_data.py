@@ -2,12 +2,15 @@
 import cons
 import pickle
 from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
+from beartype import beartype
 
 # import custom modules
 from utilities.time_data import time_data
 
-
-def bokeh_line_data(pre_agg_data_dict):
+@beartype
+def bokeh_line_data(
+    pre_agg_data_dict:dict
+    ) -> dict:
     """Generates the data used in the bokeh line plot.
 
     Parameters
@@ -47,16 +50,9 @@ def bokeh_line_data(pre_agg_data_dict):
             # create filtered column data source views
             dataview_dict = {}
             for county in cons.counties:
-                county_filter = [
-                    True if x == county else False for x in datasource.data["county"]
-                ]
-                dataview = CDSView(
-                    filter=BooleanFilter(county_filter)
-                )
-                cfg_dict = {
-                    "dataview": dataview,
-                    "color": cons.county_line_colors[county],
-                }
+                county_filter = [True if x == county else False for x in datasource.data["county"]]
+                dataview = CDSView(filter=BooleanFilter(county_filter))
+                cfg_dict = {"dataview": dataview,"color": cons.county_line_colors[county],}
                 dataview_dict[county] = cfg_dict
             # update results dictionary
             tmp_level_dict["agg_data"] = agg_data

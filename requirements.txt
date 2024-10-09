@@ -1,9 +1,10 @@
-numpy
 pyarrow
 pyexcel
 openpyxl
-pandas<2.0.0
+pandas
+numpy
 geopandas
+polars
 colour
 matplotlib
 seaborn
@@ -12,3 +13,4 @@ boto3
 ipywidgets
 jupyterlab
 black
+beartype

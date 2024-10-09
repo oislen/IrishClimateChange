@@ -3,9 +3,14 @@ import pickle
 import pandas as pd
 import geopandas as gpd
 import cons
+from beartype import beartype
+from typing import Union
 
-
-def gen_stations_data(points_data_fpath=None, return_data=True):
+@beartype
+def gen_stations_data(
+    points_data_fpath:Union[str,None]=None, 
+    return_data:bool=True
+    ) -> Union[int, gpd.GeoDataFrame]:
     """Generates gis points data for Met Eireann stations
 
     Parameters

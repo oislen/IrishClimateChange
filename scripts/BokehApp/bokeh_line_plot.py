@@ -2,12 +2,19 @@
 import math
 from bokeh.plotting import figure
 from bokeh.models import Span, DatetimeTickFormatter, HoverTool, Legend
+from beartype import beartype
 
 # import custom modules
 import cons
 
-
-def bokeh_line_plot(bokeh_data_dict, col, stat, agg_level, selection):
+@beartype
+def bokeh_line_plot(
+    bokeh_data_dict:dict, 
+    col:str, 
+    stat:str, 
+    agg_level:str, 
+    selection:list
+    ) -> figure:
     """Generates the data used in the bokeh map plot.
 
     Parameters

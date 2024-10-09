@@ -1,7 +1,12 @@
 from subprocess import Popen
+from beartype import beartype
 
-
-def run_cmd(cmd, cwd, shell=True):
+@beartype
+def run_cmd(
+    cmd:str, 
+    cwd:str, 
+    shell:bool=True
+    ):
     """Executes a given os command in the commandline
 
     Parameters
