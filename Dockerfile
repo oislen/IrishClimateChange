@@ -4,6 +4,9 @@ FROM ubuntu:20.04
 # set environment variables
 ENV user=ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
+# set git branch for cloning
+ARG GIT_BRANCH
+ENV GIT_BRANCH=${GIT_BRANCH}
 
 # install required software and programmes for development environment
 RUN apt-get update 
