@@ -1,11 +1,11 @@
 import io
 import boto3
-import pandas as pd
-from aws_rootkey import aws_rootkey_fpath
+import json
 from beartype import beartype
 
 @beartype
 def gen_boto3_excel(
+    sessionToken:str,
     bucket:str="irishclimateapp", 
     prefix:str="data/Met_Eireann"
     ) -> list:
@@ -13,6 +13,8 @@ def gen_boto3_excel(
 
     Parameters
     ----------
+    sessionToken : str
+        The file path to an active aws session token
     bucket : str
         The s3 bucket containing the Met Eireann data files
     prefix : str
@@ -23,14 +25,18 @@ def gen_boto3_excel(
     list
         The raw Met Eireann data
     """
-    # load aws root key
-    rootkey = pd.read_csv(aws_rootkey_fpath, sep="=", header=None, index_col=0)[1]
-    # generate boto3 s3 connection
-    client = boto3.client(
-        "s3",
-        aws_access_key_id=rootkey["AWSAccessKeyId"],
-        aws_secret_access_key=rootkey["AWSSecretKey"],
+    # load aws config
+    with open(sessionToken, "r") as j:
+        aws_config = json.loads(j.read())
+    # connect to aws boto3
+    session = boto3.Session(
+        aws_access_key_id=aws_config['Credentials']["AccessKeyId"],
+        aws_secret_access_key=aws_config['Credentials']["SecretAccessKey"],
+        aws_session_token=aws_config['Credentials']["SessionToken"],
+        region_name="eu-west-1"
     )
+    # generate boto3 s3 connection
+    client = session.client("s3")
     # create a paginator to list all objects
     paginator = client.get_paginator("list_objects_v2")
     # apply the paginator to list all files in the irishclimateapp bucket with key data/Met_Eireann
