@@ -46,7 +46,7 @@ def gen_preaggregate_data(
         logging.info(f"{stat} ...")
         agg_dict = {col: stat for col in cons.col_options}
         tmp_agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
-        pre_agg_data_dict[stat] = tmp_agg_data.to_dict(orient='records')
+        pre_agg_data_dict[stat] = tmp_agg_data
     # if the output
     if preaggregate_data_fpath != None:
         if os.path.exists(preaggregate_data_fpath):
