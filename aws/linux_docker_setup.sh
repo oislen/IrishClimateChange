@@ -57,9 +57,22 @@ sudo umount /tmp
 # update os
 sudo yum update -y
 # install required base software
-sudo yum install -y htop vim tmux dos2unix docker
+sudo yum install -y htop vim tmux dos2unix docker git
 # remove unneed dependencies
 sudo yum autoremove
+
+#-- Pull and Run Git Repo --#
+
+# pull git repo
+sudo mkdir /home/ubuntu
+sudo git clone https://github.com/oislen/IrishClimateDashboard.git --branch v0.0.0 /home/ubuntu/IrishClimateDashboard
+cd /home/ubuntu/IrishClimateDashboard
+# create python environment
+sudo yum install -y python3 python3-pip
+python3 -m pip install -v -r /home/ubuntu/IrishClimateDashboard/requirements.txt
+# run bokeh app
+bokeh serve /home/ubuntu/IrishClimateDashboard/scripts/bokeh_dash_app.py --allow-websocket-origin=*.*.*.*:5006
+# http://34.243.42.137:5006/bokeh_dash_app
 
 #-- Pull and Run Docker Contianer --#
 
@@ -67,10 +80,12 @@ sudo yum autoremove
 sudo gpasswd -a $USER 
 sudo systemctl start docker
 sudo chmod 666 /var/run/docker.sock
-#cat ~/.creds/docker | docker login --username oislen --password-stdin
+cat ~/.creds/docker | docker login --username oislen --password-stdin
+# set docker constants
+export DOCKER_IMAGE=oislen/irishclimatedashboard:latest
+export DOCKER_CONTAINER_NAME=icd
 # pull docker container
-docker pull oislen/irishclimatedashboard:latest
+docker pull $DOCKER_IMAGE
+docker logout
 # run pulled docker container
 docker run -it oislen/irishclimatedashboard:latest
-#docker run -d oislen/irishclimatedashboard:latest
-#docker run -it -d <container_id_or_name> /bin/bash
