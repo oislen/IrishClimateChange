@@ -1,0 +1,4 @@
+scripts/aws_rootkey.py
+*__pycache__
+*.ipynb_checkpoints
+.creds
