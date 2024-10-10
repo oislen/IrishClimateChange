@@ -65,7 +65,7 @@ sudo yum autoremove
 
 # pull git repo
 sudo mkdir /home/ubuntu
-sudo git clone https://github.com/oislen/IrishClimateDashboard.git --branch main /home/ubuntu/IrishClimateDashboard
+sudo git clone https://github.com/oislen/IrishClimateDashboard.git --branch v0.0.0 /home/ubuntu/IrishClimateDashboard
 cd /home/ubuntu/IrishClimateDashboard
 # create python environment
 sudo yum install -y python3 python3-pip
