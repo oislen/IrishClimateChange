@@ -15,7 +15,7 @@ call docker build --no-cache -t %DOCKER_IMAGE% .  --build-arg GIT_BRANCH=%GIT_BR
 
 :: run docker container
 SET UBUNTU_DIR=/home/ubuntu
-call docker run --name %DOCKER_CONTAINER_NAME% --shm-size=512m -p 5006:5006 -it %DOCKER_IMAGE%
+call docker run --name %DOCKER_CONTAINER_NAME% --shm-size=512m -p 5006:5006 --rm %DOCKER_IMAGE%
 
 :: useful docker commands
 :: docker images
