@@ -1,1 +1,1 @@
-call bokeh serve scripts\bokeh_dash_app.py
+call bokeh serve dashboard\bokeh_dash_app.py

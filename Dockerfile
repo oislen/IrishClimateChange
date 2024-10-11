@@ -26,4 +26,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN /opt/venv/bin/python3 -m pip install -v -r /home/ubuntu/IrishClimateDashboard/requirements.txt
 
 WORKDIR /home/${user}/IrishClimateDashboard
-CMD ["bokeh", "serve","scripts/bokeh_dash_app.py"]
+CMD ["bokeh", "serve","dashboard/bokeh_dash_app.py"]

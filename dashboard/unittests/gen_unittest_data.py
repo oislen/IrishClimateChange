@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 
-sys.path.append(os.path.join(os.getcwd(), "scripts"))
+sys.path.append(os.path.join(os.getcwd(), "dashboard"))
 
 import cons
 

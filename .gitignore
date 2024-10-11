@@ -1,6 +1,5 @@
 # ignore sub repos
 data/Met_Eireann/arch
-scripts/aws_rootkey.py
 *__pycache__
 *.ipynb_checkpoints
 *.xlsx
