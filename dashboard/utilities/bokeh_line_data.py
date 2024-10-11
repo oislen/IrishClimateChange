@@ -1,10 +1,10 @@
 # import relevant libraries
-import cons
-import pickle
-from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 from beartype import beartype
+import pickle
 
 # import custom modules
+import cons
+from bokeh.models import ColumnDataSource, CDSView, BooleanFilter
 from utilities.time_data import time_data
 
 @beartype

@@ -1,13 +1,13 @@
 import pickle
+from beartype import beartype
+from typing import Union
 from bokeh.models import Select, CheckboxGroup, Div, Button, MultiSelect
 from bokeh.layouts import column, row
 
 # import custom modules
 import cons
-from BokehApp.bokeh_line_data import bokeh_line_data
-from BokehApp.bokeh_line_plot import bokeh_line_plot
-from beartype import beartype
-from typing import Union
+from utilities.bokeh_line_data import bokeh_line_data
+from utilities.bokeh_line_plot import bokeh_line_plot
 
 @beartype
 def bokeh_line_dash():

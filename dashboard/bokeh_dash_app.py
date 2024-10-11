@@ -3,8 +3,8 @@ from bokeh.io import curdoc
 from bokeh.models import TabPanel, Tabs
 
 # load custom modules
-from BokehApp.bokeh_line_dash import bokeh_line_dash
-from BokehApp.bokeh_map_dash import bokeh_map_dash
+from utilities.bokeh_line_dash import bokeh_line_dash
+from utilities.bokeh_map_dash import bokeh_map_dash
 
 # initialise and structure bokeh line dashboard
 dashboard_line = bokeh_line_dash()

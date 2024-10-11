@@ -4,8 +4,8 @@ from bokeh.layouts import column, row
 from beartype import beartype
 
 import cons
-from BokehApp.bokeh_map_data import bokeh_map_data
-from BokehApp.bokeh_map_plot import bokeh_map_plot
+from utilities.bokeh_map_data import bokeh_map_data
+from utilities.bokeh_map_plot import bokeh_map_plot
 
 @beartype
 def bokeh_map_dash():
