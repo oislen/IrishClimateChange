@@ -1,4 +1,5 @@
 data/Met_Eireann/arch
+data/Met_Eireann/scraped_data
 *__pycache__
 *.ipynb_checkpoints
 *.xlsx
