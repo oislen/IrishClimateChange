@@ -1,1 +1,1 @@
-call python scripts\prg_preprocess_data.py
+call python dashboard\prg_preprocess_data.py

@@ -71,7 +71,7 @@ cd /home/ubuntu/IrishClimateDashboard
 sudo yum install -y python3 python3-pip
 python3 -m pip install -v -r /home/ubuntu/IrishClimateDashboard/requirements.txt
 # run bokeh app
-bokeh serve /home/ubuntu/IrishClimateDashboard/scripts/bokeh_dash_app.py --allow-websocket-origin=*.*.*.*:5006
+bokeh serve /home/ubuntu/IrishClimateDashboard/dashboard/bokeh_dash_app.py --allow-websocket-origin=*.*.*.*:5006
 # http://34.243.42.137:5006/bokeh_dash_app
 
 #-- Pull and Run Docker Contianer --#
