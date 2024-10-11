@@ -4,33 +4,25 @@ from bokeh.layouts import column, row
 
 # import custom modules
 import cons
-from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
 from BokehApp.bokeh_line_data import bokeh_line_data
 from BokehApp.bokeh_line_plot import bokeh_line_plot
 from beartype import beartype
 from typing import Union
 
 @beartype
-def bokeh_line_dash(
-    load_data_dict:bool=True
-    ):
+def bokeh_line_dash():
     """Generates the bokeh line dashboard
 
     Parameters
     ----------
-    load_data_dict : bool
-        Whether to load the preaggregated file from disk, or generate it scratch, default is True
-
+    
     Returns
     -------
     bokeh.layouts.row
         The interactive bokeh line dashboard
     """
-    if load_data_dict:
-        with open(cons.preaggregate_data_fpath, "rb") as handle:
-            pre_agg_data_dict = pickle.load(handle)
-    else:
-        pre_agg_data_dict = gen_preaggregate_data(return_data=True)
+    with open(cons.preaggregate_data_fpath, "rb") as handle:
+        pre_agg_data_dict = pickle.load(handle)
     # generate bokeh data for line plot
     bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict)
     # create bokeh plot

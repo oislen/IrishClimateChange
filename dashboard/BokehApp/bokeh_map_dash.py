@@ -4,41 +4,25 @@ from bokeh.layouts import column, row
 from beartype import beartype
 
 import cons
-from PreProcessData.gen_preaggregate_data import gen_preaggregate_data
-from PreProcessData.gen_counties_data import gen_counties_data
-from PreProcessData.gen_stations_data import gen_stations_data
 from BokehApp.bokeh_map_data import bokeh_map_data
 from BokehApp.bokeh_map_plot import bokeh_map_plot
 
 @beartype
-def bokeh_map_dash(
-    load_data_dict:bool=True
-    ):
+def bokeh_map_dash():
     """Generates the bokeh map dashboard
 
     Parameters
     ----------
-    load_data_dict : bool
-        Whether to load the preaggregated, counties and station geospatial files from disk, or generate them from scratch, default is True
 
     Returns
     -------
     bokeh.layouts.row
         The interactive bokeh map dashboard
     """
-    if load_data_dict:
-        with open(cons.map_data_fpath, "rb") as handle:
-            map_data_dict = pickle.load(handle)
-        with open(cons.points_data_fpath, "rb") as handle:
-            station_data = pickle.load(handle)
-    else:
-        pre_agg_data_dict = gen_preaggregate_data(return_data=True)
-        map_data_dict = gen_counties_data(
-            pre_agg_data_dict=pre_agg_data_dict, return_data=True
-        )
-        station_data = gen_stations_data(
-            points_data_fpath=cons.points_data_fpath, return_data=True
-        )
+    with open(cons.map_data_fpath, "rb") as handle:
+        map_data_dict = pickle.load(handle)
+    with open(cons.points_data_fpath, "rb") as handle:
+        station_data = pickle.load(handle)
     # generate bokeh data for map plot
     bokeh_map_data_dict, pointgeosource = bokeh_map_data(map_data_dict, station_data)
     # create bokeh map plot
