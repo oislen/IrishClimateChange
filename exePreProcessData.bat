@@ -1,1 +1,0 @@
-call python dashboard\prg_preprocess_data.py
