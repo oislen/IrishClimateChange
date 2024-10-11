@@ -1,8 +1,10 @@
 # load relevant libraries
 import os
+import sys
 import platform
 
 root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
+sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
 # set data files

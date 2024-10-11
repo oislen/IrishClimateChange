@@ -1,9 +1,11 @@
 import platform
 import os
+import sys
 
 free_images_url = 'https://www.met.ie/climate/available-data/historical-data'
 
 root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
+sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
 gis_dir = os.path.join(data_dir, "gis")
