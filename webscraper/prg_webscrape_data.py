@@ -20,7 +20,7 @@ if __name__ == '__main__':
     
     logging.info('~~~~~ Retrieving data for met stations ...')
     # load stations data
-    stations = load_stations_data(stations_fpath=cons.stations_fpath, filter_open=True, topn=5)
+    stations = load_stations_data(stations_fpath=cons.stations_fpath, filter_open=True)
     # run webscraper
     resp_log = retrieve_station_data(stations=stations, scraped_data_dir=cons.scraped_data_dir, data_level="dly")
 
