@@ -2,9 +2,9 @@ import os
 import pandas as pd
 import logging
 import cons
-from IrishClimateDashboard.webscraper.PostProcessData.gen_boto3_excel import gen_boto3_excel
 from beartype import beartype
 from typing import Union
+from webscraper.utilities.gen_boto3_excel import gen_boto3_excel
 
 @beartype
 def gen_master_data(
