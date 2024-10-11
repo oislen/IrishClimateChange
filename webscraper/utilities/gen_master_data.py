@@ -5,6 +5,7 @@ import cons
 from beartype import beartype
 from typing import Union
 from webscraper.utilities.gen_boto3_excel import gen_boto3_excel
+from webscraper.utilities.load_data import load_data
 
 @beartype
 def gen_master_data(
@@ -39,28 +40,18 @@ def gen_master_data(
         if met_eireann_fpaths == None:
             logging.info("Retrieving raw met eireann .xlsx file paths from disk ...")
             # load data files from file directory
-            met_eireann_fpaths = [
-                os.path.join(cons.met_eireann_dir, fpath)
-                for fpath in os.listdir(cons.met_eireann_dir)
-                if ".xlsx" in fpath
-            ]
+            #met_eireann_fpaths = [os.path.join(cons.met_eireann_dir, fpath) for fpath in os.listdir(cons.met_eireann_dir) if ".xlsx" in fpath]
+            met_eireann_fpaths = [os.path.join(cons.scraped_data_dir, fname) for fname in os.listdir(cons.scraped_data_dir)]
     # otherwise if loading data from aws s3
     else:
         logging.info("Retrieving raw met eireann .xlsx file paths from aws s3 ...")
-        met_eireann_fpaths = gen_boto3_excel(
-            bucket="irishclimateapp", prefix="data/Met_Eireann"
-        )
+        met_eireann_fpaths = gen_boto3_excel(bucket="irishclimateapp", prefix="data/Met_Eireann")
     logging.info("Reading, concatenating and cleaning .xlsx files ...")
     # load and concatenate data files together
-    data_list = [
-        pd.read_excel(fpath, dtype=dtypes, na_values=[" "])
-        for fpath in met_eireann_fpaths
-    ]
+    #data_list = [pd.read_excel(fpath, dtype=dtypes, na_values=[" "]) for fpath in met_eireann_fpaths]
+    data_list = [load_data(fpath) for fpath in met_eireann_fpaths]
     data = pd.concat(objs=data_list, ignore_index=True, axis=0)
-    data = data[data.columns[~data.columns.str.contains("ind")]]
     data["date"] = pd.to_datetime(data["date"])
-    data["county"] = data["county"].str.title()
-    logging.info("Sorting master file by county and station names ...")
     # order results by county and station alphabetically
     data = data.sort_values(by=["county", "station"]).reset_index(drop=True)
     # if the output
