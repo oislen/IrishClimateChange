@@ -1,19 +1,28 @@
-import time
-import cons
 import logging
+import cons
+import time
+from utilities.load_stations_data import load_stations_data
+from utilities.retrieve_station_data import retrieve_station_data
 from utilities.gen_master_data import gen_master_data
 from utilities.gen_preaggregate_data import gen_preaggregate_data
 from utilities.gen_counties_data import gen_counties_data
 from utilities.gen_stations_data import gen_stations_data
 
+# if running as main programme
 if __name__ == '__main__':
+    
+    # start timer
+    t0 = time.time()
 
     # set up logging
     lgr = logging.getLogger()
     lgr.setLevel(logging.INFO)
-
-    # start timer
-    t0 = time.time()
+    
+    logging.info('~~~~~ Retrieving data for met stations ...')
+    # load stations data
+    stations = load_stations_data(stations_fpath=cons.stations_fpath, filter_open=True, topn=5)
+    # run webscraper
+    resp_log = retrieve_station_data(stations=stations, scraped_data_dir=cons.scraped_data_dir, data_level="dly")
 
     logging.info('~~~~~ Generating master data file ...')
     # generate master data file
