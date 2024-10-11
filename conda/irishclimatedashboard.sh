@@ -10,8 +10,5 @@ conda update -n base conda --yes
 # install relevant libraries
 pip install -r ../requirements.txt
 
-# run playwright install
-playwright install
-
 # export environment to .yml file
 conda env export > irishclimatedashboard.yml
