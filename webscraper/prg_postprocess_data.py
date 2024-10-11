@@ -1,10 +1,10 @@
 import time
 import cons
 import logging
-from PostProcessData.gen_master_data import gen_master_data
-from PostProcessData.gen_preaggregate_data import gen_preaggregate_data
-from PostProcessData.gen_counties_data import gen_counties_data
-from PostProcessData.gen_stations_data import gen_stations_data
+from utilities.gen_master_data import gen_master_data
+from utilities.gen_preaggregate_data import gen_preaggregate_data
+from utilities.gen_counties_data import gen_counties_data
+from utilities.gen_stations_data import gen_stations_data
 
 if __name__ == '__main__':
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     logging.info('~~~~~ Generating master data file ...')
     # generate master data file
-    #gen_master_data(master_data_fpath = cons.master_data_fpath, return_data = False)
+    gen_master_data(master_data_fpath = cons.master_data_fpath, return_data = False)
 
     logging.info('~~~~~ Generating preaggregated data file ...')
     # generate the preaggregate data
