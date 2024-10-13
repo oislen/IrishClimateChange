@@ -40,9 +40,8 @@ def bokeh_line_plot(
     # create plot figure object
     plot = figure(toolbar_location="below", output_backend="webgl", **cons.FIG_SETTING)
     # create a horizontal line around the average
-    point_datasource = agg_data_dict["point_datasource"]
-    line_datasource = agg_data_dict["line_datasource"]
-    stat_value = point_datasource.to_df().agg({col: "mean"}).values[0]
+    datasource = agg_data_dict["datasource"]
+    stat_value = datasource.to_df().agg({col: "mean"}).values[0]
     hline = Span(
         location=stat_value,
         line_dash="dashed",
@@ -59,7 +58,7 @@ def bokeh_line_plot(
     # add dates to x-axis ticks
     # remap x-axis tick labels
     axis_data_dict = (
-        point_datasource.to_df()[["index", "date_str"]]
+        datasource.to_df()[["index", "date_str"]]
         .drop_duplicates()
         .sort_values(by="index")
         .set_index("index")
@@ -88,27 +87,21 @@ def bokeh_line_plot(
                 x="index",
                 y=col,
                 color=cfg_dict["color"],
-                source=point_datasource,
-                view=cfg_dict["point_dataview"],
+                source=cfg_dict["dataview"],
                 size=8,
             )
-            county_line = plot.multi_line(
-                xs="index",
-                ys=col,
+            county_line = plot.line(
+                x="index",
+                y=col,
                 color=cfg_dict["color"],
-                source=line_datasource,
-                view=cfg_dict["line_dataview"],
+                source=cfg_dict["dataview"],
                 line_width=2,
             )
             # create hover tools
             plot.add_tools(
                 HoverTool(
                     renderers=[county_point],
-                    tooltips=[
-                        ("County", "@county"),
-                        (f"{agg_level}".title(), "@date_str"),
-                        ("Value", f"@{col}"),
-                    ],
+                    tooltips=[("County", "@county"),(f"{agg_level}".title(), "@date_str"),("Value", f"@{col}"),],
                     attachment="left",
                 )
             )

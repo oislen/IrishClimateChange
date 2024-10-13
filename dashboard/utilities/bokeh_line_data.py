@@ -40,38 +40,24 @@ def bokeh_line_data(
                 time_span = cons.linedash_yearmonth_timespan
             elif agg_level == "month":
                 time_span = cons.linedash_month_timespan
-            point_agg_data = time_data(
+            agg_data = time_data(
                 data=agg_data_dict,
                 agg_dict=agg_dict,
                 time_span=time_span,
                 counties=cons.counties,
                 strftime=date_strftime,
             )
-            # aggregate to county level
-            #point_melt_data=pd.melt(frame=point_agg_data, id_vars=['county','date','date_str','index'], value_vars=cons.col_options, var_name='col', value_name='stat').dropna()
-            #point_melt_agg_data = point_melt_data.groupby(by=['county','col'], as_index=False).agg({'date':list,'date_str':list, 'index':lambda series:tuple(series.to_list()), 'stat':list})
-            #line_melt_agg_data = point_melt_agg_data.pivot(columns=['col'], index=['county','index'], values=['stat'])
-            #line_melt_agg_data.columns = line_melt_agg_data.columns.get_level_values("col")
-            #line_agg_data = line_melt_agg_data.reset_index()
-            line_agg_dict = {col:list for col in point_agg_data.columns.drop('county')}
-            line_agg_data = point_agg_data.replace({np.nan:None}).groupby(by=['county'], as_index=False).agg(line_agg_dict)
             # create bokeh data source
-            point_datasource = ColumnDataSource(point_agg_data)
-            line_datasource = ColumnDataSource(line_agg_data)
+            datasource = ColumnDataSource(agg_data)
             # create filtered column data source views
             dataview_dict = {}
             for county in cons.counties:
-                point_county_filter = [True if x == county else False for x in point_datasource.data["county"]]
-                line_county_filter = [True if x == county else False for x in line_datasource.data["county"]]
-                point_dataview = CDSView(filter=BooleanFilter(point_county_filter))
-                line_dataview = CDSView(filter=BooleanFilter(line_county_filter))
-                cfg_dict = {"point_dataview": point_dataview,"line_dataview": line_dataview,"color": cons.county_line_colors[county],}
+                dataview = ColumnDataSource(agg_data.loc[(agg_data['county'] == county), :])
+                cfg_dict = {"dataview": dataview,"color": cons.county_line_colors[county],}
                 dataview_dict[county] = cfg_dict
             # update results dictionary
-            tmp_level_dict["point_agg_data"] = point_agg_data
-            tmp_level_dict["line_agg_data"] = line_agg_data
-            tmp_level_dict["point_datasource"] = point_datasource
-            tmp_level_dict["line_datasource"] = line_datasource
+            tmp_level_dict["agg_data"] = agg_data
+            tmp_level_dict["datasource"] = datasource
             tmp_level_dict["dataview_dict"] = dataview_dict
             stat_level_dict[agg_level] = tmp_level_dict
         bokeh_line_data_dict[stat] = stat_level_dict
