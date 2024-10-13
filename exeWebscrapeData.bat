@@ -1,1 +1,1 @@
-call python webscraper\prg_webscrape_data.py
+call python webscraper\prg_webscrape_data.py --retrieve_data --generate_master_data --generate_preaggregated_data --generate_counties_data --generate_stations_data
