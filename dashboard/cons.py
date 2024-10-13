@@ -5,7 +5,7 @@ import platform
 from datetime import datetime
 import json
 
-root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
+root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else "/home/runner/work/IrishClimateDashboard" if "GITHUB_ACTIONS_UNITTEST_FLAG" in os.environ else '/home/ubuntu/IrishClimateDashboard'
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
