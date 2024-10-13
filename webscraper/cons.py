@@ -1,8 +1,10 @@
 import platform
 import os
 import sys
+import json
 
-free_images_url = 'https://www.met.ie/climate/available-data/historical-data'
+met_eir_historical_data_url = 'https://www.met.ie/climate/available-data/historical-data'
+stations_data_url = 'https://cli.fusio.net/cli/climate_data/webdata/StationDetails.csv'
 
 root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
 sys.path.append(root_dir)
@@ -10,6 +12,7 @@ sys.path.append(root_dir)
 data_dir = os.path.join(root_dir, 'data')
 gis_dir = os.path.join(data_dir, "gis")
 met_eireann_dir = os.path.join(data_dir, 'Met_Eireann')
+bokeh_ref_data_dir = os.path.join(data_dir, "bokeh", "ref")
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.pickle")
 bokeh_line_data_fpath = os.path.join(data_dir, "bokeh_line_data.pickle")
@@ -21,7 +24,15 @@ map_data_fpath = os.path.join(gis_dir, "map_data.pickle")
 points_data_fpath = os.path.join(gis_dir, "points_data.pickle")
 scraped_data_dir = os.path.join(met_eireann_dir, 'scraped_data')
 stations_fpath = os.path.join(met_eireann_dir, 'ref', 'StationDetails.csv')
+unittest_normal_dists_fpath = os.path.join(bokeh_ref_data_dir, "unittest_normal_dists.json")
+col_options_fpath = os.path.join(bokeh_ref_data_dir, "col_options.json")
+stat_options_fpath = os.path.join(bokeh_ref_data_dir, "stat_options.json")
+agg_level_strftime_fpath = os.path.join(bokeh_ref_data_dir, "agg_level_strftime.json")
 
-date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
-col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'glorad']
-stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
+# load bokeh reference data
+with open(col_options_fpath) as json_file: 
+    col_options = json.load(json_file)
+with open(stat_options_fpath) as json_file: 
+    stat_options = json.load(json_file)
+with open(agg_level_strftime_fpath) as json_file: 
+    date_strftime_dict = json.load(json_file)

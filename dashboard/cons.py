@@ -25,6 +25,7 @@ figure_settings_fpath = os.path.join(bokeh_ref_data_dir, "fig_settings.json")
 unittest_normal_dists_fpath = os.path.join(bokeh_ref_data_dir, "unittest_normal_dists.json")
 col_options_fpath = os.path.join(bokeh_ref_data_dir, "col_options.json")
 stat_options_fpath = os.path.join(bokeh_ref_data_dir, "stat_options.json")
+agg_level_strftime_fpath = os.path.join(bokeh_ref_data_dir, "agg_level_strftime.json")
 
 # seaborn plot settings
 sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
@@ -43,13 +44,14 @@ with open(col_options_fpath) as json_file:
     col_options = json.load(json_file)
 with open(stat_options_fpath) as json_file: 
     stat_options = json.load(json_file)
+with open(agg_level_strftime_fpath) as json_file: 
+    date_strftime_dict = json.load(json_file)
 
 # bokeh line selector settings
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
 counties_values = [str(i) for i in range(len(counties))]
 counties_options = [(str(i), c) for i, c in enumerate(counties)]
-date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
 line_agg_level_options = list(date_strftime_dict.keys())
 line_agg_level_default = line_agg_level_options[0]
 col_default = col_options[0]

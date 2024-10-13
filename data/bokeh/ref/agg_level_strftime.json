@@ -1,0 +1,5 @@
+{
+    "year": "%Y",
+    "year-month": "%Y-%m",
+    "month": "%m"
+}
