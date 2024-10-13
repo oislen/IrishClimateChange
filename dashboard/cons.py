@@ -3,11 +3,13 @@ import os
 import sys
 import platform
 from datetime import datetime
+import json
 
 root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
+bokeh_ref_data_dir = os.path.join(data_dir, "bokeh", "ref")
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 gis_dir = os.path.join(data_dir, "gis")
@@ -16,6 +18,11 @@ bokeh_line_data_fpath = os.path.join(data_dir, "bokeh_line_data.pickle")
 bokeh_map_data_fpath = os.path.join(data_dir, "bokeh_map_data.pickle")
 map_data_fpath = os.path.join(gis_dir, "map_data.pickle")
 points_data_fpath = os.path.join(gis_dir, "points_data.pickle")
+# set bokeh reference data file paths
+county_line_colors_fpath = os.path.join(bokeh_ref_data_dir, "county_line_colors.json")
+map_settings_fpath = os.path.join(bokeh_ref_data_dir, "map_settings.json")
+figure_settings_fpath = os.path.join(bokeh_ref_data_dir, "fig_settings.json")
+unittest_normal_dists_fpath = os.path.join(bokeh_ref_data_dir, "unittest_normal_dists.json")
 
 # seaborn plot settings
 sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
@@ -23,36 +30,15 @@ sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
 # set whether to load in pickle data for bokeh app or generate from master file
 load_data_dict = True
 
-# bokeh figure settings
-FIG_SETTING = {'height':640, 
-               'width':640, 
-               'min_border_left':40, 
-               'min_border_right':40,
-               'min_border_top':40, 
-               'min_border_bottom': 16, 
-               'tools':'pan,wheel_zoom, box_zoom,reset,save'
-               }
-
-# bokeh map settings
-MAP_SETTINGS = {'line_color':'gray', 
-                'line_width':0.25, 
-                'fill_alpha':1
-                }
+# load bokeh reference data
+with open(county_line_colors_fpath) as json_file: 
+    county_line_colors = json.load(json_file)
+with open(map_settings_fpath) as json_file: 
+    MAP_SETTINGS = json.load(json_file)
+with open(figure_settings_fpath) as json_file: 
+    FIG_SETTING = json.load(json_file)
 
 # bokeh line selector settings
-county_line_colors = {'Donegal':'greenyellow', 'Dublin':'lightblue', 
-                      'Carlow':'sandybrown', 'Cavan':'dodgerblue', 'Clare':'yellow', 'Cork':'red', 
-                      'Galway':'maroon', 
-                      'Kerry':'gold', 'Kildare':'lavender', 'Kilkenny':'black', 
-                      'Laois':'fuchsia', 'Leitrim':'khaki', 'Limerick':'olivedrab', 'Longford':'blueviolet',
-                      'Mayo':'green',  'Meath':'lawngreen', 'Monaghan':'slateblue',
-                      'Offaly':'lightgreen',
-                      'Roscommon':'cornsilk',
-                      'Sligo':'indianred', 
-                      'Tipperary':'royalblue',
-                      'Waterford':'whitesmoke', 'Westmeath':'darkred', 'Wexford':'purple', 'Wicklow':'darkblue'
-                      }
-
 counties = list(county_line_colors.keys())
 line_colors = list(county_line_colors.values())
 counties_values = [str(i) for i in range(len(counties))]
@@ -78,23 +64,5 @@ sh_execBokehApp = "bash exeBokehApp.sh &"
 unittest_n_dates = 3
 unittest_country_station_map ={'dublin':['dublin airport', 'casement'], 'cork':['ucc']}
 unittest_start_date = '2020-01-01'
-unittest_normal_dists = {
-    "maxtp":{"loc":13, "scale":4.9},
-    "mintp":{"loc":6.1, "scale":4.3},
-    "igmin":{"loc":0.2, "scale":0.4},
-    "gmin":{"loc":.4, "scale":5.2},
-    "rain":{"loc":2.0, "scale":4.4},
-    "wdsp":{"loc":9.9, "scale":4},
-    "hm":{"loc":17, "scale":6},
-    "ddhm":{"loc":206, "scale":85},
-    "hg":{"loc":25, "scale":8.8},
-    "sun":{"loc":4.1, "scale":3.8},
-    "dos":{"loc":0.3, "scale":18},
-    "glorad":{"loc":1062, "scale":741},
-    "soil":{"loc":11.2, "scale":5.3},
-    "pe":{"loc":1.6, "scale":1.0},
-    "evap":{"loc":2.3, "scale":1.4},
-    "smd_wd":{"loc":20.5, "scale":22.5},
-    "smd_md":{"loc":19.9, "scale":23.1},
-    "smd_pd":{"loc":18.2, "scale":27.3}
-}
+with open(unittest_normal_dists_fpath) as json_file: 
+    unittest_normal_dists = json.load(json_file)
