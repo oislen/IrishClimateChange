@@ -47,7 +47,7 @@ def webscrape_data(
     if generate_master_data:
         logging.info('~~~~~ Generating master data file ...')
         # generate master data file
-        gen_master_data(master_data_fpath = cons.master_data_fpath, return_data = False)
+        gen_master_data(master_data_fpath = cons.master_data_fpath)
     if generate_preaggregated_data:
         logging.info('~~~~~ Generating preaggregated data file ...')
         # generate the preaggregate data
