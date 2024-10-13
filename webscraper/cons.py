@@ -23,5 +23,5 @@ scraped_data_dir = os.path.join(met_eireann_dir, 'scraped_data')
 stations_fpath = os.path.join(met_eireann_dir, 'ref', 'StationDetails.csv')
 
 date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
-col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain']
+col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'glorad']
 stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
