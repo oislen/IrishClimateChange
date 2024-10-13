@@ -59,11 +59,14 @@ counties_options = [(str(i), c) for i, c in enumerate(counties)]
 date_strftime_dict = {'year':'%Y', 'year-month':'%Y-%m', 'month':'%m'}
 line_agg_level_options = list(date_strftime_dict.keys())
 line_agg_level_default = line_agg_level_options[0]
-col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain']
+col_options = ['maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'glorad']
 col_default = col_options[0]
 stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
 stat_default = stat_options[0]
 show_stations_default = []
+linedash_year_timespan = ["2010", "2023"]
+linedash_yearmonth_timespan = ["2010-01", "2023-12"]
+linedash_month_timespan = ["01", "12"]
 
 # bokeh server execution commands
 bat_execBokehApp = "START /MIN CMD.EXE /C exeBokehApp.bat"
