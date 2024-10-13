@@ -109,6 +109,7 @@ def bokeh_map_plot(
                 renderers=[stationpoints],
                 tooltips=[
                     ("Station Name", "@name"),
+                    ("Station Id", "@station_id"),
                     ("Latitude", "@latitude"),
                     ("Longitude", "@longitude"),
                     ("Open Year", "@open_year"),
