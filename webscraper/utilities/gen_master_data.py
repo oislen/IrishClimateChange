@@ -4,14 +4,13 @@ import logging
 import cons
 from beartype import beartype
 from typing import Union
-from webscraper.utilities.gen_boto3_excel import gen_boto3_excel
 from webscraper.utilities.load_data import load_data
 
 @beartype
 def gen_master_data(
     met_eireann_fpaths:Union[list,None]=None,
-    master_data_fpath:Union[str,None]=None, 
-) -> pd.DataFrame:
+    master_data_fpath:Union[str,None]=None,
+    ):
     """Generates the master data from the individual raw Met Eireann .xlsx files
 
     Parameters
@@ -23,9 +22,6 @@ def gen_master_data(
 
     Returns
     -------
-
-    pandas.DataFrame
-        The master data file
     """
     # if load data locally
     if met_eireann_fpaths == None:
@@ -46,4 +42,3 @@ def gen_master_data(
             data.to_feather(master_data_fpath)
         else:
             raise ValueError(f"{master_data_fpath} does not exist")
-    return data

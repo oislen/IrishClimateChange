@@ -9,9 +9,8 @@ from typing import Union
 @beartype
 def gen_preaggregate_data(
     master_data:Union[pd.DataFrame,None]=None, 
-    preaggregate_data_fpath:Union[str,None]=None, 
-    return_data:bool=True
-) -> Union[int,dict]:
+    preaggregate_data_fpath:Union[str,None]=None
+    ):
     """Generates preaggregate data for bokeh dashboard app
 
     Parameters
@@ -20,14 +19,9 @@ def gen_preaggregate_data(
         Either the master data as a pandas.DataFrame or loads the master data from disk when None, default is None
     preaggregate_data_fpath : str
         The file location to write the preaggregated data to disk, default is None
-    return_data : bool
-        Whether to return the preaggregated data, default is True
 
     Returns
     -------
-
-    0, pandas.DataFrame
-        Depending on return_data parameter, either return zero or preaggregated data
     """
     if type(master_data) == type(None):
         logging.info("Loading master data from disk ...")
@@ -56,9 +50,3 @@ def gen_preaggregate_data(
                 pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
         else:
             raise ValueError(f"{preaggregate_data_fpath} does not exist")
-    # if returning data
-    if return_data:
-        res = pre_agg_data_dict
-    else:
-        res = 0
-    return res

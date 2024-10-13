@@ -51,15 +51,15 @@ def webscrape_data(
     if generate_preaggregated_data:
         logging.info('~~~~~ Generating preaggregated data file ...')
         # generate the preaggregate data
-        gen_preaggregate_data(preaggregate_data_fpath = cons.preaggregate_data_fpath, return_data = False)
+        gen_preaggregate_data(preaggregate_data_fpath = cons.preaggregate_data_fpath)
     if generate_counties_data:
         logging.info('~~~~~ Generating geospatial counties data file ...')
         # generate counties data
-        gen_counties_data(map_data_fpath = cons.map_data_fpath, return_data = False)
+        gen_counties_data(map_data_fpath = cons.map_data_fpath)
     if generate_stations_data:
         logging.info('~~~~~ Generating geospatial stations data file ...')
         # generate wheather station points data
-        gen_stations_data(points_data_fpath = cons.points_data_fpath, return_data = False)
+        gen_stations_data(points_data_fpath = cons.points_data_fpath)
     # end timer and log result
     t1 = time.time()
     tres = t1 - t0
