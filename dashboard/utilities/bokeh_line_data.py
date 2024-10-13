@@ -33,11 +33,11 @@ def bokeh_line_data(
             agg_dict = {col: stat for col in cons.col_options}
             date_strftime = cons.date_strftime_dict[agg_level]
             if agg_level == "year":
-                time_span = ["2010", "2019"]
+                time_span = cons.linedash_year_timespan
             elif agg_level == "year-month":
-                time_span = ["2010-01", "2019-12"]
+                time_span = cons.linedash_yearmonth_timespan
             elif agg_level == "month":
-                time_span = ["01", "12"]
+                time_span = cons.linedash_month_timespan
             agg_data = time_data(
                 data=agg_data_dict,
                 agg_dict=agg_dict,
