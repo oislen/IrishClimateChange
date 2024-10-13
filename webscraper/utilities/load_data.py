@@ -3,9 +3,27 @@ import re
 import os
 import pandas as pd
 import cons
+from beartype import beartype
 
-def load_data(fpath, stations_fpath=cons.stations_fpath):
-    """
+@beartype
+def load_data(
+    fpath:str,
+    stations_fpath:str=cons.stations_fpath
+    ) -> pd.DataFrame:
+    """Loads webscraped met data from disk
+
+    Parameters
+    ----------
+    fpath : str
+        The file path to load the webscraped met data from disk
+    stations_fpath : str
+        The file path to load the reference station data from disk
+
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded webscraped met data
     """
     # extract stationid
     station_id = int(re.findall(pattern="dly([0-9]+).csv", string=os.path.basename(fpath))[0])

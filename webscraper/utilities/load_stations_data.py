@@ -1,8 +1,28 @@
 import pandas as pd
-import cons
+from beartype import beartype
 
-def load_stations_data(stations_fpath, filter_open=True, topn=None):
-    """
+@beartype
+def load_stations_data(
+    stations_fpath:str, 
+    filter_open:bool=True, 
+    topn:int=None
+    ) -> pd.DataFrame:
+    """Loads the station reference data file
+
+    Parameters
+    ----------
+    stations_fpath : str
+        The file path to load the reference station data from disk
+    filter_open : bool
+        Whether to only consider open stations and not closed stations
+    topn : int
+        The number of rows to filter from the head of the loaded stations data
+
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded stations reference data
     """
     # load stations data
     stations = pd.read_csv(stations_fpath)
