@@ -19,8 +19,8 @@ agg_dict = {col: stat for col in cons.col_options}
 # generate unittest data
 data = gen_unittest_data()
 obs_time_data = time_data(data=data, agg_dict=agg_dict)
-exp_data_shape = (6, 12)
-exp_data_columns = ['county', 'date', 'date_str', 'maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'index']
+exp_data_shape = (6, 13)
+exp_data_columns = ['county', 'date', 'date_str', 'maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'glorad', 'index']
 
 class Test_time_data(unittest.TestCase):
     """"""
