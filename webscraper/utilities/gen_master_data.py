@@ -51,9 +51,8 @@ def gen_master_data(
     #data_list = [pd.read_excel(fpath, dtype=dtypes, na_values=[" "]) for fpath in met_eireann_fpaths]
     data_list = [load_data(fpath) for fpath in met_eireann_fpaths]
     data = pd.concat(objs=data_list, ignore_index=True, axis=0)
-    data["date"] = pd.to_datetime(data["date"])
-    # order results by county and station alphabetically
-    data = data.sort_values(by=["county", "station"]).reset_index(drop=True)
+    # order results by county, id and date alphabetically
+    data = data.sort_values(by=["county", "id", "date"]).reset_index(drop=True)
     # if the output
     if master_data_fpath != None:
         if os.path.exists(master_data_fpath):
