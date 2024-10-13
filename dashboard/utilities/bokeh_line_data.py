@@ -1,5 +1,7 @@
 # import relevant libraries
 from beartype import beartype
+import numpy as np
+import pandas as pd
 import pickle
 
 # import custom modules
@@ -50,8 +52,7 @@ def bokeh_line_data(
             # create filtered column data source views
             dataview_dict = {}
             for county in cons.counties:
-                county_filter = [True if x == county else False for x in datasource.data["county"]]
-                dataview = CDSView(filter=BooleanFilter(county_filter))
+                dataview = ColumnDataSource(agg_data.loc[(agg_data['county'] == county), :])
                 cfg_dict = {"dataview": dataview,"color": cons.county_line_colors[county],}
                 dataview_dict[county] = cfg_dict
             # update results dictionary

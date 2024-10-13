@@ -87,27 +87,21 @@ def bokeh_line_plot(
                 x="index",
                 y=col,
                 color=cfg_dict["color"],
-                source=datasource,
-                view=cfg_dict["dataview"],
+                source=cfg_dict["dataview"],
                 size=8,
             )
             county_line = plot.line(
                 x="index",
                 y=col,
                 color=cfg_dict["color"],
-                source=datasource,
-                view=cfg_dict["dataview"],
+                source=cfg_dict["dataview"],
                 line_width=2,
             )
             # create hover tools
             plot.add_tools(
                 HoverTool(
                     renderers=[county_point],
-                    tooltips=[
-                        ("County", "@county"),
-                        (f"{agg_level}".title(), "@date_str"),
-                        ("Value", f"@{col}"),
-                    ],
+                    tooltips=[("County", "@county"),(f"{agg_level}".title(), "@date_str"),("Value", f"@{col}"),],
                     attachment="left",
                 )
             )

@@ -38,18 +38,12 @@ def time_data(
     agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
     # if filtering date with respect to timespan
     if time_span != None:
-        time_span_lb = agg_data["date"] >= datetime.datetime.strptime(
-            time_span[0], strftime
-        )
-        time_span_ub = agg_data["date"] <= datetime.datetime.strptime(
-            time_span[1], strftime
-        )
+        time_span_lb = agg_data["date"] >= datetime.datetime.strptime(time_span[0], strftime)
+        time_span_ub = agg_data["date"] <= datetime.datetime.strptime(time_span[1], strftime)
         agg_data = agg_data.loc[time_span_lb & time_span_ub, :]
     # if filtering data with respect to counties
     if counties != None:
         agg_data = agg_data.loc[agg_data["county"].isin(counties)]
     agg_data = agg_data.reset_index(drop=True)
-    agg_data["index"] = (
-        agg_data.groupby("county")["date"].rank(ascending=True).astype(int).subtract(1)
-    )
+    agg_data["index"] = (agg_data.groupby("county")["date"].rank(ascending=True).astype(int).subtract(1))
     return agg_data
