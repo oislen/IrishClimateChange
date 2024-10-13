@@ -2,6 +2,7 @@
 import os
 import sys
 import platform
+from datetime import datetime
 
 root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
 sys.path.append(root_dir)
@@ -64,8 +65,9 @@ col_default = col_options[0]
 stat_options = ['mean', 'median', 'max', 'min', 'var', 'std', 'sum']
 stat_default = stat_options[0]
 show_stations_default = []
-linedash_year_timespan = ["2010", "2023"]
-linedash_yearmonth_timespan = ["2010-01", "2023-12"]
+linedash_yearend = str(int(datetime.now().strftime('%Y')) - 1)
+linedash_year_timespan = ["2010", linedash_yearend]
+linedash_yearmonth_timespan = ["2010-01", f"{linedash_yearend}-12"]
 linedash_month_timespan = ["01", "12"]
 
 # bokeh server execution commands
