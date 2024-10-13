@@ -4,7 +4,7 @@ from beartype import beartype
 
 @beartype
 def url_retrieve(
-    stationid:str, 
+    stationid:int, 
     scraped_data_dir:str, 
     data_level:str="dly"
     ):
@@ -12,7 +12,7 @@ def url_retrieve(
 
     Parameters
     ----------
-    stationid : str
+    stationid : int
         The station id to retrieve data for
     scraped_data_dir : str
         The file directory to write the scraped met data to
