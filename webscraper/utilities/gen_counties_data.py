@@ -51,11 +51,13 @@ def gen_counties_data(
     # iterate over statistic and pre aggregated data
     for stat, pre_agg_data in pre_agg_data_dict.items():
         logging.info(f"{stat} ...")
+        pre_agg_data['year'] = pre_agg_data["date"].dt.year.astype(str)
         # aggregate data to county level
+        #group_cols = ["county","year"]
         group_cols = ["county"]
         agg_dict = {col: stat for col in cons.col_options}
-        # filter data to be between 2010 and 2019
-        pre_agg_data = pre_agg_data.loc[(pre_agg_data["date"].dt.year >= 2010) & (pre_agg_data["date"].dt.year >= 2010), :]
+        # filter data to be between 2010
+        pre_agg_data = pre_agg_data.loc[(pre_agg_data['year'].astype(int) >= 2010), :]
         county_data = pre_agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
         # join county level data to map data
         map_data_dict[stat] = gpd.GeoDataFrame(
