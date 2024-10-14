@@ -1,4 +1,5 @@
 import pickle
+import logging
 from bokeh.models import Select, Div, CheckboxButtonGroup
 from bokeh.layouts import column, row
 from beartype import beartype
@@ -20,6 +21,7 @@ def bokeh_map_dash():
     bokeh.layouts.row
         The interactive bokeh map dashboard
     """
+    logging.info("Initialise map plot begin")
     with open(cons.map_data_fpath, "rb") as handle:
         map_data = pickle.load(handle)
     with open(cons.points_data_fpath, "rb") as handle:
@@ -30,9 +32,11 @@ def bokeh_map_dash():
     # create bokeh map plot
     bokeh_map_plot_params = {"bokeh_map_data_dict":bokeh_map_data_dict,"show_stations":cons.show_stations_default}
     map_plot = timeit(func=bokeh_map_plot, params=bokeh_map_plot_params)
+    logging.info("Initialise map plot end")
 
     # create call back function for bokeh dashboard interaction
     def callback_map_plot(attr, old, new):
+        logging.info("Callback map plot begin")
         # extract new selector value
         col = map_col_selector.value
         stat = map_stat_selector.value
@@ -46,6 +50,7 @@ def bokeh_map_dash():
         map_plot = timeit(func=bokeh_map_plot, params=bokeh_map_plot_params)
         # reassign bokeh plot to bokeh dashboard
         dashboard_map.children[1] = map_plot
+        logging.info("Callback map plot end")
 
     # set up selectors for bokeh map plot
     map_col_selector = Select(
