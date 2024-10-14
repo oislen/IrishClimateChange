@@ -47,29 +47,33 @@ def gen_counties_data(
     counties = counties.sort_values(by="county")
     logging.info("Calculating county level statistics ...")
     # create a dictionary to contain map data
-    map_data_dict = {}
+    map_data_list = []
     # iterate over statistic and pre aggregated data
     for stat, pre_agg_data in pre_agg_data_dict.items():
         logging.info(f"{stat} ...")
         pre_agg_data['year'] = pre_agg_data["date"].dt.year.astype(str)
         # aggregate data to county level
-        #group_cols = ["county","year"]
-        group_cols = ["county"]
+        group_cols = ["county","year"]
+        #group_cols = ["county"]
         agg_dict = {col: stat for col in cons.col_options}
         # filter data to be between 2010
         pre_agg_data = pre_agg_data.loc[(pre_agg_data['year'].astype(int) >= 2010), :]
         county_data = pre_agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
-        # join county level data to map data
-        map_data_dict[stat] = gpd.GeoDataFrame(
-            data=pd.merge(left=counties, right=county_data, on="county", how="left"),
-            crs="EPSG:2157",
-            )
+        county_data['stat'] = stat
+        map_data_list.append(county_data)
+    # 
+    map_data = pd.concat(objs=map_data_list,axis=0,ignore_index=True)
+    # join county level data to map data
+    map_geodata = gpd.GeoDataFrame(
+        data=pd.merge(left=counties, right=map_data, on="county", how="left"),
+        crs="EPSG:2157",
+        )
     # if the output
     if map_data_fpath != None:
         if os.path.exists(map_data_fpath):
             logging.info("Writing counties data to disk as pickle file ...")
             # pickle the preaggregated data dictionary to disk
             with open(map_data_fpath, "wb") as f:
-                pickle.dump(map_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(map_geodata, f, protocol=pickle.HIGHEST_PROTOCOL)
         else:
             raise ValueError(f"{map_data_fpath} does not exist")
