@@ -33,12 +33,20 @@ def bokeh_map_data(
         # Input GeoJSON source that contains features for plotting
         missgeosource = GeoJSONDataSource(geojson=miss_map_data.to_json())
         nonmissgeosource = GeoJSONDataSource(geojson=nonmiss_map_data.to_json())
+        ## create filtered column data source views
+        #dataview_dict = {}
+        #for year in cons.linedash_year_options:
+        #    nonmiss_map_dataview = GeoJSONDataSource(geojson=nonmiss_map_data.loc[(nonmiss_map_data['year'] == year), :].to_json())
+        #    miss_map_dataview = GeoJSONDataSource(geojson=miss_map_data.loc[(miss_map_data['year'] == year), :].to_json())
+        #    cfg_dict = {"nonmiss_map_dataview":nonmiss_map_dataview, "miss_map_dataview":miss_map_dataview}
+        #    dataview_dict[year] = cfg_dict
         # assign data to temp dict
         tmp_data_dict["map_data"] = map_data
         tmp_data_dict["nonmiss_map_data"] = nonmiss_map_data
         tmp_data_dict["miss_map_data"] = miss_map_data
         tmp_data_dict["missgeosource"] = missgeosource
         tmp_data_dict["nonmissgeosource"] = nonmissgeosource
+        #tmp_data_dict["dataview_dict"] = dataview_dict
         # assign temp data dict to bokeh data dict
         bokeh_map_data_dict[stat] = tmp_data_dict
     pointgeosource = GeoJSONDataSource(geojson=station_data.to_json())

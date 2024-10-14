@@ -11,7 +11,8 @@ def bokeh_map_plot(
     pointgeosource:GeoJSONDataSource, 
     col:str, 
     stat:str, 
-    show_stations:list
+    show_stations:list#,
+    #year:str
     ) -> figure:
     """Generates the data used in the bokeh map plot.
 
@@ -27,6 +28,8 @@ def bokeh_map_plot(
         The aggregated statistic to plot in the interactive bokeh heatmap
     show_stations : list
         Whether to toggle the Met Eireann station data overlay in the interactive bokeh heatmap
+    year : str
+        The year of the map data to visualise
 
     Returns
     -------
@@ -70,7 +73,7 @@ def bokeh_map_plot(
     map_plot.title.text_font_style = "bold"
     map_plot.title.text_font_size = "22px"
     # add patches to render states with no aggregate data
-    missgeosource = bokeh_map_data_dict[stat]["missgeosource"]
+    missgeosource = bokeh_map_data_dict[stat]['missgeosource']#[year]['miss_map_dataview']
     misscounties = map_plot.patches(
         "xs", "ys", source=missgeosource, fill_color="white", **cons.MAP_SETTINGS
     )
@@ -83,7 +86,7 @@ def bokeh_map_plot(
         )
     )
     # add patches to render states with aggregate data
-    nonmissgeosource = bokeh_map_data_dict[stat]["nonmissgeosource"]
+    nonmissgeosource = bokeh_map_data_dict[stat]['nonmissgeosource']#[year]['nonmiss_map_dataview']
     nonmisscounties = map_plot.patches(
         "xs",
         "ys",

@@ -31,7 +31,8 @@ def bokeh_map_dash():
         pointgeosource=pointgeosource,
         col=cons.col_default,
         stat=cons.stat_default,
-        show_stations=cons.show_stations_default,
+        show_stations=cons.show_stations_default#,
+        #year=cons.linedash_year_timespan[1]
     )
 
     # create call back function for bokeh dashboard interaction
@@ -68,6 +69,14 @@ def bokeh_map_dash():
         height=60,
         aspect_ratio=10,
     )
+    #map_year_selector = Select(
+    #    title="Year:",
+    #    value=cons.linedash_year_timespan[1],
+    #    options=cons.linedash_year_options,
+    #    width=120,
+    #    height=60,
+    #    aspect_ratio=10,
+    #)
     toggle_stations = CheckboxButtonGroup(
         labels=["Toggle Stations"], 
         active=[], 
@@ -77,11 +86,10 @@ def bokeh_map_dash():
     map_col_selector.on_change("value", callback_map_plot)
     map_stat_selector.on_change("value", callback_map_plot)
     toggle_stations.on_change("active", callback_map_plot)
+    #map_year_selector.on_change("value", callback_map_plot)
 
     # structure dashboard map plot
-    widgets_map = column(
-        toggle_stations, map_col_selector, map_stat_selector
-    )
+    widgets_map = column(toggle_stations, map_col_selector, map_stat_selector)#, map_year_selector)
     dashboard_map = row(widgets_map, map_plot)
 
     return dashboard_map
