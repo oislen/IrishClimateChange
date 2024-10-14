@@ -1,5 +1,6 @@
 import time
 import numpy as np
+import logging
 
 
 def timeit(func, params, itr=1, digits=3):
@@ -27,5 +28,8 @@ def timeit(func, params, itr=1, digits=3):
         t1 = time.time()
         tres = t1 - t0
     eres = round(np.mean(tres), digits)
-    print(f"Mean Execution Time: {eres} seconds")
+    logging_message=f"Execution Time for {str(func)}: {eres} seconds"
+    if itr>1:
+        logging_message=f"Mean {logging_message}"
+    logging.info(logging_message)
     return res

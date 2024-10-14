@@ -61,6 +61,7 @@ linedash_yearend = str(int(datetime.now().strftime('%Y')) - 1)
 linedash_year_timespan = ["2010", linedash_yearend]
 linedash_yearmonth_timespan = ["2010-01", f"{linedash_yearend}-12"]
 linedash_month_timespan = ["01", "12"]
+linedash_year_options = [str(year) for year in range(int(linedash_year_timespan[0]), int(linedash_year_timespan[1])+1)]
 
 # bokeh server execution commands
 bat_execBokehApp = "START /MIN CMD.EXE /C exeBokehApp.bat"
