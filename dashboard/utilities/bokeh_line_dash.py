@@ -1,4 +1,5 @@
 import pickle
+import logging
 from beartype import beartype
 from typing import Union
 from bokeh.models import Select, CheckboxGroup, Div, Button, MultiSelect
@@ -8,6 +9,7 @@ from bokeh.layouts import column, row
 import cons
 from utilities.bokeh_line_data import bokeh_line_data
 from utilities.bokeh_line_plot import bokeh_line_plot
+from utilities.timeit import timeit
 
 @beartype
 def bokeh_line_dash():
@@ -21,21 +23,20 @@ def bokeh_line_dash():
     bokeh.layouts.row
         The interactive bokeh line dashboard
     """
+    logging.info("Initialise line plot begin")
     with open(cons.preaggregate_data_fpath, "rb") as handle:
         pre_agg_data_dict = pickle.load(handle)
     # generate bokeh data for line plot
-    bokeh_line_data_dict = bokeh_line_data(pre_agg_data_dict)
+    bokeh_line_data_params = {"pre_agg_data_dict":pre_agg_data_dict}
+    bokeh_line_data_dict = timeit(func=bokeh_line_data, params=bokeh_line_data_params)
     # create bokeh plot
-    line_plot = bokeh_line_plot(
-        bokeh_line_data_dict,
-        col=cons.col_default,
-        stat=cons.stat_default,
-        agg_level=cons.line_agg_level_default,
-        selection=cons.counties,
-    )
+    bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":cons.col_default, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "selection":cons.counties}
+    line_plot = timeit(func=bokeh_line_plot, params=bokeh_line_plot_params)
+    logging.info("Initialise line plot end")
 
     # create call back function for bokeh dashboard interaction
     def callback_line_plot(attr, old, new):
+        logging.info("Callback line plot begin")
         # extract new selector value
         agg_level = line_agg_level_selector.value
         col = line_col_selector.value
@@ -44,15 +45,11 @@ def bokeh_line_dash():
         for i in line_county_multiselect.value:
             selection.append(cons.counties[int(i)])
         # update bokeh plot
-        line_plot = bokeh_line_plot(
-            bokeh_line_data_dict,
-            col=col,
-            stat=stat,
-            agg_level=agg_level,
-            selection=selection,
-        )
+        bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":col, "stat":stat, "agg_level":agg_level, "selection":selection}
+        line_plot = timeit(func=bokeh_line_plot, params=bokeh_line_plot_params)
         # reassign bokeh plot to bokeh dashboard
         dashboard_line.children[1] = line_plot
+        logging.info("Callback line plot end")
 
     def callback_multiselect_selectall():
         line_county_multiselect.value = cons.counties_values
