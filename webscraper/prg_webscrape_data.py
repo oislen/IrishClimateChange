@@ -9,6 +9,7 @@ from utilities.gen_master_data import gen_master_data
 from utilities.gen_preaggregate_data import gen_preaggregate_data
 from utilities.gen_counties_data import gen_counties_data
 from utilities.gen_stations_data import gen_stations_data
+from utilities.clean_data import clean_data
 
 @beartype
 def webscrape_data(
@@ -44,6 +45,8 @@ def webscrape_data(
         stations = load_stations_data(stations_fpath=cons.stations_fpath, filter_open=True)
         # run webscraper
         resp_log = retrieve_station_data(stations=stations, scraped_data_dir=cons.scraped_data_dir, data_level="dly")
+        # run data cleaning
+        clean_data(scraped_data_dir=cons.scraped_data_dir, cleaned_data_dir=cons.cleaned_data_dir)
     if generate_master_data:
         logging.info('~~~~~ Generating master data file ...')
         # generate master data file
