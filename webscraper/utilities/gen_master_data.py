@@ -4,7 +4,6 @@ import logging
 import cons
 from beartype import beartype
 from typing import Union
-from webscraper.utilities.load_data import load_data
 
 @beartype
 def gen_master_data(
@@ -30,7 +29,7 @@ def gen_master_data(
         met_eireann_fpaths = [os.path.join(cons.scraped_data_dir, fname) for fname in os.listdir(cons.scraped_data_dir)]
     logging.info("Reading, concatenating and cleaning .xlsx files ...")
     # load and concatenate data files together
-    data_list = [load_data(fpath) for fpath in met_eireann_fpaths]
+    data_list = [pd.read_csv(fpath) for fpath in met_eireann_fpaths]
     data = pd.concat(objs=data_list, ignore_index=True, axis=0)
     # order results by county, id and date alphabetically
     data = data.sort_values(by=["county", "id", "date"]).reset_index(drop=True)
