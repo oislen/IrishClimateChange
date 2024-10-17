@@ -7,26 +7,25 @@ from beartype import beartype
 from typing import Union
 
 @beartype
-def gen_preaggregate_data(
-    master_data:Union[pd.DataFrame,None]=None, 
-    preaggregate_data_fpath:Union[str,None]=None
+def gen_preagg_data(
+    master_data_fpath:str=cons.master_data_fpath, 
+    preaggregate_data_fpath:str=cons.preaggregate_data_fpath
     ):
     """Generates preaggregate data for bokeh dashboard app
 
     Parameters
     ----------
-    master_data : None or pd.DataFrame
-        Either the master data as a pandas.DataFrame or loads the master data from disk when None, default is None
+    master_data_fpath : None or pd.DataFrame
+        The file location to write the master data to disk, default is cons.master_data_fpath
     preaggregate_data_fpath : str
-        The file location to write the preaggregated data to disk, default is None
+        The file location to write the preaggregated data to disk, default is cons.preaggregate_data_fpath
 
     Returns
     -------
     """
-    if type(master_data) == type(None):
-        logging.info("Loading master data from disk ...")
-        # load master data
-        master_data = pd.read_feather(cons.master_data_fpath)
+    logging.info("Loading master data from disk ...")
+    # load master data
+    master_data = pd.read_feather(master_data_fpath)
     logging.info("Performing initial data aggregation to year-month level ...")
     # preaggregate the data to year-month level for each available stat
     pre_agg_data_dict = {}
@@ -41,12 +40,10 @@ def gen_preaggregate_data(
         agg_dict = {col: stat for col in cons.col_options}
         tmp_agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
         pre_agg_data_dict[stat] = tmp_agg_data
-    # if the output
-    if preaggregate_data_fpath != None:
-        if os.path.exists(preaggregate_data_fpath):
-            logging.info("Writing preaggregated data to disk as .pickle file ...")
-            # pickle the preaggregated data dictionary to disk
-            with open(cons.preaggregate_data_fpath, "wb") as f:
-                pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
-        else:
-            raise ValueError(f"{preaggregate_data_fpath} does not exist")
+    if os.path.exists(preaggregate_data_fpath):
+        logging.info("Writing preaggregated data to disk as .pickle file ...")
+        # pickle the preaggregated data dictionary to disk
+        with open(cons.preaggregate_data_fpath, "wb") as f:
+            pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
+    else:
+        raise ValueError(f"{preaggregate_data_fpath} does not exist")
