@@ -1,0 +1,9 @@
+{
+    "DryRun": false,
+    "LaunchTemplate": {
+        "LaunchTemplateName": "irishclimatedashboard",
+        "Version": "$Latest"
+    },
+    "MaxCount":1,
+    "MinCount":1
+}
