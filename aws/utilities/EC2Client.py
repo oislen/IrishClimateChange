@@ -7,18 +7,6 @@ from typing import Union
 from beartype import beartype
 import cons
 
-launch_template={
-    "DryRun":False,
-    "LaunchTemplateName":"irishclimatedashboard",
-    "VersionDescription":"Initial version",
-    "LaunchTemplateData":{
-        "ImageId": "ami-00385a401487aefa4",
-        "InstanceType": "t2.micro",
-        "Placement": {"AvailabilityZone": "eu-west-1"},
-        "SecurityGroupIds": ["sg-03864b806cd78ded3"]
-        }    
-    }
-
 class EC2Client():
     
     @beartype
@@ -36,45 +24,49 @@ class EC2Client():
         # generate boto3 s3 connection
         self.client = self.session.client("ec2")
     
-    def create_launch_template(self, launch_template):
+    def create_launch_template(self, launch_template_config):
         """
         """
         # create ec2 launch template
-        response = self.client.create_launch_template(**launch_template)
+        response = self.client.create_launch_template(**launch_template_config)
         return response
     
-    def delete_launch_template(self, launch_template):
+    def delete_launch_template(self, launch_template_config):
         """
         """
         # delete ec2 launch template
-        response = self.client.delete_launch_template(
-            DryRun=launch_template["DryRun"], 
-            LaunchTemplateName=launch_template["LaunchTemplateName"]
-            )
+        response = self.client.delete_launch_template(DryRun=launch_template_config["DryRun"], LaunchTemplateName=launch_template_config["LaunchTemplateName"])
+        return response
+    
+    def create_fleet(self, create_fleet_config):
+        """
+        """
+        response = self.client.create_fleet(**create_fleet_config)
+        return response
+    
+    def run_instances(self, run_instances_config):
+        """
+        """
+        response = self.client.run_instances(**run_instances_config)
+        return response
+    
+    def stop_instances(self, InstanceIds=[]):
+        """
+        """
+        response = self.client.stop_instances(InstanceIds=InstanceIds)
+        return response
+    
+    def terminate_instances(self, InstanceIds=[]):
+        """
+        """
+        response = self.client.terminate_instances(InstanceIds=InstanceIds)
         return response
 
-    
-    def create_fleet(self):
-        """
-        """
-        self.client.create_fleet(
-            DryRun=False,
-            TargetCapacitySpecification={
-                "TotalTargetCapacity": target_capacity,
-                "OnDemandTargetCapacity": 0,
-                "SpotTargetCapacity": target_capacity,
-                "DefaultTargetCapacityType": "spot"
-                },
-            LaunchTemplateConfigs=launch_template_configs,
-            SpotOptions={
-                "AllocationStrategy": "diversified",
-                },
-            )
-
-    
-
 ec2_client = EC2Client(sessionToken=cons.session_token_fpath)
-ec2_client.delete_launch_template(launch_template)
-ec2_client.create_launch_template(launch_template)
-
-LaunchTemplateConfigs=[{"LaunchTemplateSpecification":{"LaunchTemplateName":launch_template["LaunchTemplateName"]}}]
+ec2_client.delete_launch_template(cons.launch_template_config)
+ec2_client.create_launch_template(cons.launch_template_config)
+#ec2_client.create_fleet(cons.create_fleet_config)
+ec2_client.run_instances(cons.run_instances_config)
+#InstanceIds=["i-0d795798de843f848"]
+#ec2_client.stop_instances(InstanceIds=InstanceIds)
+#ec2_client.terminate_instances(InstanceIds=InstanceIds)
