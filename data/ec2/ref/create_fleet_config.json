@@ -1,0 +1,25 @@
+{
+    "DryRun": false,
+    "TargetCapacitySpecification": {
+        "TotalTargetCapacity": 1,
+        "OnDemandTargetCapacity": 1,
+        "SpotTargetCapacity": 0,
+        "DefaultTargetCapacityType": "on-demand"
+    },
+    "LaunchTemplateConfigs": [
+        {
+            "LaunchTemplateSpecification": {
+                "LaunchTemplateName": "irishclimatedashboard",
+                "Version": "$Latest"
+            },
+            "Overrides": [
+                {
+                    "InstanceType": "t2.micro"
+                }
+            ]
+        }
+    ],
+    "SpotOptions": {
+        "AllocationStrategy": "diversified"
+    }
+}
