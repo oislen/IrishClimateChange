@@ -12,7 +12,7 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`type %EC2_DNS_FPATH%`) DO (
     SET EC2_DNS!=%%F
 )
 :: scp docker file and linuc setup shell script to EC2 home
-:: call scp -i %EC2_PEM_FPATH% %EC2_SETUP_FPATH% %EC2_USER%@%EC2_DNS%:~/linux_docker_setup.sh
+call scp -i %EC2_PEM_FPATH% %EC2_SETUP_FPATH% %EC2_USER%@%EC2_DNS%:~/linux_docker_setup.sh
 :: ssh to EC2
 call ssh -i %EC2_PEM_FPATH% %EC2_USER%@%EC2_DNS%
 ENDLOCAL
