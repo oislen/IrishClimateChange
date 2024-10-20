@@ -1,1 +1,0 @@
-call python -m unittest discover dashboard\unittests\utilities
