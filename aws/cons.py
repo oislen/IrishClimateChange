@@ -10,13 +10,13 @@ data_dir = os.path.join(root_dir, 'data')
 creds_data = os.path.join(root_dir, '.creds')
 ec2_ref_data_dir = os.path.join(data_dir, "ec2", "ref")
 session_token_fpath = os.path.join(creds_data, "sessionToken.json")
-create_launch_template_config_fpath = os.path.join(ec2_ref_data_dir, "create_launch_template_config.json")
+launch_template_config_fpath = os.path.join(ec2_ref_data_dir, "launch_template_config.json")
 create_fleet_config_fpath = os.path.join(ec2_ref_data_dir, "create_fleet_config.json")
 run_instances_config_fpath = os.path.join(ec2_ref_data_dir, "run_instances_config.json")
 
 # load aws ec2 references
-with open(create_launch_template_config_fpath) as json_file: 
-    create_launch_template_config = json.load(json_file)
+with open(launch_template_config_fpath) as json_file: 
+    launch_template_config = json.load(json_file)
 with open(create_fleet_config_fpath) as json_file: 
     create_fleet_config = json.load(json_file)
 with open(run_instances_config_fpath) as json_file: 
