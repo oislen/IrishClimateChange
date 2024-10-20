@@ -1,3 +1,5 @@
+# sed -i 's/\r$//' linux_docker_setup.sh
+
 # reset premission for the /opt /dev /run and /sys directories
 ls -larth /.
 sudo chmod -R 777 /opt /dev /run /sys/fs/cgroup
