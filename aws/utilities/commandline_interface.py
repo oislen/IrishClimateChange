@@ -1,7 +1,7 @@
 import argparse
 
 
-def commandline_interface():
+def commandline_interface() -> dict:
     """A commandline interface for parsing input parameters with
 
     Parameters
