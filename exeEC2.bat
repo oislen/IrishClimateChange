@@ -1,1 +1,0 @@
-call python aws\prg_run_ec2_instance.py --launch --terminate
