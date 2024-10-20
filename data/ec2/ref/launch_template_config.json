@@ -16,7 +16,7 @@
             {
                 "DeviceIndex":0,
                 "AssociatePublicIpAddress": true,
-                "SubnetId":"subnet-0aa86a2d7a6c5af54",
+                "SubnetId":"subnet-0b4107fd011ea3b8a",
                 "Groups":["sg-03864b806cd78ded3"]
             }
         ],
