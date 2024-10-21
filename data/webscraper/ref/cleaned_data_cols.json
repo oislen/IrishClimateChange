@@ -1,0 +1,22 @@
+[
+    "id",
+    "county",
+    "station",
+    "open_year",
+    "close_year",
+    "height(m)",
+    "easting",
+    "northing",
+    "latitude",
+    "longitude",
+    "maxtp",
+    "mintp",
+    "gmin",
+    "rain",
+    "wdsp",
+    "soil",
+    "sun",
+    "evap",
+    "glorad",
+    "date"
+]
