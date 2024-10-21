@@ -27,7 +27,7 @@ def gen_master_data(
     met_eireann_fpaths = [os.path.join(cleaned_data_dir, fname) for fname in os.listdir(cleaned_data_dir)]
     logging.info("Reading and concatenating files ...")
     # load and concatenate data files together
-    data_list = [pd.read_csv(fpath) for fpath in met_eireann_fpaths]
+    data_list = [pd.read_parquet(fpath) for fpath in met_eireann_fpaths]
     data = pd.concat(objs=data_list, ignore_index=True, axis=0)
     # convert date to datetime
     data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
