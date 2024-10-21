@@ -1,8 +1,10 @@
 import io
+import os
 import boto3
 import json
 import logging
 import pandas as pd
+import pyarrow as pa
 from typing import Union
 from beartype import beartype
 
@@ -28,7 +30,8 @@ class S3Client():
         self,
         data:pd.DataFrame,
         key:str,
-        bucket:str="irishclimateapp"
+        bucket:str,
+        schema=None
         ):
         """Stores a raw Met Eireann data file on s3.
         
@@ -42,12 +45,19 @@ class S3Client():
         Returns
         -------
         """
+        _, fextension = os.path.splitext(os.path.basename(key))
         try:
             logging.info(f"Storing data to S3://{bucket}/{key}")
-            csv_buf = io.StringIO()
-            data.to_csv(csv_buf, header=True, index=False)
-            csv_buf.seek(0)
-            self.client.put_object(Bucket=bucket, Body=csv_buf.getvalue(), Key=key)
+            if fextension==".csv":
+                buf = io.StringIO()
+                data.to_csv(buf, header=True, index=False)
+                buf.seek(0)
+            elif fextension==".parquet":
+                buf = io.BytesIO()
+                data.to_parquet(buf, index=False, schema=schema)
+            else:
+                raise ValueError("Invalid file extensions {fextension}")
+            self.client.put_object(Bucket=bucket, Body=buf.getvalue(), Key=key)
         except Exception as e:
             logging.info(str(e))
             
