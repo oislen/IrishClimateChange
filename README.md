@@ -21,20 +21,39 @@ The underlying meteorological data is sourced from Met Éireann's public histori
 
 The different climate measures include:
 
-    maxtp:  -  Maximum Air Temperature (C)	  "
-    mintp:  -  Minimum  Air Temperature (C)	
-    gmin:   -  09utc Grass Minimum Temperature (C)	
-    soil:   -  Mean 10cm Soil Temperature (C)	
-    wdsp:   -  Mean Wind Speed (knot)	
-    sun:    -  Sunshine duration (hours)					"	
-    evap:   -  Evaporation (mm)	
-    rain:   -  Precipitation Amount (mm)	
+```
+maxtp:  -  Maximum Air Temperature (C)
+mintp:  -  Minimum  Air Temperature (C)
+gmin:   -  09utc Grass Minimum Temperature (C)
+soil:   -  Mean 10cm Soil Temperature (C)
+wdsp:   -  Mean Wind Speed (knot)
+sun:    -  Sunshine duration (hours)
+evap:   -  Evaporation (mm)
+rain:   -  Precipitation Amount (mm)
+glorad  -  Global Radiation
+```
 
-## Docker Image
+## Running the Application (Windows)
 
-The dashboard application is available as a docker image, and is accessible on dockerhub:
+### Docker Image
+
+The latest version of the Irish Climate Dashboard app can be found as a docker image on dockerhub here:
+
 * https://hub.docker.com/repository/docker/oislen/irishclimatedashboard/general
 
-## Hosted Dashboard
+The docker image can be pulled from dockerhub using the following command:
 
-Hosted dashboards are available on :
+```
+docker pull oislen/irishclimatedashboard:latest
+```
+
+The Irish Climate Dashboard app can then be started using the following command and the docker image:
+
+```
+docker run --name icd --publish 5006:5006 --rm oislen/irishclimatedashboard:latest
+```
+
+Once the dashboard app is running, navigate to localhost:5006 in your preferred browser
+
+* http://localhost:5006/bokeh_dash_app
+
