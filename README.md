@@ -57,3 +57,22 @@ Once the dashboard app is running, navigate to localhost:5006 in your preferred 
 
 * http://localhost:5006/bokeh_dash_app
 
+### Anaconda
+
+Create a local conda environment for the Irish Climate Dashboard app using [Anaconda](https://www.anaconda.com/):
+
+```
+conda create --name irishclimatedashboard python=3.12 --yes
+conda activate irishclimatedashboard
+pip install -r requirements.txt
+```
+
+Start the Irish Climate Dashboard app can then be started using the following command and the local conda environment:
+
+```
+bokeh serve dashboard\\bokeh_dash_app.py
+```
+
+Once the dashboard app is running, navigate to localhost:5006 in your preferred browser
+
+* http://localhost:5006/bokeh_dash_app
