@@ -35,31 +35,9 @@ glorad  -  Global Radiation
 
 ## Running the Application (Windows)
 
-### Docker Image
-
-The latest version of the Irish Climate Dashboard app can be found as a docker image on dockerhub here:
-
-* https://hub.docker.com/repository/docker/oislen/irishclimatedashboard/general
-
-The docker image can be pulled from dockerhub using the following command:
-
-```
-docker pull oislen/irishclimatedashboard:latest
-```
-
-The Irish Climate Dashboard app can then be started using the following command and the docker image:
-
-```
-docker run --name icd --publish 5006:5006 --rm oislen/irishclimatedashboard:latest
-```
-
-Once the dashboard app is running, navigate to localhost:5006 in your preferred browser
-
-* http://localhost:5006/bokeh_dash_app
-
 ### Anaconda
 
-Create a local conda environment for the Irish Climate Dashboard app using [Anaconda](https://www.anaconda.com/):
+Create a local conda environment for the Irish Climate Dashboard app using [anaconda](https://www.anaconda.com/):
 
 ```
 conda create --name irishclimatedashboard python=3.12 --yes
@@ -71,6 +49,28 @@ Start the Irish Climate Dashboard app can then be started using the following co
 
 ```
 bokeh serve dashboard\\bokeh_dash_app.py
+```
+
+Once the dashboard app is running, navigate to localhost:5006 in your preferred browser
+
+* http://localhost:5006/bokeh_dash_app
+
+### Docker
+
+The latest version of the Irish Climate Dashboard app can be found as a [docker](https://www.docker.com/) image on dockerhub here:
+
+* https://hub.docker.com/repository/docker/oislen/irishclimatedashboard/general
+
+The image can be pulled from dockerhub using the following command:
+
+```
+docker pull oislen/irishclimatedashboard:latest
+```
+
+The Irish Climate Dashboard app can then be started using the following command and the docker image:
+
+```
+docker run --name icd --publish 5006:5006 --rm oislen/irishclimatedashboard:latest
 ```
 
 Once the dashboard app is running, navigate to localhost:5006 in your preferred browser
