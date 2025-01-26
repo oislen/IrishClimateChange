@@ -1,0 +1,81 @@
+# User Guide
+## Historical Database Query
+This webpage is where the user makes a choice on the data required. The available data
+will then be graphed and displayed, under [chart](https://cli.fusio.net/cli/climate_data/UserGuide.html#Chart). Initially the user may elect to 
+
+(1) Select the Data resolution  [Menu](https://cli.fusio.net/cli/climate_data/UserGuide.html#Menu) : Hourly or Daily or Monthly
+                                 OR
+(2) Zoom/click and drag on the  [Map](https://cli.fusio.net/cli/climate_data/UserGuide.html#Map)  to select station required. 
+### Menu Controls:
+		Select Hourly or Daily or Monthly Data resolution.
+		Select County and Station using down-arrows.
+		Select Parameter (Ctrl + click to select more than one), Year/Month/Day and 
+		press Go.
+### Map Controls:
+		Click/drag or zoom on the map to select station required.
+		Mouse-over blue marker on map to display name of station.
+		Click on blue marker to display pop-up.
+		Click on Hourly/Daily/Monthly button in pop-up to display parameters in the box 
+		on left.
+		Select  Parameter  (Ctrl + click to select more than one), Year/Month/Day and 
+		press Go.
+		Search function on map, enables user to search for stations with specific 
+		parameters.
+
+
+Users may toggle between both options.
+### Chart Controls:
+Click on Display Fullscreen to resize.
+Chart is interactive:   Mouse-over to highlight individual values.
+			Click and drag to zoom
+			Double Click to zoom back out.
+			Shift-drag to pan.
+			Move cursor over Chart to display Legend.
+			Move cursor over padding at either end to remove Legend.
+### Other:
+1. Selections are "sticky" i.e. they will be remembered. After selecting a dataset the user has 
+   the option of changing just one of the selections made. For example if the user requires the
+   same data from a nearby station, just click on the station marker on map and select the 
+   Hourly/Daily/Monthly button or select a different station using the down arrow and the same
+   parameters and dates will be retained for displaying purposes. 
+2. Available Data:  Hourly  - last 30 years, time lag for updating data is 1 month.
+		    Daily   - full data series, time lag for updating data is 1 month for 
+                              Synoptic stations, others 3 to 6 months. 
+		    Monthly - full data series, time lag for updating data is 2 months for 
+			      Synoptic stations, others 3 to 6 months. 
+                    Minute  - available from 2008 onwards for Synoptic stations except Airports, 
+			      time lag for updating data is 1 month. Select the "Daily" "County"
+		              "Station" and "Parameters" options and click the "Download the full 
+			      data series" link.                       
+3. Once a station is selected, a red marker displays on the map to identify its location.
+4. Option to Download the full data series for any individual station. Select Data resolution, 
+   County, Station and Parameter options and the link will display. This Download also contains the 
+   Licence Agreement and information on elements and indicators.
+5. Data from closed stations are available by selecting the "Show closed stations" button above the "Go"
+   button. The Open and Closed years for the selected station are displayed in the brackets after the 
+   station name or by clicking on the blue marker on the map or by selecting the "Station Details" link 
+   above the "Terms and conditions". 
+6. Option to Reset form.
+7. Option to Print data table at bottom of page
+8. Limit of 100 lines for displaying data.
+9. Files may be downloaded directly by using this link http://cli.fusio.net/cli/climate_data/webdata/dly375.csv ,
+   just replace the station number 375 with a new number in the address line. If you have access to a 
+   unix/linux machine, you can use the wget commmand, see below. Station numbers are available [here](https://cli.fusio.net/cli/climate_data/webdata/StationDetails.csv) .
+10. Ensure you have read and are aware of the Terms and Conditions and Licence Agreement for
+   the use of this data.
+ 
+Enquiries to enq@met.ie .
+
+**Download Multiple Files / URLs Using Wget -i **
+First, store all the download files or URLs in a text file as:
+
+```
+$ cat > download-file-list.txt
+URL1
+URL2
+URL3
+URL4
+Next, give the download-file-list.txt as argument to wget using -i option as shown below.
+
+$ wget -i download-file-list.txt
+```
