@@ -1,0 +1,84 @@
+﻿Daily Elements:
+
+ID      ELEMENT                                                                    Unit       
+
+rain    Precipitation Amount                                                        mm
+maxtp   Maximum Air Temperature                                                     °C	  
+mintp   Minimum  Air Temperature                                                    °C
+gmin    09utc Grass Minimum Temperature                                             °C
+soil    Mean 10cm Soil Temperature                                                  °C	
+wdsp    Mean Wind Speed                                                             knot
+hm		Highest 10 minute mean wind speed                                           knot                 
+ddhm    Mean wind direction over 10 minutes at time of highest mean                 degree
+hg      Highest Gust                                                                knot
+cbl     Mean CBL Pressure                                                           hpa 
+sun     Sunshine duration                                                           hours
+g_rad   Global Radiation                                                            j/cm sq. 
+pe      Potential Evapotranspiration - calculated using Penman-Monteith Equation    mm
+evap    Evaporation - calculated using Penman formula                               mm
+smd_wd  Soil Moisture Deficits for well drained soils                               mm
+smd_md  Soil Moisture Deficits for moderately drained soils                         mm
+smd_pd  Soil Moisture Deficits for poorly drained soils                             mm
+dos     Dept of Snow                                                                cm
+ind     Indicator (i)
+
+
+
+
+Indicators        Description - Decode
+                                                        
+
+irain		  Rainfall Indicators:    		0. Satisfactory 
+							1. deposition. 
+							2. trace or sum of precipitation 
+				            		3. trace or sum of deposition. 
+							4. estimated precipitation
+		  		            		5  estimated deposition . 
+							6. estimated trace of  precipitation  
+				            		7. Estimated trace of deposition. 
+							8. not available
+
+imax		  Temperature Indicators: 		0. Positive 
+							1. Negative 
+							2. Estimated 
+							3. Negative estimated 
+							4. Not available
+
+imin		  Temperature Indicators: 		0. Positive 
+							1. Negative 
+							2  Estimated 
+							3. Negative estimated 
+							4. Not available
+
+igmin		  Grass Minimum Indicators:		0. Positive 
+							1. Negative 
+							2  Estimated 
+							3. Negative estimated 
+							4. Not available
+
+ihm		  Wind Speed Indicators (hm):    	0. Satisfactory 
+						   	1. 10 minute. 
+						   	2. 60 minute. 
+					               	3. 10 minute and  defective. 
+						  	4. 60 minute and defective. 
+					               	5. 10 minute and partially defective. 
+					               	6. 60 minute and partially defective. 
+						   	7. not available.
+
+
+iddhm		  Wind Direction Indicators: 		0. Record satisfactory. 
+							1. Record defective. 
+					           	2. Record partially defective.
+
+
+ihg		  Highest Gust Wind Indicator: 		0. Record satisfactory. 
+							1. Record defective. 
+					           	2. Record partially defective.
+
+
+isun		  Sunshine Indicators: 			1. satisfactory. 
+							2. estimated. 
+							3. not available.	
+
+
+
