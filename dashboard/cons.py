@@ -61,7 +61,7 @@ show_stations_default = []
 linedash_yearstart = "2010"
 linedash_yearend = "2024"
 linedash_year_timespan = [linedash_yearstart, linedash_yearend]
-linedash_yearmonth_timespan = ["{linedash_yearstart}-01", f"{linedash_yearend}-12"]
+linedash_yearmonth_timespan = [f"{linedash_yearstart}-01", f"{linedash_yearend}-12"]
 linedash_month_timespan = ["01", "12"]
 linedash_year_options = [str(year) for year in range(int(linedash_year_timespan[0]), int(linedash_year_timespan[1])+1)]
 
