@@ -1,0 +1,9 @@
+{
+    "height": 640,
+    "width": 640,
+    "min_border_left": 40,
+    "min_border_right": 40,
+    "min_border_top": 40,
+    "min_border_bottom": 16,
+    "tools": "pan,wheel_zoom, box_zoom,reset,save"
+}

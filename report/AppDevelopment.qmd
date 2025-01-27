@@ -1,0 +1,139 @@
+---
+title: "App Development"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+# App Development
+
+```{python}
+#| label: data-load
+#| 
+# import relevant libraries
+import sys
+import os
+import pickle
+
+# add relevant paths
+ica_dir = os.path.dirname(os.getcwd())
+dashboard_dir = os.path.join(ica_dir, "dashboard")
+sys.path.append(ica_dir)
+sys.path.append(dashboard_dir)
+
+# import custom modules
+import dashboard.cons as cons
+from dashboard.utilities.time_data import time_data
+from dashboard.arch.time_plot import time_plot
+from dashboard.arch.map_plot import map_plot
+
+# load data
+with open(cons.preaggregate_data_fpath, "rb") as handle:
+    pre_agg_data_dict = pickle.load(handle)
+with open(cons.map_data_fpath, "rb") as handle:
+    map_data = pickle.load(handle)
+with open(cons.points_data_fpath, "rb") as handle:
+    station_data = pickle.load(handle)
+```
+
+# Visualisation Proto-Types
+
+## GIS Heat Map
+
+* West coast experiences significantly more rainfall than the east coast
+
+```{python}
+#| label: gis-heat-map
+#| 
+map_plot(
+    map_data=map_data,
+    station_data=station_data,
+    year="2024",
+    stat="mean",
+    col="rain"
+    )
+```
+
+
+## Time Series Plots
+
+```{python}
+#| label: gis-heat-map
+#| 
+date_strftime_dict = cons.date_strftime_dict
+counties = cons.counties
+agg_dict = {col:'mean' for col in cons.col_options}
+```
+
+### Yearly Max Temperature by County
+
+```{python}
+#| label: year-data
+#| 
+# set year strftime pattern and time span
+year_strftime = date_strftime_dict['year']
+time_span = cons.linedash_year_timespan
+# generate the time series data
+year_data = time_data(
+    data = pre_agg_data_dict['mean'],
+    agg_dict = agg_dict,
+    time_span = time_span,
+    counties = counties,
+    strftime = year_strftime
+    )
+# show head of data
+year_data.head()
+```
+
+
+```{python}
+#| label: year-time-series-plot
+#| 
+time_plot(
+    data=year_data, 
+    x='index', 
+    y='maxtp', 
+    hue='county', 
+    refline=year_data['maxtp'].mean(), 
+    title='Irish Climate App - Max Temperature by County',
+    xlabel='Year',
+    ylabel='Max Temperature'
+    )
+```
+
+### Monthly Min Temperature by County
+
+```{python}
+#| label: month-data
+#| 
+# set month strftime pattern and time span
+month_strftime = date_strftime_dict['month']
+time_span = ['01', '12']
+# generate the time series data
+month_data = time_data(
+    data=pre_agg_data_dict['mean'],
+    agg_dict=agg_dict,
+    time_span=time_span,
+    counties=counties,
+    strftime=month_strftime
+    )
+# show head of data
+month_data.head()
+```
+
+
+```{python}
+#| label: month-time-series-plot
+#| 
+time_plot(
+    data=month_data, 
+    x='index',
+    y='mintp', 
+    hue='county', 
+    refline=month_data['mintp'].mean(), 
+    title='Irish Climate App - Min Temperature by County',
+    xlabel='Month',
+    ylabel='Min Temperature'
+    )
+```

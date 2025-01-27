@@ -9,7 +9,7 @@ root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows'
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
-bokeh_ref_data_dir = os.path.join(data_dir, "bokeh", "ref")
+dashboard_dir = os.path.join(root_dir, 'dashboard')
 # set data files
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 gis_dir = os.path.join(data_dir, "gis")
@@ -18,14 +18,15 @@ bokeh_line_data_fpath = os.path.join(data_dir, "bokeh_line_data.pickle")
 bokeh_map_data_fpath = os.path.join(data_dir, "bokeh_map_data.pickle")
 map_data_fpath = os.path.join(gis_dir, "map_data.pickle")
 points_data_fpath = os.path.join(gis_dir, "points_data.pickle")
-# set bokeh reference data file paths
-county_line_colors_fpath = os.path.join(bokeh_ref_data_dir, "county_line_colors.json")
-map_settings_fpath = os.path.join(bokeh_ref_data_dir, "map_settings.json")
-figure_settings_fpath = os.path.join(bokeh_ref_data_dir, "fig_settings.json")
-unittest_normal_dists_fpath = os.path.join(bokeh_ref_data_dir, "unittest_normal_dists.json")
-col_options_fpath = os.path.join(bokeh_ref_data_dir, "col_options.json")
-stat_options_fpath = os.path.join(bokeh_ref_data_dir, "stat_options.json")
-agg_level_strftime_fpath = os.path.join(bokeh_ref_data_dir, "agg_level_strftime.json")
+# set bokeh reference dashboard file paths
+bokeh_dashboard_ref_dir = os.path.join(dashboard_dir, "ref")
+county_line_colors_fpath = os.path.join(bokeh_dashboard_ref_dir, "county_line_colors.json")
+map_settings_fpath = os.path.join(bokeh_dashboard_ref_dir, "map_settings.json")
+figure_settings_fpath = os.path.join(bokeh_dashboard_ref_dir, "fig_settings.json")
+unittest_normal_dists_fpath = os.path.join(bokeh_dashboard_ref_dir, "unittest_normal_dists.json")
+col_options_fpath = os.path.join(bokeh_dashboard_ref_dir, "col_options.json")
+stat_options_fpath = os.path.join(bokeh_dashboard_ref_dir, "stat_options.json")
+agg_level_strftime_fpath = os.path.join(bokeh_dashboard_ref_dir, "agg_level_strftime.json")
 
 # seaborn plot settings
 sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
@@ -57,9 +58,10 @@ line_agg_level_default = line_agg_level_options[0]
 col_default = col_options[0]
 stat_default = stat_options[0]
 show_stations_default = []
-linedash_yearend = str(int(datetime.now().strftime('%Y')) - 1)
-linedash_year_timespan = ["2010", linedash_yearend]
-linedash_yearmonth_timespan = ["2010-01", f"{linedash_yearend}-12"]
+linedash_yearstart = "2010"
+linedash_yearend = "2024"
+linedash_year_timespan = [linedash_yearstart, linedash_yearend]
+linedash_yearmonth_timespan = [f"{linedash_yearstart}-01", f"{linedash_yearend}-12"]
 linedash_month_timespan = ["01", "12"]
 linedash_year_options = [str(year) for year in range(int(linedash_year_timespan[0]), int(linedash_year_timespan[1])+1)]
 

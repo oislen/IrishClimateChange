@@ -1,0 +1,30 @@
+{
+    "DryRun": false,
+    "LaunchTemplateName": "irishclimatedashboard",
+    "VersionDescription": "Initial version",
+    "LaunchTemplateData": {
+        "BlockDeviceMappings": [
+            {
+                "DeviceName": "/dev/xvda",
+                "Ebs": {
+                    "VolumeSize": 20,
+                    "VolumeType": "gp3"
+                }
+            }
+        ],
+        "NetworkInterfaces":[
+            {
+                "DeviceIndex":0,
+                "AssociatePublicIpAddress": true,
+                "SubnetId":"subnet-0b4107fd011ea3b8a",
+                "Groups":["sg-03864b806cd78ded3"]
+            }
+        ],
+        "ImageId": "ami-00385a401487aefa4",
+        "InstanceType": "t2.micro",
+        "KeyName": "kaggle",
+        "Placement": {
+            "AvailabilityZone": "eu-west-1a"
+        }
+    }
+}
