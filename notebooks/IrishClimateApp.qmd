@@ -1,0 +1,40 @@
+---
+title: "Irish Climate App"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+# Bokeh Server Applications
+
+```{python}
+#| label: setup
+#| 
+# import relevant libraries
+import sys
+import os
+import platform
+# add relevant paths
+ica_dir = os.path.dirname(os.getcwd())
+dashboard_dir = os.path.join(ica_dir, "dashboard")
+sys.path.append(ica_dir)
+sys.path.append(dashboard_dir)
+import dashboard.cons as cons
+from dashboard.arch.run_cmd import run_cmd
+from IPython.display import IFrame
+
+# determine operating system and relevant execution command
+cmd = cons.bat_execBokehApp if platform.system() == 'Windows' else cons.sh_execBokehApp
+# set the current working directory
+cwd = os.path.join(os.path.dirname(os.getcwd()), 'dashboard')
+run_cmd(cmd, cwd)
+```
+
+
+```{python}
+#| label: irish-climate-app
+#| 
+# Create and deploy interactive data applications
+IFrame('http://localhost:5006/bokeh_map_app', width=1200, height=700)
+```
