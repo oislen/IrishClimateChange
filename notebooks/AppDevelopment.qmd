@@ -37,10 +37,6 @@ with open(cons.points_data_fpath, "rb") as handle:
     station_data = pickle.load(handle)
 ```
 
-```{python}
-map_data.head()
-```
-
 # Visualisation Proto-Types
 
 ## GIS Heat Map
@@ -77,7 +73,7 @@ agg_dict = {col:'mean' for col in cons.col_options}
 #| 
 # set year strftime pattern and time span
 year_strftime = date_strftime_dict['year']
-time_span = ['2010', '2024']
+time_span = cons.linedash_year_timespan
 # generate the time series data
 year_data = time_data(
     data = pre_agg_data_dict['mean'],
