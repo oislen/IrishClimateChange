@@ -4,23 +4,18 @@ FROM ubuntu:latest
 # set environment variables
 ENV user=ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
-## set git branch for cloning
-#ARG GIT_BRANCH
-#ENV GIT_BRANCH=${GIT_BRANCH}
 # set python version
 ARG PYTHON_VERSION="3.12"
 ENV PYTHON_VERSION=${PYTHON_VERSION}
 
 # install required software and programmes for development environment
 RUN apt-get update 
-#RUN apt-get install -y apt-utils vim curl wget unzip git tree htop
 RUN apt-get install -y apt-utils vim curl wget unzip tree htop
 
 # set up home environment
 RUN mkdir -p /home/${user} && chown -R ${user}: /home/${user}
 
 # clone git repo
-#RUN git clone https://github.com/oislen/IrishClimateDashboard.git --branch ${GIT_BRANCH} /home/ubuntu/IrishClimateDashboard
 COPY . /home/ubuntu/IrishClimateDashboard
 
 # add deadsnakes ppa

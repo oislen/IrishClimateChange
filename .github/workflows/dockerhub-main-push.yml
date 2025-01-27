@@ -24,4 +24,3 @@ jobs:
         with:
           push: true
           tags: oislen/irishclimatedashboard:latest
-          build-args: GIT_BRANCH=main
