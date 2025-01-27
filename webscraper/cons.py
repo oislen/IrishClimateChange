@@ -11,10 +11,11 @@ root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows'
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
-creds_data = os.path.join(root_dir, '.creds')
+creds_dir = os.path.join(root_dir, '.creds')
+dashboard_dir = os.path.join(root_dir, 'dashboard')
 gis_dir = os.path.join(data_dir, "gis")
 met_eireann_dir = os.path.join(data_dir, 'Met_Eireann')
-bokeh_ref_data_dir = os.path.join(data_dir, "bokeh", "ref")
+bokeh_ref_data_dir = os.path.join(dashboard_dir, "ref")
 webscraper_ref_data_dir = os.path.join(data_dir, "webscraper", "ref")
 master_data_fpath = os.path.join(data_dir, 'master.feather')
 preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.pickle")
@@ -33,7 +34,7 @@ col_options_fpath = os.path.join(bokeh_ref_data_dir, "col_options.json")
 stat_options_fpath = os.path.join(bokeh_ref_data_dir, "stat_options.json")
 agg_level_strftime_fpath = os.path.join(bokeh_ref_data_dir, "agg_level_strftime.json")
 cleaned_data_cols_fpath = os.path.join(webscraper_ref_data_dir, "cleaned_data_cols.json")
-session_token_fpath = os.path.join(creds_data, "sessionToken.json")
+session_token_fpath = os.path.join(creds_dir, "sessionToken.json")
 
 # load bokeh reference data
 with open(col_options_fpath) as json_file: 
