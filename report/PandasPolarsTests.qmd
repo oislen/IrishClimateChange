@@ -1,0 +1,249 @@
+---
+title: "Pandas vs Polars Tests"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+```{python}
+#| label: setup
+import os
+import sys
+import time
+import pickle
+import datetime
+from typing import Union
+from beartype import beartype
+import numpy as np
+import pandas as pd
+import polars as pl
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# add relevant paths
+ica_dir = os.path.dirname(os.getcwd())
+dashboard_dir = os.path.join(ica_dir, "dashboard")
+sys.path.append(ica_dir)
+sys.path.append(dashboard_dir)
+
+# import custom modules
+import dashboard.cons as cons
+
+# load test data
+with open(cons.preaggregate_data_fpath, "rb") as handle:
+    pre_agg_data_dict = pickle.load(handle)
+
+# test settings
+n_itr = 200
+stat = "mean"
+pandas_data = pre_agg_data_dict[stat]
+polars_data = pl.from_pandas(data=pandas_data)
+time_span = cons.linedash_year_timespan
+date_strftime = cons.date_strftime_dict["year"]
+```
+
+## Pandas Tests
+
+```{python}
+#| label: pandas time data function
+#|
+@beartype
+def pd_time_data(
+    data:pd.DataFrame, 
+    agg_dict:dict, 
+    time_span:Union[list, None]=None, 
+    counties:Union[list, None]=None, 
+    strftime:Union[str, None]=None
+    ) -> pd.DataFrame:
+    """Aggregates and filters Met Eireann for time series plot
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+        The Met Eireann data to aggregate and filter
+    agg_dict : dict
+        The column aggregation operations to perform on the Met Eireann data
+    time_span : list
+        A list, or iterable, containing the time series start date and end date as strings to filter for
+    counties : list
+        A list, or iterable, containing the counties to filter for
+    strftime : string
+        The strftime expression for converting the start date and end date strings from the time_span parameter into datetime objects for filtering
+
+    Returns
+    -------
+    pandas.DataFrame
+        The aggregated and filtered Met Eireann time series data
+    """
+    agg_data = data.copy(deep=True)
+    agg_data["date_str"] = agg_data["date"].dt.strftime(strftime)
+    agg_data["date"] = pd.to_datetime(agg_data["date_str"], format=strftime)
+    group_cols = ["county", "date", "date_str"]
+    agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
+    # if filtering date with respect to timespan
+    if time_span != None:
+        time_span_lb = agg_data["date"] >= datetime.datetime.strptime(time_span[0], strftime)
+        time_span_ub = agg_data["date"] <= datetime.datetime.strptime(time_span[1], strftime)
+        agg_data = agg_data.loc[time_span_lb & time_span_ub, :]
+    # if filtering data with respect to counties
+    if counties != None:
+        agg_data = agg_data.loc[agg_data["county"].isin(counties)]
+    agg_data = agg_data.reset_index(drop=True)
+    agg_data["index"] = (agg_data.groupby("county")["date"].rank(ascending=True).astype(int).subtract(1))
+    return agg_data
+```
+
+```{python}
+#| label: pandas tests
+#|
+print("pandas tests")
+pandas_times = []
+pandas_agg_dict = {col: stat for col in cons.col_options}
+for itr in range(n_itr):
+    start_time = time.time()
+    pandas_result = pd_time_data(
+        data=pandas_data, 
+        agg_dict=pandas_agg_dict, 
+        time_span=time_span, 
+        counties=cons.counties, 
+        strftime=date_strftime
+        )
+    end_time = time.time()
+    pandas_result_time = end_time - start_time
+    pandas_times.append(pandas_result_time)
+    print(f"itr: {itr}")
+    print(f"pandas_result.shape: {pandas_result.shape}")
+    print(f"pandas_result_time: {pandas_result_time}")
+
+avg_pandas_times = np.mean(pandas_times)
+print(f"avg_pandas_times: {avg_pandas_times}")
+```
+
+## Polars Tests
+
+```{python}
+#| label: polars time data function
+#|
+def pl_time_data(
+    data:pl.DataFrame, 
+    agg_dict:dict, 
+    time_span:Union[list, None]=None, 
+    counties:Union[list, None]=None, 
+    strftime:Union[str, None]=None
+    ) -> pl.DataFrame:
+    """Aggregates and filters Met Eireann for time series plot
+
+    Parameters
+    ----------
+    data : polars.DataFrame
+        The Met Eireann data to aggregate and filter
+    agg_dict : dict
+        The column aggregation operations to perform on the Met Eireann data
+    time_span : list
+        A list, or iterable, containing the time series start date and end date as strings to filter for
+    counties : list
+        A list, or iterable, containing the counties to filter for
+    strftime : string
+        The strftime expression for converting the start date and end date strings from the time_span parameter into datetime objects for filtering
+
+    Returns
+    -------
+    polars.DataFrame
+        The aggregated and filtered Met Eireann time series data
+    """
+    agg_data = data.clone()
+    agg_data = agg_data.with_columns(date_str = pl.col("date").dt.to_string(format=strftime))
+    agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
+    group_cols = ["county", "date", "date_str"]
+    agg_data = agg_data.group_by(group_cols).agg(agg_dict)
+    # if filtering date with respect to timespan
+    if time_span != None:
+        time_span_lb = pl.col("date") >= datetime.datetime.strptime(time_span[0], strftime)
+        time_span_ub = pl.col("date") <= datetime.datetime.strptime(time_span[1], strftime)
+        agg_data = agg_data.filter(time_span_lb & time_span_ub)
+    # if filtering data with respect to counties
+    if counties != None:
+        agg_data = agg_data.filter(pl.col("county").is_in(counties))
+    agg_data = agg_data.with_columns(index=pl.struct("county").rank("dense").over("date") - 1)
+    return agg_data
+```
+
+```{python}
+#| label: polars tests
+#|
+print("polars tests")
+polars_times = []
+#polars_agg_dict = [getattr(pl.col(col), stat) for col in cons.col_options]
+polars_agg_dict = [pl.col(col).mean() for col in cons.col_options]
+for itr in range(n_itr):
+    start_time = time.time()
+    polars_result = pl_time_data(
+        data=polars_data, 
+        agg_dict=polars_agg_dict, 
+        time_span=time_span, 
+        counties=cons.counties, 
+        strftime=date_strftime
+        )
+    end_time = time.time()
+    polars_result_time = end_time - start_time
+    polars_times.append(polars_result_time)
+    print(f"itr: {itr}")
+    print(f"polars_result.shape: {polars_result.shape}")
+    print(f"polars_result_time: {polars_result_time}")
+
+avg_polars_times = np.mean(polars_times)
+print(f"avg_polars_times: {avg_polars_times}")
+```
+
+## Execution Time Comparisons
+
+
+```{python}
+#| label: combine-times
+#| 
+# combine execution times
+execution_times = pd.concat(
+    objs = [
+        pd.Series(polars_times, name="polars"),
+        pd.Series(pandas_times, name="pandas")
+        ],
+    axis = 1
+    )
+
+# melt execution times
+execution_times_melt = pd.melt(
+    frame=execution_times,
+    value_vars=["polars","pandas"],
+    value_name="execution_time",
+    var_name="library"
+    )
+
+```
+
+
+```{python}
+#| label: plot-times
+#|
+fig, ax = plt.subplots()
+sns.set_style("darkgrid")
+# plot histogram comparing execution times between the libraries
+hist_chart = sns.histplot(
+    data=execution_times_melt,
+    x="execution_time",
+    hue="library",
+    bins=50,
+    ax=ax
+)
+sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+# add vertical reference line
+plt.axvline(x=avg_polars_times, color="blue", linestyle="--")
+plt.axvline(x=avg_pandas_times, color="orange", linestyle="--")
+# set plot labels
+hist_chart.set(title="Execution Times - Pandas vs Polars")
+hist_chart.set(xlabel="Execution Time")
+hist_chart.set(ylabel="Count")
+# show and close plot
+plt.show()
+plt.close()
+```
