@@ -38,7 +38,6 @@ with open(cons.preaggregate_data_fpath, "rb") as handle:
 n_itr = 200
 stat = "mean"
 pandas_data = pre_agg_data_dict[stat]
-polars_data = pl.from_pandas(data=pandas_data)
 time_span = cons.linedash_year_timespan
 date_strftime = cons.date_strftime_dict["year"]
 ```
@@ -126,17 +125,17 @@ print(f"avg_pandas_times: {avg_pandas_times}")
 #| label: polars time data function
 #|
 def pl_time_data(
-    data:pl.DataFrame, 
+    data:pd.DataFrame, 
     agg_dict:dict, 
     time_span:Union[list, None]=None, 
     counties:Union[list, None]=None, 
     strftime:Union[str, None]=None
-    ) -> pl.DataFrame:
+    ) -> pd.DataFrame:
     """Aggregates and filters Met Eireann for time series plot
 
     Parameters
     ----------
-    data : polars.DataFrame
+    data : pandas.DataFrame
         The Met Eireann data to aggregate and filter
     agg_dict : dict
         The column aggregation operations to perform on the Met Eireann data
@@ -149,10 +148,10 @@ def pl_time_data(
 
     Returns
     -------
-    polars.DataFrame
+    pandas.DataFrame
         The aggregated and filtered Met Eireann time series data
     """
-    agg_data = data.clone()
+    agg_data = pl.from_pandas(data=data)
     agg_data = agg_data.with_columns(date_str = pl.col("date").dt.to_string(format=strftime))
     agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
     group_cols = ["county", "date", "date_str"]
@@ -166,7 +165,7 @@ def pl_time_data(
     if counties != None:
         agg_data = agg_data.filter(pl.col("county").is_in(counties))
     agg_data = agg_data.with_columns(index=pl.struct("county").rank("dense").over("date") - 1)
-    return agg_data
+    return agg_data.to_pandas()
 ```
 
 ```{python}
@@ -179,7 +178,7 @@ polars_agg_dict = [pl.col(col).mean() for col in cons.col_options]
 for itr in range(n_itr):
     start_time = time.time()
     polars_result = pl_time_data(
-        data=polars_data, 
+        data=pandas_data, 
         agg_dict=polars_agg_dict, 
         time_span=time_span, 
         counties=cons.counties, 
