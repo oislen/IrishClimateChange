@@ -1,8 +1,6 @@
 # import relevant libraries
 from beartype import beartype
-import numpy as np
-import pandas as pd
-import pickle
+import polars as pl
 
 # import custom modules
 import cons
@@ -32,7 +30,7 @@ def bokeh_line_data(
         for agg_level in cons.line_agg_level_options:
             tmp_level_dict = {}
             # generate time data aggregated by year
-            agg_dict = {col: stat for col in cons.col_options}
+            agg_dict = [getattr(pl.col(col), stat)() for col in cons.col_options]
             date_strftime = cons.date_strftime_dict[agg_level]
             if agg_level == "year":
                 time_span = cons.linedash_year_timespan
