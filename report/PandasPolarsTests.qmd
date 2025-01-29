@@ -173,8 +173,7 @@ def pl_time_data(
 #|
 print("polars tests")
 polars_times = []
-#polars_agg_dict = [getattr(pl.col(col), stat) for col in cons.col_options]
-polars_agg_dict = [pl.col(col).mean() for col in cons.col_options]
+polars_agg_dict = [getattr(pl.col(col), stat)() for col in cons.col_options]
 for itr in range(n_itr):
     start_time = time.time()
     polars_result = pl_time_data(
