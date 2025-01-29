@@ -35,7 +35,7 @@ with open(cons.preaggregate_data_fpath, "rb") as handle:
     pre_agg_data_dict = pickle.load(handle)
 
 # test settings
-n_itr = 200
+n_itr = 250
 stat = "mean"
 pandas_data = pre_agg_data_dict[stat]
 time_span = cons.linedash_year_timespan
