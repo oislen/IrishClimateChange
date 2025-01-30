@@ -31,7 +31,7 @@ def bokeh_line_data(
         for agg_level in cons.line_agg_level_options:
             tmp_level_dict = {}
             # generate time data aggregated by year
-            agg_dict = [getattr(pl.col(col), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
+            agg_dict = [getattr(pl.col(col).replace({None:np.nan}), stat)().alias(col) for col in cons.col_options]
             date_strftime = cons.date_strftime_dict[agg_level]
             if agg_level == "year":
                 time_span = cons.linedash_year_timespan
