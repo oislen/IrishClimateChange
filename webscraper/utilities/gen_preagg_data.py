@@ -25,7 +25,7 @@ def gen_preagg_data(
     """
     logging.info("Loading master data from disk ...")
     # load master data
-    master_data = pd.read_feather(master_data_fpath)
+    master_data = pd.read_parquet(master_data_fpath)
     logging.info("Performing initial data aggregation to year-month level ...")
     # preaggregate the data to year-month level for each available stat
     pre_agg_data_dict = {}
