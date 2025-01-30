@@ -1,5 +1,5 @@
 import os
-import pandas as pd
+import polars as pl
 import logging
 import cons
 from beartype import beartype
@@ -27,16 +27,14 @@ def gen_master_data(
     met_eireann_fpaths = [os.path.join(cleaned_data_dir, fname) for fname in os.listdir(cleaned_data_dir)]
     logging.info("Reading and concatenating files ...")
     # load and concatenate data files together
-    data_list = [pd.read_parquet(fpath) for fpath in met_eireann_fpaths]
-    data = pd.concat(objs=data_list, ignore_index=True, axis=0)
-    # convert date to datetime
-    data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
+    data_list = [pl.read_parquet(fpath) for fpath in met_eireann_fpaths]
+    data = pl.concat(items=data_list, how='vertical')
     # order results by county, id and date alphabetically
-    data = data.sort_values(by=["county", "id", "date"]).reset_index(drop=True)
+    data = data.sort(by=["county", "id", "date"])
     # if the output
     if os.path.exists(master_data_fpath):
-        logging.info("Writing master file to disk as .feather file ...")
+        logging.info("Writing master file to disk as .parquet file ...")
         # save concatenated data to disk
-        data.to_feather(master_data_fpath)
+        data.write_parquet(file=master_data_fpath)
     else:
         raise ValueError(f"{master_data_fpath} does not exist")

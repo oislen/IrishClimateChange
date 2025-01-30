@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import pandas as pd
+import polars as pl
 import unittest
 import numpy as np
 
@@ -15,10 +16,11 @@ random.seed(42)
 np.random.seed(42)
 
 stat = 'mean'
-agg_dict = {col: stat for col in cons.col_options}
+#agg_dict = {col: stat for col in cons.col_options}
+agg_dict = [getattr(pl.col(col), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
 # generate unittest data
 data = gen_unittest_data()
-obs_time_data = time_data(data=data, agg_dict=agg_dict)
+obs_time_data = time_data(data=pl.from_pandas(data), agg_dict=agg_dict).to_pandas()
 exp_data_shape = (6, 13)
 exp_data_columns = ['county', 'date', 'date_str', 'maxtp', 'mintp', 'gmin', 'soil', 'wdsp', 'sun', 'evap', 'rain', 'glorad', 'index']
 

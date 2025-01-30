@@ -2,7 +2,8 @@ import cons
 import os
 import logging
 import pickle
-import pandas as pd
+import numpy as np
+import polars as pl
 from beartype import beartype
 from typing import Union
 
@@ -25,24 +26,24 @@ def gen_preagg_data(
     """
     logging.info("Loading master data from disk ...")
     # load master data
-    master_data = pd.read_feather(master_data_fpath)
+    master_data = pl.read_parquet(master_data_fpath)
     logging.info("Performing initial data aggregation to year-month level ...")
     # preaggregate the data to year-month level for each available stat
     pre_agg_data_dict = {}
     strftime = cons.date_strftime_dict["year-month"]
-    agg_data = master_data.copy()
-    agg_data["date_str"] = agg_data["date"].dt.strftime(strftime)
-    agg_data["date"] = pd.to_datetime(agg_data["date_str"], format=strftime)
+    agg_data = master_data.clone()
+    agg_data = agg_data.with_columns(date_str = pl.col("date").dt.to_string(strftime))
+    agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
     group_cols = ["county", "date", "date_str"]
     logging.info("Performing final data aggregation to desired statistics ...")
     for stat in cons.stat_options:
         logging.info(f"{stat} ...")
-        agg_dict = {col: stat for col in cons.col_options}
-        tmp_agg_data = agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
-        pre_agg_data_dict[stat] = tmp_agg_data
+        agg_dict = [getattr(pl.col(col), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
+        tmp_agg_data = agg_data.group_by(group_cols).agg(agg_dict)
+        pre_agg_data_dict[stat] = tmp_agg_data.sort(by=group_cols).to_pandas()
     if os.path.exists(preaggregate_data_fpath):
-        logging.info("Writing preaggregated data to disk as .pickle file ...")
-        # pickle the preaggregated data dictionary to disk
+        logging.info("Writing pre-aggregated data to disk as .pickle file ...")
+        # pickle the pre-aggregated data dictionary to disk
         with open(cons.preaggregate_data_fpath, "wb") as f:
             pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
     else:
