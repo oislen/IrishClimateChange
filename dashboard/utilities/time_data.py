@@ -32,19 +32,17 @@ def time_data(
         The aggregated and filtered Met Eireann time series data
     """
     agg_data = data.clone()
-    agg_data = agg_data.with_columns(date_str = pl.col("date").dt.to_string(format=strftime))
-    agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
+    agg_data = agg_data.with_columns(pl.col("date").dt.to_string(format=strftime).alias("date_str"))
+    agg_data = agg_data.with_columns(pl.col("date_str").str.to_datetime(format=strftime).alias("date"))
     group_cols = ["county", "date", "date_str"]
     agg_data = agg_data.group_by(group_cols).agg(agg_dict)
-    # if filtering date with respect to timespan
-    if time_span != None:
-        time_span_lb = pl.col("date") >= datetime.datetime.strptime(time_span[0], strftime)
-        time_span_ub = pl.col("date") <= datetime.datetime.strptime(time_span[1], strftime)
-        agg_data = agg_data.filter(time_span_lb & time_span_ub)
     # if filtering data with respect to counties
     if counties != None:
         agg_data = agg_data.filter(pl.col("county").is_in(counties))
-    agg_data = agg_data.sort(by=["county","date"])
-    agg_data = agg_data.with_columns(index=pl.struct("county","date").rank(method ="dense", descending=False).over(partition_by="county", order_by="date") - 1)
-    #agg_data = agg_data.select(pl.all().replace({None:np.nan}))
+    agg_data = (agg_data
+                .sort(by=["county","date"])
+                .with_columns(
+                    pl.struct("county","date").rank(method ="dense", descending=False).over(partition_by="county", order_by="date").alias("index") - 1
+                    )
+                )
     return agg_data
