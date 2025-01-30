@@ -36,6 +36,11 @@ def time_data(
     agg_data = agg_data.with_columns(pl.col("date_str").str.to_datetime(format=strftime).alias("date"))
     group_cols = ["county", "date", "date_str"]
     agg_data = agg_data.group_by(group_cols).agg(agg_dict)
+    # if filtering date with respect to timespan
+    if False:#time_span != None:
+        time_span_lb = pl.col("date") >= datetime.datetime.strptime(time_span[0], strftime)
+        time_span_ub = pl.col("date") <= datetime.datetime.strptime(time_span[1], strftime)
+        agg_data = agg_data.filter(time_span_lb & time_span_ub)
     # if filtering data with respect to counties
     if counties != None:
         agg_data = agg_data.filter(pl.col("county").is_in(counties))
