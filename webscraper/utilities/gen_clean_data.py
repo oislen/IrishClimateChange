@@ -9,7 +9,7 @@ from utilities.S3Client import S3Client
 @beartype
 def load_data(
     fpath:str,
-    stations_fpath:str=cons.stations_fpath
+    stations_data:pl.DataFrame
     ) -> pl.DataFrame:
     """Loads webscraped met data from disk
 
@@ -17,8 +17,8 @@ def load_data(
     ----------
     fpath : str
         The file path to load the webscraped met data from disk
-    stations_fpath : str
-        The file path to load the reference station data from disk, default is cons.stations_fpath
+    stations_data : polars.DataFrame
+        The loaded met eireann stations dataset as a polars dataframe
 
     Returns
     -------
@@ -46,9 +46,8 @@ def load_data(
         # subset required rows and columns
         cols_to_sub = ["date"] + cons.col_options
         sub_cols = [col for col in dataframe.columns if col in cols_to_sub]
-        dataframe = dataframe.select(sub_cols)
         row_filter = pl.col("date").str.contains("20[1-2]+")
-        dataframe = dataframe.filter(row_filter)
+        dataframe = dataframe.select(sub_cols).filter(row_filter)
         # convert numeric columns
         for col in cons.col_options:
             if col in dataframe.columns:
@@ -56,26 +55,27 @@ def load_data(
                 dataframe = dataframe.with_columns(pl.when(pl.col(col).is_in([""," "])).then(None).otherwise(pl.col(col)).cast(pl.Float64).alias(col))
             else:
                 dataframe = dataframe.with_columns(pl.lit(None).alias(col))
-        # subset return columns
+        # join on met eireann stations data and process results
         sub_cols = [col for col in dataframe.columns if "ind" not in col]
-        dataframe = dataframe.select(sub_cols).with_columns(station_id = station_id)
-        dataframe = dataframe.with_columns(station_id = station_id)
-        stations_data = pl.read_csv(stations_fpath).rename(mapping={"name":"station"})
-        dataframe = dataframe.join(other=stations_data, on="station_id", how="inner").rename(mapping={"station_id":"id"})
-        dataframe = dataframe.with_columns(county = pl.col("county").str.to_titlecase())
-        dataframe = dataframe.with_columns(date = pl.col("date").str.to_datetime(format="%d-%b-%Y"))
+        dataframe = (dataframe
+                     .select(sub_cols)
+                     .with_columns(station_id = station_id)
+                     .join(other=stations_data, on="station_id", how="inner")
+                     .rename(mapping={"station_id":"id"})
+                     .with_columns(county=pl.col("county").str.to_titlecase(), date=pl.col("date").str.to_datetime(format="%d-%b-%Y"))
+                     )
+        # order columns and sort rows
         sub_cols = [col for col in dataframe.columns if col in cons.cleaned_data_cols]
-        dataframe = dataframe.select(sub_cols)
-        dataframe = dataframe.sort(by=["county","date"])
+        dataframe = dataframe.select(sub_cols).sort(by=["county","date"])
     else:
         dataframe = pl.DataFrame(schema=cons.cleaned_data_cols)
     return dataframe
-
 
 @beartype
 def gen_clean_data(
     scraped_data_dir:str=cons.scraped_data_dir,
     cleaned_data_dir:str=cons.cleaned_data_dir,
+    stations_fpath:str=cons.stations_fpath,
     store_on_s3:bool=False
     ):
     """Generates the master data from the individual raw Met Eireann .xlsx files
@@ -86,6 +86,8 @@ def gen_clean_data(
         The local directory to load the raw Met Eireann .csv files from, default is cons.scraped_data_dir
     cleaned_data_dir : str
         The local directory to write the cleaned Met Eireann .csv files to, default is cons.cleaned_data_dir
+    stations_fpath : str
+        The file path to load the reference station data from disk, default is cons.stations_fpath
     store_on_s3 : bool
         Whether to back up the clean data files on s3, default is False
 
@@ -96,12 +98,13 @@ def gen_clean_data(
     scraped_data_fpaths = [os.path.join(scraped_data_dir, fname) for fname in os.listdir(scraped_data_dir)]
     logging.info("Reading, cleaning and storing files ...")
     s3client = S3Client(sessionToken=cons.session_token_fpath)
+    stations_data = pl.read_csv(stations_fpath).rename(mapping={"name":"station"})
     for fpath in scraped_data_fpaths:
         # extract basename
         scraped_fname, _ = os.path.splitext(os.path.basename(fpath))
         cleaned_fextension = ".parquet"
         # load data
-        clean_data = load_data(fpath)
+        clean_data = load_data(fpath=fpath, stations_data=stations_data).to_pandas()
         clean_data_shape = clean_data.shape
         # only rewrite file with data
         if clean_data_shape[0] > 0:
@@ -109,9 +112,7 @@ def gen_clean_data(
             # write data to clean data directory
             cleaned_data_fpath = os.path.join(cleaned_data_dir, f"{scraped_fname}{cleaned_fextension}")
             logging.info(f"Writing cleaned data file {cleaned_data_fpath} to disk")
-            #clean_data.to_csv(cleaned_data_fpath, header=True, index=False)
-            clean_data.to_pandas().to_parquet(cleaned_data_fpath, index=False, schema=cons.cleaned_data_pa_schema)
-            #clean_data.write_parquet(file=cleaned_data_fpath)
+            clean_data.to_parquet(cleaned_data_fpath, index=False, schema=cons.cleaned_data_pa_schema)
             if store_on_s3:
                 # store data on s3 back up repository
                 s3client.store(
