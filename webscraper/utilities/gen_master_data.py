@@ -34,7 +34,7 @@ def gen_master_data(
     data = data.sort(by=["county", "id", "date"])
     # if the output
     if os.path.exists(master_data_fpath):
-        logging.info("Writing master file to disk as .feather file ...")
+        logging.info("Writing master file to disk as .parquet file ...")
         # save concatenated data to disk
         data.write_parquet(file=master_data_fpath)
     else:
