@@ -1,8 +1,7 @@
 import logging
 import os
 import re
-import numpy as np
-import pandas as pd
+import polars as pl
 from beartype import beartype
 import cons
 from utilities.S3Client import S3Client
@@ -11,7 +10,7 @@ from utilities.S3Client import S3Client
 def load_data(
     fpath:str,
     stations_fpath:str=cons.stations_fpath
-    ) -> pd.DataFrame:
+    ) -> pl.DataFrame:
     """Loads webscraped met data from disk
 
     Parameters
@@ -23,7 +22,7 @@ def load_data(
 
     Returns
     -------
-    pd.DataFrame
+    pl.DataFrame
         The loaded webscraped met data
     """
     # extract stationid
@@ -32,34 +31,44 @@ def load_data(
     with open(fpath) as file:
         lines = [line.rstrip().lower() for line in file]
     # split into rows
-    split_lines = [row.split(',') for row in lines]
+    split_lines = [row.split(",") for row in lines]
     # generate dataframe
     n_cols = len(split_lines[-1])
     data_lines = [line for line in split_lines if len(line) == n_cols]
-    dataframe = pd.DataFrame(data_lines[1:], columns = data_lines[0])
-    # rename columns to standard names
-    rename_cols = {'maxt':'maxtp', 'mint':'mintp', 'g_rad':'glorad'}
-    dataframe = dataframe.rename(columns=rename_cols)
-    # subset required rows and columns
-    sub_cols = dataframe.columns[dataframe.columns.isin(['date'] + cons.col_options)]
-    row_filter = dataframe['date'].str.contains('20[1-2]+')
-    dataframe = dataframe.loc[row_filter, sub_cols]
-    # convert numeric columns
-    for col in cons.col_options:
-        if col in dataframe.columns:
-            dataframe[col] = dataframe[col].apply(lambda x: x.strip()).replace('', None).astype(float)
-        else:
-            dataframe[col] = np.nan
-    # subset return columns
-    cols = dataframe.columns[~dataframe.columns.isin(['ind'])]
-    dataframe = dataframe[cols]
-    dataframe['station_id'] = station_id
-    stations_data = pd.read_csv(stations_fpath).rename(columns={'name':'station'})
-    dataframe = pd.merge(left=dataframe, right=stations_data, on='station_id', how='inner').rename(columns={'station_id':'id'})
-    dataframe["county"] = dataframe["county"].str.title()
-    dataframe["date"] = pd.to_datetime(dataframe["date"], format='%d-%b-%Y')
-    dataframe = dataframe[cons.cleaned_data_cols]
-    dataframe = dataframe.replace({np.nan:None})
+    raw_colnames = data_lines[0]
+    clean_names = [col if col != "ind" else f"{col}_{raw_colnames[idx-1]}" for idx, col in enumerate(raw_colnames)]
+    if data_lines[1:] != []:
+        # convert rows to a dataframe
+        dataframe = pl.DataFrame(data=data_lines[1:], schema=clean_names, orient="row")
+        # rename columns to standard names
+        cols_to_rename = {"maxt":"maxtp", "mint":"mintp", "g_rad":"glorad"}
+        dataframe = dataframe.rename(mapping={old:new for old, new in cols_to_rename.items() if old in clean_names})
+        # subset required rows and columns
+        cols_to_sub = ["date"] + cons.col_options
+        sub_cols = [col for col in dataframe.columns if col in cols_to_sub]
+        dataframe = dataframe.select(sub_cols)
+        row_filter = pl.col("date").str.contains("20[1-2]+")
+        dataframe = dataframe.filter(row_filter)
+        # convert numeric columns
+        for col in cons.col_options:
+            if col in dataframe.columns:
+                dataframe = dataframe.with_columns(pl.col(col).str.strip_chars().alias(col))
+                dataframe = dataframe.with_columns(pl.when(pl.col(col).is_in([""," "])).then(None).otherwise(pl.col(col)).cast(pl.Float64).alias(col))
+            else:
+                dataframe = dataframe.with_columns(pl.lit(None).alias(col))
+        # subset return columns
+        sub_cols = [col for col in dataframe.columns if "ind" not in col]
+        dataframe = dataframe.select(sub_cols).with_columns(station_id = station_id)
+        dataframe = dataframe.with_columns(station_id = station_id)
+        stations_data = pl.read_csv(stations_fpath).rename(mapping={"name":"station"})
+        dataframe = dataframe.join(other=stations_data, on="station_id", how="inner").rename(mapping={"station_id":"id"})
+        dataframe = dataframe.with_columns(county = pl.col("county").str.to_titlecase())
+        dataframe = dataframe.with_columns(date = pl.col("date").str.to_datetime(format="%d-%b-%Y"))
+        sub_cols = [col for col in dataframe.columns if col in cons.cleaned_data_cols]
+        dataframe = dataframe.select(sub_cols)
+        dataframe = dataframe.sort(by=["county","date"])
+    else:
+        dataframe = pl.DataFrame(schema=cons.cleaned_data_cols)
     return dataframe
 
 
@@ -101,7 +110,8 @@ def gen_clean_data(
             cleaned_data_fpath = os.path.join(cleaned_data_dir, f"{scraped_fname}{cleaned_fextension}")
             logging.info(f"Writing cleaned data file {cleaned_data_fpath} to disk")
             #clean_data.to_csv(cleaned_data_fpath, header=True, index=False)
-            clean_data.to_parquet(cleaned_data_fpath, index=False, schema=cons.cleaned_data_pa_schema)
+            clean_data.to_pandas().to_parquet(cleaned_data_fpath, index=False, schema=cons.cleaned_data_pa_schema)
+            #clean_data.write_parquet(file=cleaned_data_fpath)
             if store_on_s3:
                 # store data on s3 back up repository
                 s3client.store(
