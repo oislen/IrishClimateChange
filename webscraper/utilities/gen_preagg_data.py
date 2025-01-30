@@ -2,7 +2,6 @@ import cons
 import os
 import logging
 import pickle
-import pandas as pd
 import numpy as np
 import polars as pl
 from beartype import beartype

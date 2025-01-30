@@ -1,5 +1,4 @@
 import datetime
-import numpy as np
 import polars as pl
 from typing import Union
 from beartype import beartype
