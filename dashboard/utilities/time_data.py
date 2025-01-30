@@ -1,22 +1,22 @@
 import datetime
-import pandas as pd
+import numpy as np
 import polars as pl
 from typing import Union
 from beartype import beartype
 
 @beartype
 def time_data(
-    data:pd.DataFrame, 
+    data:pl.DataFrame, 
     agg_dict:list, 
     time_span:Union[list, None]=None, 
     counties:Union[list, None]=None, 
     strftime:Union[str, None]=None
-    ) -> pd.DataFrame:
+    ) -> pl.DataFrame:
     """Aggregates and filters Met Eireann for time series plot
 
     Parameters
     ----------
-    data : pandas.DataFrame
+    data : polars.DataFrame
         The Met Eireann data to aggregate and filter
     agg_dict : list
         The column aggregation operations to perform on the Met Eireann data
@@ -29,10 +29,10 @@ def time_data(
 
     Returns
     -------
-    pandas.DataFrame
+    polars.DataFrame
         The aggregated and filtered Met Eireann time series data
     """
-    agg_data = pl.from_pandas(data=data)
+    agg_data = data.clone()
     agg_data = agg_data.with_columns(date_str = pl.col("date").dt.to_string(format=strftime))
     agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
     group_cols = ["county", "date", "date_str"]
@@ -47,4 +47,5 @@ def time_data(
         agg_data = agg_data.filter(pl.col("county").is_in(counties))
     agg_data = agg_data.sort(by=["county","date"])
     agg_data = agg_data.with_columns(index=pl.struct("county","date").rank(method ="dense", descending=False).over(partition_by="county", order_by="date") - 1)
-    return agg_data.to_pandas()
+    #agg_data = agg_data.select(pl.all().replace({None:np.nan}))
+    return agg_data
