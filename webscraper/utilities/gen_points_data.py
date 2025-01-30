@@ -29,7 +29,7 @@ def gen_points_data(
     """
     logging.info("Loading master and stations data from disk ...")
     # load master and station data
-    master_data = pd.read_feather(master_data_fpath)
+    master_data = pd.read_parquet(master_data_fpath)
     stations_data = pd.read_csv(stations_fpath)
     logging.info("Identifying master station ids ...")
     # extract out station ids from mater file
