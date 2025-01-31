@@ -21,9 +21,9 @@ def gen_map_data(
     rep_counties_fpath : str
         The file path to the republic of ireland counties .shp file on disk, default is cons.rep_counties_fpath,
     ni_counties_fpath : str
-        The file path to northern irleand counties .shp file on disk, default is cons.ni_counties_fpath
+        The file path to northern ireland counties .shp file on disk, default is cons.ni_counties_fpath
     pre_agg_data_dict : str
-        The file path to the preaggregated data on disk, default is cons.preaggregate_data_fpath
+        The file path to the pre-aggregated data on disk, default is cons.preaggregate_data_fpath
     map_data_fpath : str
         The file location to write the map data to disk, default is map_data_fpath
 
@@ -34,14 +34,13 @@ def gen_map_data(
     # load in county shape files
     rep_counties = (gpd.read_file(rep_counties_fpath)[["ENGLISH", "geometry"]].rename(columns={"ENGLISH": "county"}).to_crs(epsg=2157))
     ni_counties = gpd.read_file(ni_counties_fpath)[["county", "geometry"]].to_crs(epsg=2157)
-    logging.info("Loading preaggregated data dictionary ...")
-    # load preaggregated data
-    with open(preaggregate_data_fpath, "rb") as f:
-        pre_agg_data_dict = pickle.load(f)
+    logging.info("Loading pre-aggregated data dictionary ...")
+    # load pre-aggregated data
+    pre_agg_data = pd.read_parquet(preaggregate_data_fpath)
     logging.info("Concatenating counties geopandas dataframes ...")
     # concatenate county shape files
     counties = gpd.GeoDataFrame(pd.concat([rep_counties, ni_counties], ignore_index=True), crs="EPSG:2157")
-    logging.info("Simplifiying counties geometries ...")
+    logging.info("Simplifying counties geometries ...")
     # simplify the granularity of the geometry column
     counties["geometry"] = counties["geometry"].simplify(tolerance=1000)
     logging.info("Standardising county names to title case ...")
@@ -54,7 +53,7 @@ def gen_map_data(
     # create a dictionary to contain map data
     map_data_list = []
     # iterate over statistic and pre aggregated data
-    for stat, pre_agg_data in pre_agg_data_dict.items():
+    for stat in pre_agg_data["stat"].unique():
         logging.info(f"{stat} ...")
         pre_agg_data['year'] = pre_agg_data["date"].dt.year.astype(str)
         # aggregate data to county level
@@ -73,9 +72,8 @@ def gen_map_data(
         crs="EPSG:2157",
         )
     if os.path.exists(map_data_fpath):
-        logging.info("Writing counties data to disk as pickle file ...")
-        # pickle the preaggregated data dictionary to disk
-        with open(map_data_fpath, "wb") as f:
-            pickle.dump(map_geodata, f, protocol=pickle.HIGHEST_PROTOCOL)
+        logging.info("Writing counties data to disk as .parquet file ...")
+        # write the pre-aggregated data dictionary to disk
+        map_geodata.to_parquet(path=map_data_fpath)
     else:
         raise ValueError(f"{map_data_fpath} does not exist")

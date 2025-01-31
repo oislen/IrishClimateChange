@@ -10,7 +10,7 @@ from utilities.time_data import time_data
 
 @beartype
 def bokeh_line_data(
-    pre_agg_data_dict:dict,
+    pre_agg_data:pl.DataFrame,
     stat:str,
     agg_level:str,
     counties:list
@@ -19,7 +19,7 @@ def bokeh_line_data(
 
     Parameters
     ----------
-    pre_agg_data_dict : dict
+    pre_agg_data : pl.DataFrame
         The aggregated data to be transformed into aggregated bokeh data objects for visualisation
     stat : str
         The statistic being visualised on the dashboard.
@@ -34,7 +34,7 @@ def bokeh_line_data(
         The aggregated bokeh data objects to visualise
     """
     # generate time data aggregated by year
-    data = pre_agg_data_dict[stat]
+    data = pre_agg_data.filter(pl.col("stat") == stat)
     agg_dict = [getattr(pl.col(col).replace({None:np.nan}), stat)().alias(col) for col in cons.col_options]
     date_strftime = cons.date_strftime_dict[agg_level]
     if agg_level == "year":
@@ -44,7 +44,7 @@ def bokeh_line_data(
     elif agg_level == "month":
         time_span = cons.linedash_month_timespan
     agg_data = time_data(
-        data=pl.from_pandas(data),
+        data=data,
         agg_dict=agg_dict,
         time_span=time_span,
         counties=counties,
