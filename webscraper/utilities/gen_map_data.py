@@ -73,9 +73,8 @@ def gen_map_data(
         crs="EPSG:2157",
         )
     if os.path.exists(map_data_fpath):
-        logging.info("Writing counties data to disk as pickle file ...")
-        # pickle the preaggregated data dictionary to disk
-        with open(map_data_fpath, "wb") as f:
-            pickle.dump(map_geodata, f, protocol=pickle.HIGHEST_PROTOCOL)
+        logging.info("Writing counties data to disk as .parquet file ...")
+        # pickle the pre-aggregated data dictionary to disk
+        map_geodata.to_parquet(path=map_data_fpath)
     else:
         raise ValueError(f"{map_data_fpath} does not exist")
