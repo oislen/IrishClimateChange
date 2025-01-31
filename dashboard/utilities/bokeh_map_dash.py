@@ -1,5 +1,6 @@
 import pickle
 import logging
+import geopandas as gpd
 from bokeh.models import Select, Div, CheckboxButtonGroup
 from bokeh.layouts import column, row
 from beartype import beartype
@@ -22,10 +23,8 @@ def bokeh_map_dash():
         The interactive bokeh map dashboard
     """
     logging.info("Initialise map plot begin")
-    with open(cons.map_data_fpath, "rb") as handle:
-        map_data = pickle.load(handle)
-    with open(cons.points_data_fpath, "rb") as handle:
-        station_data = pickle.load(handle)
+    map_data = gpd.read_parquet(cons.map_data_fpath)
+    station_data = gpd.read_parquet(cons.points_data_fpath)
     # generate bokeh data for map plot
     bokeh_map_data_params = {"map_data":map_data,"station_data":station_data,"col":cons.col_default,"stat":cons.stat_default,"year":cons.linedash_year_timespan[1]}
     bokeh_map_data_dict = timeit(func=bokeh_map_data, params=bokeh_map_data_params)
