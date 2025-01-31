@@ -35,10 +35,11 @@ def bokeh_map_data(
     """
     bokeh_map_data_dict = {}
     # filter for year
-    row_filter = (map_data['year'].astype(str) == year) & (map_data['stat'].astype(str) == stat)
+    data_filter = (map_data['year'].astype(str) == year) & (map_data['stat'].astype(str) == stat)
+    missing_filter = (map_data['year'].isnull())
     sub_cols = ['county', 'geometry', 'year', 'stat', col]
-    map_data_sub = map_data.loc[row_filter, sub_cols]
-    # split data into missing and nonmissing
+    map_data_sub = map_data.loc[data_filter | missing_filter, sub_cols]
+    # split data into missing and non-missing
     nonmiss_map_data = map_data_sub[map_data_sub.notnull().all(axis=1)]
     miss_map_data = map_data_sub[map_data_sub.isnull().any(axis=1)]
     # Input GeoJSON source that contains features for plotting
