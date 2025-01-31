@@ -34,29 +34,23 @@ def map_plot(
     """
     # create map of ireland
     sub_cols = ["county", "geometry", "year", col, "stat"]
-    row_filter = (map_data["year"] == year) & (map_data["stat"] == stat)
-    map_plot_data = map_data.loc[row_filter, sub_cols]
+    data_filter = (map_data["year"] == year) & (map_data["stat"] == stat)
+    missing_filter = (map_data["year"].isnull())
+    map_plot_data = map_data.loc[missing_filter | data_filter, sub_cols]
+    # extract out any rows missing year
     fig, ax = plt.subplots(figsize=cons.sns_fig_settings["figure.figsize"])
     plt.axis("off")
     plt.title("Irish Climate App", size=20)
-    # plot counties of the island of Ireland
-    map_plot_data["geometry"].boundary.plot(ax=ax, color="grey", linewidth=0.9, alpha=0.6)
     # create custom colour map
-    cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
-        "", ["lightblue", "steelblue"]
-    )
+    cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["lightblue", "steelblue"])
     norm = plt.Normalize(map_plot_data[col].min(), map_plot_data[col].max())
     # plot heatmap of county climate
-    legend_kwds = {
-        "label": col,
-        "orientation": "horizontal",
-        "fraction": 0.046,
-        "pad": 0.04,
-    }
-    map_plot_data.plot(
-        column=col, ax=ax, cmap=cmap, legend=True, legend_kwds=legend_kwds, norm=norm
-    )
+    legend_kwds = {"label": col, "orientation": "horizontal", "fraction": 0.046, "pad": 0.04}
+    missing_kwds = {"color": "slategrey"}
+    # fill in counties of ireland
+    map_plot_data.plot(column=col, ax=ax, cmap=cmap, legend=True, legend_kwds=legend_kwds, norm=norm, missing_kwds=missing_kwds)
     # overlay met eireann weather station locations
     station_data.plot(ax=ax, color="red", alpha=0.6)
     plt.show()
+    plt.close()
     return 0
