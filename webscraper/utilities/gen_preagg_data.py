@@ -19,7 +19,7 @@ def gen_preagg_data(
     master_data_fpath : None or pd.DataFrame
         The file location to write the master data to disk, default is cons.master_data_fpath
     preaggregate_data_fpath : str
-        The file location to write the preaggregated data to disk, default is cons.preaggregate_data_fpath
+        The file location to write the pre-aggregated data to disk, default is cons.preaggregate_data_fpath
 
     Returns
     -------
@@ -36,15 +36,17 @@ def gen_preagg_data(
     agg_data = agg_data.with_columns(date = pl.col("date_str").str.to_datetime(format=strftime))
     group_cols = ["county", "date", "date_str"]
     logging.info("Performing final data aggregation to desired statistics ...")
+    concat_items = []
     for stat in cons.stat_options:
         logging.info(f"{stat} ...")
         agg_dict = [getattr(pl.col(col), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
-        tmp_agg_data = agg_data.group_by(group_cols).agg(agg_dict)
-        pre_agg_data_dict[stat] = tmp_agg_data.sort(by=group_cols).to_pandas()
+        tmp_agg_data = agg_data.group_by(group_cols).agg(agg_dict).sort(by=group_cols).with_columns(pl.lit(stat).alias("stat"))
+        concat_items.append(tmp_agg_data)
+    # concatenate dataframes together
+    concat_data = pl.concat(items=concat_items,how='vertical')
     if os.path.exists(preaggregate_data_fpath):
-        logging.info("Writing pre-aggregated data to disk as .pickle file ...")
-        # pickle the pre-aggregated data dictionary to disk
-        with open(cons.preaggregate_data_fpath, "wb") as f:
-            pickle.dump(pre_agg_data_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
+        logging.info("Writing pre-aggregated data to disk as .parquet file ...")
+        # write the pre-aggregated data dictionary to disk
+        concat_data.write_parquet(file=preaggregate_data_fpath)
     else:
         raise ValueError(f"{preaggregate_data_fpath} does not exist")

@@ -74,7 +74,7 @@ def gen_map_data(
         )
     if os.path.exists(map_data_fpath):
         logging.info("Writing counties data to disk as .parquet file ...")
-        # pickle the pre-aggregated data dictionary to disk
+        # write the pre-aggregated data dictionary to disk
         map_geodata.to_parquet(path=map_data_fpath)
     else:
         raise ValueError(f"{map_data_fpath} does not exist")

@@ -48,7 +48,7 @@ def gen_points_data(
         ).to_crs(epsg=2157)
     if os.path.exists(points_data_fpath):
         logging.info("Writing gis stations data to disk as .parquet file ...")
-        # pickle the gis stations data
+        # write the gis stations data
         geo_master_stations.to_parquet(path=points_data_fpath)
     else:
         raise ValueError(f"{points_data_fpath} does not exist")
