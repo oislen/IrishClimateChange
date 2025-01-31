@@ -1,8 +1,7 @@
 import pickle
 import logging
 from beartype import beartype
-from typing import Union
-from bokeh.models import Select, CheckboxGroup, Div, Button, MultiSelect
+from bokeh.models import Select, Div, Button, MultiSelect
 from bokeh.layouts import column, row
 
 # import custom modules
@@ -27,7 +26,7 @@ def bokeh_line_dash():
     with open(cons.preaggregate_data_fpath, "rb") as handle:
         pre_agg_data_dict = pickle.load(handle)
     # generate bokeh data for line plot
-    bokeh_line_data_params = {"pre_agg_data_dict":pre_agg_data_dict}
+    bokeh_line_data_params = {"pre_agg_data_dict":pre_agg_data_dict, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "counties":cons.counties}
     bokeh_line_data_dict = timeit(func=bokeh_line_data, params=bokeh_line_data_params)
     # create bokeh plot
     bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":cons.col_default, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "selection":cons.counties}
@@ -44,6 +43,9 @@ def bokeh_line_dash():
         selection = list()
         for i in line_county_multiselect.value:
             selection.append(cons.counties[int(i)])
+        # update bokeh data
+        bokeh_line_data_params = {"pre_agg_data_dict":pre_agg_data_dict, "stat":stat, "agg_level":agg_level, "counties":selection}
+        bokeh_line_data_dict = timeit(func=bokeh_line_data, params=bokeh_line_data_params)
         # update bokeh plot
         bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":col, "stat":stat, "agg_level":agg_level, "selection":selection}
         line_plot = timeit(func=bokeh_line_plot, params=bokeh_line_plot_params)

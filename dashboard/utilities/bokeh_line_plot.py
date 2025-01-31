@@ -1,7 +1,8 @@
 # import relevant libraries
 import math
+import polars as pl
 from bokeh.plotting import figure
-from bokeh.models import Span, DatetimeTickFormatter, HoverTool, Legend
+from bokeh.models import Span, HoverTool, Legend
 from beartype import beartype
 
 # import custom modules
@@ -35,13 +36,10 @@ def bokeh_line_plot(
     bokeh.plotting.figure
         The interactive bokeh line plot
     """
-    # extract out data for bokeh plot
-    agg_data_dict = bokeh_data_dict[stat][agg_level]
     # create plot figure object
     plot = figure(toolbar_location="below", output_backend="webgl", **cons.FIG_SETTING)
-    # create a horizontal line around the average
-    datasource = agg_data_dict["datasource"]
-    stat_value = datasource.to_df().agg({col: "mean"}).values[0]
+    # create a horizontal line around the selection average
+    stat_value = bokeh_data_dict["agg_data"].select(pl.col(col).drop_nans().mean()).to_series()[0]
     hline = Span(
         location=stat_value,
         line_dash="dashed",
@@ -58,9 +56,11 @@ def bokeh_line_plot(
     # add dates to x-axis ticks
     # remap x-axis tick labels
     axis_data_dict = (
-        datasource.to_df()[["index", "date_str"]]
-        .drop_duplicates()
-        .sort_values(by="index")
+        bokeh_data_dict["agg_data"]
+        .select(pl.col("index"), pl.col("date_str"))
+        .unique()
+        .sort(by="index")
+        .to_pandas()
         .set_index("index")
         .to_dict()["date_str"]
     )
@@ -80,7 +80,7 @@ def bokeh_line_plot(
     legend_it = []
 
     # overlay timelines and points
-    for county, cfg_dict in agg_data_dict["dataview_dict"].items():
+    for county, cfg_dict in bokeh_data_dict["dataview_dict"].items():
         if county in selection:
             # add county line
             county_point = plot.scatter(
