@@ -27,6 +27,7 @@ unittest_normal_dists_fpath = os.path.join(bokeh_dashboard_ref_dir, "unittest_no
 col_options_fpath = os.path.join(bokeh_dashboard_ref_dir, "col_options.json")
 stat_options_fpath = os.path.join(bokeh_dashboard_ref_dir, "stat_options.json")
 agg_level_strftime_fpath = os.path.join(bokeh_dashboard_ref_dir, "agg_level_strftime.json")
+measurement_units_fpath = os.path.join(bokeh_dashboard_ref_dir, "measurement_units.json")
 
 # seaborn plot settings
 sns_fig_settings = {'figure.figsize':(7, 7), "lines.linewidth": 0.7}
@@ -47,6 +48,8 @@ with open(stat_options_fpath) as json_file:
     stat_options = json.load(json_file)
 with open(agg_level_strftime_fpath) as json_file: 
     date_strftime_dict = json.load(json_file)
+with open(measurement_units_fpath, encoding='utf-8') as json_file:
+    measurement_units_dict = json.load(json_file)
 
 # bokeh line selector settings
 counties = list(county_line_colors.keys())
