@@ -61,7 +61,7 @@ def gen_map_data(
         #group_cols = ["county"]
         agg_dict = {col: stat for col in cons.col_options}
         # filter data to be between 2010
-        pre_agg_data = pre_agg_data.loc[(pre_agg_data['year'].astype(int) >= 2010), :]
+        pre_agg_data = pre_agg_data.loc[(pre_agg_data['year'].astype(int) >= 2010) & (pre_agg_data['stat'] == stat), :].copy()
         county_data = pre_agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
         county_data['stat'] = stat
         map_data_list.append(county_data)

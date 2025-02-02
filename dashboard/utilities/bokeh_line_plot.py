@@ -2,7 +2,7 @@
 import math
 import polars as pl
 from bokeh.plotting import figure
-from bokeh.models import Span, HoverTool, Legend
+from bokeh.models import Span, HoverTool, Legend, Label
 from beartype import beartype
 
 # import custom modules
@@ -70,7 +70,7 @@ def bokeh_line_plot(
     # plot.xaxis[0].formatter = DatetimeTickFormatter(days=["%Y-%m-%d"])
 
     plot.x_range.min_interval = 1
-    plot.x_range.max_interval = 47.5
+    plot.x_range.max_interval = 250
     plot.title.text_font_style = "bold"
     plot.title.text_font_size = "22px"
     plot.xaxis.major_label_text_font_size = "11pt"
@@ -110,5 +110,15 @@ def bokeh_line_plot(
     legend = Legend(items=legend_it)
     legend.click_policy = "mute"
     plot.add_layout(legend, "right")
+
+    # add units of measurement
+    mytext = Label(
+        x=3,
+        y=3,
+        x_units='screen',
+        y_units='screen',
+        text=f"Units: {cons.measurement_units_dict[col]}"
+        )
+    plot.add_layout(mytext)
 
     return plot
