@@ -1,0 +1,11 @@
+{
+  "rain": "mm",
+  "maxtp": "°C",
+  "mintp": "°C",
+  "gmin": "°C",
+  "soil": "°C",
+  "wdsp": "knot",
+  "sun": "hours",
+  "glorad": "j/cm sq.",
+  "evap": "mm"
+}
