@@ -119,9 +119,7 @@ def bokeh_map_plot(
         y=3,
         x_units='screen',
         y_units='screen',
-        text=f"Units: {cons.measurement_units_dict[bokeh_map_data_dict['col']]}",
-        border_line_color='black',
-        background_fill_color='white'
+        text=f"Units: {cons.measurement_units_dict[bokeh_map_data_dict['col']]}"
         )
     map_plot.add_layout(mytext)
 

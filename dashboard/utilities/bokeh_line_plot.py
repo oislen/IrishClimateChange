@@ -117,9 +117,7 @@ def bokeh_line_plot(
         y=3,
         x_units='screen',
         y_units='screen',
-        text=f"Units: {cons.measurement_units_dict[col]}",
-        border_line_color='black',
-        background_fill_color='white'
+        text=f"Units: {cons.measurement_units_dict[col]}"
         )
     plot.add_layout(mytext)
 
