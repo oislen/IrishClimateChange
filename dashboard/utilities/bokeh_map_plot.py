@@ -1,6 +1,6 @@
 import cons
 from colour import Color
-from bokeh.models import LinearColorMapper, ColorBar, HoverTool
+from bokeh.models import LinearColorMapper, ColorBar, HoverTool, Label
 from bokeh.plotting import figure
 from bokeh.models import GeoJSONDataSource
 from beartype import beartype
@@ -112,4 +112,17 @@ def bokeh_map_plot(
         )
     # set layout of color bar
     map_plot.add_layout(color_bar, "below")
+
+    # add units of measurement
+    mytext = Label(
+        x=3,
+        y=3,
+        x_units='screen',
+        y_units='screen',
+        text=f"Units: {cons.measurement_units_dict[bokeh_map_data_dict['col']]}",
+        border_line_color='black',
+        background_fill_color='white'
+        )
+    map_plot.add_layout(mytext)
+
     return map_plot
