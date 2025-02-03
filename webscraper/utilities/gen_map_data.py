@@ -55,14 +55,15 @@ def gen_map_data(
     # iterate over statistic and pre aggregated data
     for stat in pre_agg_data["stat"].unique():
         logging.info(f"{stat} ...")
-        pre_agg_data['year'] = pre_agg_data["date"].dt.year.astype(str)
+        tmp_pre_agg_data = pre_agg_data.copy(deep=True)
+        tmp_pre_agg_data['year'] = tmp_pre_agg_data["date"].dt.year.astype(str)
         # aggregate data to county level
         group_cols = ["county","year"]
         #group_cols = ["county"]
         agg_dict = {col: stat for col in cons.col_options}
         # filter data to be between 2010
-        pre_agg_data = pre_agg_data.loc[(pre_agg_data['year'].astype(int) >= 2010) & (pre_agg_data['stat'] == stat), :].copy()
-        county_data = pre_agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
+        tmp_pre_agg_data = tmp_pre_agg_data.loc[(tmp_pre_agg_data['year'].astype(int) >= 2010) & (tmp_pre_agg_data['stat'] == stat), :].copy()
+        county_data = tmp_pre_agg_data.groupby(group_cols, as_index=False).agg(agg_dict)
         county_data['stat'] = stat
         map_data_list.append(county_data)
     map_data = pd.concat(objs=map_data_list,axis=0,ignore_index=True)
