@@ -4,6 +4,7 @@ import polars as pl
 from bokeh.plotting import figure
 from bokeh.models import Span, HoverTool, Legend, Label
 from beartype import beartype
+from copy import deepcopy
 
 # import custom modules
 import cons
@@ -64,8 +65,11 @@ def bokeh_line_plot(
         .set_index("index")
         .to_dict()["date_str"]
     )
+    tmp_axis_data_dict = deepcopy(axis_data_dict)
+    if agg_level == 'year-month':
+        tmp_axis_data_dict = {key:(value if (i % 3 == 0) else "") for i, (key, value) in enumerate(axis_data_dict.items())}
     plot.xaxis.ticker = list(axis_data_dict.keys())
-    plot.xaxis.major_label_overrides = axis_data_dict
+    plot.xaxis.major_label_overrides = tmp_axis_data_dict
     plot.xaxis.major_label_orientation = 0.75
     # plot.xaxis[0].formatter = DatetimeTickFormatter(days=["%Y-%m-%d"])
 
