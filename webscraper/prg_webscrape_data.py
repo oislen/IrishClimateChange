@@ -6,7 +6,6 @@ from utilities.commandline_interface import commandline_interface
 from utilities.gen_met_data import gen_met_data
 from utilities.gen_clean_data import gen_clean_data
 from utilities.gen_master_data import gen_master_data
-from utilities.gen_preagg_data import gen_preagg_data
 from utilities.gen_map_data import gen_map_data
 from utilities.gen_points_data import gen_points_data
 
@@ -15,7 +14,6 @@ def webscrape_data(
     run_met_data:bool, 
     run_clean_data:bool,
     run_master_data:bool, 
-    run_preagg_data:bool,
     run_map_data:bool,
     run_points_data:bool
     ):
@@ -29,8 +27,6 @@ def webscrape_data(
         Cleans and processes the scraped met data
     run_master_data : bool
         Generates the master data file from the retrieved / web scraped met data files
-    run_preagg_data : bool
-        Preaggreates the master data file into various date levels for the bokeh dashboard app
     run_map_data : bool
         Generates the map gis file for the bokeh dashboard app
     run_points_data : bool
@@ -68,14 +64,6 @@ def webscrape_data(
             cleaned_data_dir=cons.cleaned_data_dir, 
             master_data_fpath=cons.master_data_fpath
             )
-    
-    if run_preagg_data:
-        logging.info('~~~~~ Generating preaggregated data file ...')
-        # generate the preaggregate data
-        gen_preagg_data(
-            master_data_fpath=cons.master_data_fpath, 
-            preaggregate_data_fpath=cons.preaggregate_data_fpath
-            )
 
     if run_map_data:
         logging.info('~~~~~ Generating geospatial map data file ...')
@@ -83,7 +71,7 @@ def webscrape_data(
         gen_map_data(
             rep_counties_fpath=cons.rep_counties_fpath, 
             ni_counties_fpath=cons.ni_counties_fpath, 
-            preaggregate_data_fpath=cons.preaggregate_data_fpath, 
+            master_data_fpath=cons.master_data_fpath, 
             map_data_fpath=cons.map_data_fpath
             )
 
@@ -116,7 +104,6 @@ if __name__ == '__main__':
         run_met_data=input_params_dict['run_met_data'], 
         run_clean_data=input_params_dict['run_clean_data'], 
         run_master_data=input_params_dict['run_master_data'], 
-        run_preagg_data=input_params_dict['run_preagg_data'],
         run_map_data=input_params_dict['run_map_data'],
         run_points_data=input_params_dict['run_points_data']
     )
