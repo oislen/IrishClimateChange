@@ -24,9 +24,9 @@ def bokeh_line_dash():
         The interactive bokeh line dashboard
     """
     logging.info("Initialise line plot begin")
-    pre_agg_data = pl.read_parquet(cons.preaggregate_data_fpath)
+    master_data = pl.read_parquet(cons.master_data_fpath)
     # generate bokeh data for line plot
-    bokeh_line_data_params = {"pre_agg_data":pre_agg_data, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "counties":cons.counties}
+    bokeh_line_data_params = {"master_data":master_data, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "counties":cons.counties}
     bokeh_line_data_dict = timeit(func=bokeh_line_data, params=bokeh_line_data_params)
     # create bokeh plot
     bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":cons.col_default, "stat":cons.stat_default, "agg_level":cons.line_agg_level_default, "selection":cons.counties}
@@ -44,7 +44,7 @@ def bokeh_line_dash():
         for i in line_county_multiselect.value:
             selection.append(cons.counties[int(i)])
         # update bokeh data
-        bokeh_line_data_params = {"pre_agg_data":pre_agg_data, "stat":stat, "agg_level":agg_level, "counties":selection}
+        bokeh_line_data_params = {"master_data":master_data, "stat":stat, "agg_level":agg_level, "counties":selection}
         bokeh_line_data_dict = timeit(func=bokeh_line_data, params=bokeh_line_data_params)
         # update bokeh plot
         bokeh_line_plot_params = {"bokeh_data_dict":bokeh_line_data_dict, "col":col, "stat":stat, "agg_level":agg_level, "selection":selection}
