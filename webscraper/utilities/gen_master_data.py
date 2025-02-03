@@ -26,9 +26,9 @@ def gen_master_data(
     # load data files from file directory
     met_eireann_fpaths = [os.path.join(cleaned_data_dir, fname) for fname in os.listdir(cleaned_data_dir)]
     logging.info("Reading and concatenating files ...")
-    # load and concatenate data files together
+    # load and concatenate data files together, and filter for data from 2010 onwards
     data_list = [pl.read_parquet(fpath) for fpath in met_eireann_fpaths]
-    data = pl.concat(items=data_list, how='vertical')
+    data = pl.concat(items=data_list, how='vertical').filter(pl.col('date').dt.year() >= 2010)
     # order results by county, id and date alphabetically
     data = data.sort(by=["county", "id", "date"])
     # if the output

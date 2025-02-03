@@ -11,7 +11,7 @@ sys.path.append(root_dir)
 data_dir = os.path.join(root_dir, 'data')
 dashboard_dir = os.path.join(root_dir, 'dashboard')
 # set data files
-master_data_fpath = os.path.join(data_dir, 'master.feather')
+master_data_fpath = os.path.join(data_dir, 'master.parquet')
 gis_dir = os.path.join(data_dir, "gis")
 preaggregate_data_fpath = os.path.join(data_dir, "preaggregate_data.parquet")
 bokeh_line_data_fpath = os.path.join(data_dir, "bokeh_line_data.pickle")

@@ -11,7 +11,7 @@ from utilities.time_data import time_data
 
 @beartype
 def bokeh_line_data(
-    pre_agg_data:pl.DataFrame,
+    master_data:pl.DataFrame,
     stat:str,
     agg_level:str,
     counties:list
@@ -20,8 +20,8 @@ def bokeh_line_data(
 
     Parameters
     ----------
-    pre_agg_data : pl.DataFrame
-        The aggregated data to be transformed into aggregated bokeh data objects for visualisation
+    master_data : pl.DataFrame
+        The master data to be transformed into aggregated bokeh data objects for visualisation
     stat : str
         The statistic being visualised on the dashboard.
     agg_level : str
@@ -35,8 +35,8 @@ def bokeh_line_data(
         The aggregated bokeh data objects to visualise
     """
     # filter for desired statistic and the previous full calendar year
-    max_datetime = pre_agg_data.select(pl.col("date").max().dt.strftime("%Y").str.to_datetime("%Y") - pl.duration(days=1)).to_series()[0]
-    data = pre_agg_data.filter((pl.col("stat") == stat) & (pl.col("date") <= max_datetime))
+    max_datetime = master_data.select(pl.col("date").max().dt.strftime("%Y").str.to_datetime("%Y") - pl.duration(days=1)).to_series()[0]
+    data = master_data.filter((pl.col("date") <= max_datetime))
     # determine time span from date aggregate level
     date_strftime = cons.date_strftime_dict[agg_level]
     if agg_level == "year":
@@ -46,7 +46,7 @@ def bokeh_line_data(
     elif agg_level == "month":
         time_span = cons.linedash_month_timespan
     # generate time data aggregated by year
-    agg_dict = [getattr(pl.col(col).replace({None:np.nan}), stat)().alias(col) for col in cons.col_options]
+    agg_dict = [getattr(pl.col(col).drop_nulls(), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
     agg_data = time_data(
         data=data,
         agg_dict=agg_dict,

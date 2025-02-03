@@ -1,6 +1,7 @@
 import os
 import logging
 import pickle
+import polars as pl
 import pandas as pd
 import geopandas as gpd
 import cons
@@ -29,16 +30,17 @@ def gen_points_data(
     """
     logging.info("Loading master and stations data from disk ...")
     # load master and station data
-    master_data = pd.read_parquet(master_data_fpath)
-    stations_data = pd.read_csv(stations_fpath)
+    master_data = pl.read_parquet(master_data_fpath)
+    stations_data = pl.read_csv(stations_fpath)
     logging.info("Identifying master station ids ...")
     # extract out station ids from mater file
-    master_station_ids = master_data["id"].unique()
+    master_station_ids = master_data.select(pl.col("id")).unique().to_series()
     logging.info("Filtering corresponding station data ...")
     # filter master data with station ids
-    master_stations = stations_data.loc[stations_data["station_id"].isin(master_station_ids), :].copy()
-    master_stations["county"] = master_stations["county"].str.title()
-    master_stations["name"] = master_stations["name"].str.title()
+    master_stations = (stations_data
+                       .filter(pl.col("station_id").is_in(master_station_ids))
+                       .with_columns(pl.col("county").str.to_titlecase().alias("county"), pl.col("name").str.to_titlecase().alias("name"))
+                       ).to_pandas()
     logging.info("Creating geopandas DataFrame of station data ...")
     # create gis data
     geo_master_stations = gpd.GeoDataFrame(
