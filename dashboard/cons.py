@@ -61,12 +61,9 @@ line_agg_level_default = line_agg_level_options[0]
 col_default = col_options[0]
 stat_default = stat_options[0]
 show_stations_default = []
-linedash_yearstart = "2010"
-linedash_yearend = "2024"
-linedash_year_timespan = [linedash_yearstart, linedash_yearend]
-linedash_yearmonth_timespan = [f"{linedash_yearstart}-01", f"{linedash_yearend}-12"]
+linedash_year_start = "2010"
+linedash_year_month_start = "2010-01"
 linedash_month_timespan = ["01", "12"]
-linedash_year_options = [str(year) for year in range(int(linedash_year_timespan[0]), int(linedash_year_timespan[1])+1)]
 
 # bokeh server execution commands
 bat_execBokehApp = "START /MIN CMD.EXE /C exeBokehApp.bat"
