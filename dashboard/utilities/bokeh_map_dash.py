@@ -1,5 +1,6 @@
 import pickle
 import logging
+import polars as pl
 import geopandas as gpd
 from bokeh.models import Select, Div, CheckboxButtonGroup
 from bokeh.layouts import column, row
@@ -23,10 +24,12 @@ def bokeh_map_dash():
         The interactive bokeh map dashboard
     """
     logging.info("Initialise map plot begin")
+    pre_agg_data = pl.read_parquet(cons.preaggregate_data_fpath)
     map_data = gpd.read_parquet(cons.map_data_fpath)
     station_data = gpd.read_parquet(cons.points_data_fpath)
     # generate bokeh data for map plot
-    bokeh_map_data_params = {"map_data":map_data,"station_data":station_data,"col":cons.col_default,"stat":cons.stat_default,"year":cons.linedash_year_timespan[1]}
+    max_datetime = pre_agg_data.select(pl.col("date").max().dt.strftime("%Y").str.to_datetime("%Y") - pl.duration(days=1)).to_series()[0]
+    bokeh_map_data_params = {"map_data":map_data,"station_data":station_data,"col":cons.col_default,"stat":cons.stat_default,"year":str(max_datetime.year)}
     bokeh_map_data_dict = timeit(func=bokeh_map_data, params=bokeh_map_data_params)
     # create bokeh map plot
     bokeh_map_plot_params = {"bokeh_map_data_dict":bokeh_map_data_dict,"show_stations":cons.show_stations_default}
@@ -70,8 +73,8 @@ def bokeh_map_dash():
     )
     map_year_selector = Select(
         title="Year:",
-        value=cons.linedash_year_timespan[1],
-        options=cons.linedash_year_options,
+        value=str(max_datetime.year),
+        options=[str(year) for year in range(int(cons.linedash_year_start), max_datetime.year+1)],
         width=120,
        height=60,
         aspect_ratio=10,
