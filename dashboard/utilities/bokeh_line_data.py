@@ -2,6 +2,7 @@
 from beartype import beartype
 import polars as pl
 import numpy as np
+import datetime
 
 # import custom modules
 import cons
@@ -33,16 +34,19 @@ def bokeh_line_data(
     dict
         The aggregated bokeh data objects to visualise
     """
-    # generate time data aggregated by year
-    data = pre_agg_data.filter(pl.col("stat") == stat)
-    agg_dict = [getattr(pl.col(col).replace({None:np.nan}), stat)().alias(col) for col in cons.col_options]
+    # filter for desired statistic and the previous full calendar year
+    max_datetime = pre_agg_data.select(pl.col("date").max().dt.strftime("%Y").str.to_datetime("%Y") - pl.duration(days=1)).to_series()[0]
+    data = pre_agg_data.filter((pl.col("stat") == stat) & (pl.col("date") <= max_datetime))
+    # determine time span from date aggregate level
     date_strftime = cons.date_strftime_dict[agg_level]
     if agg_level == "year":
-        time_span = cons.linedash_year_timespan
+        time_span = [cons.linedash_year_start, max_datetime.strftime(date_strftime)]
     elif agg_level == "year-month":
-        time_span = cons.linedash_yearmonth_timespan
+        time_span = [cons.linedash_year_month_start, max_datetime.strftime(date_strftime)]
     elif agg_level == "month":
         time_span = cons.linedash_month_timespan
+    # generate time data aggregated by year
+    agg_dict = [getattr(pl.col(col).replace({None:np.nan}), stat)().alias(col) for col in cons.col_options]
     agg_data = time_data(
         data=data,
         agg_dict=agg_dict,
