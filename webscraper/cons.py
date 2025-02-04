@@ -1,5 +1,5 @@
-import platform
 import os
+import re
 import sys
 import json
 import pyarrow as pa
@@ -7,7 +7,8 @@ import pyarrow as pa
 met_eir_historical_data_url = 'https://www.met.ie/climate/available-data/historical-data'
 stations_data_url = 'https://cli.fusio.net/cli/climate_data/webdata/StationDetails.csv'
 
-root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else '/home/ubuntu/IrishClimateDashboard'
+root_dir_re_match = re.findall(string=os.getcwd(), pattern="^.+IrishClimateDashboard")
+root_dir = root_dir_re_match[0] if len(root_dir_re_match) > 0 else os.path.join(".", "IrishClimateDashboard")
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')

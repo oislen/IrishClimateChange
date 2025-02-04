@@ -1,11 +1,11 @@
 # load relevant libraries
 import os
 import sys
-import platform
-from datetime import datetime
+import re
 import json
 
-root_dir = 'E:\\GitHub\\IrishClimateDashboard' if platform.system() == 'Windows' else "/home/runner/work/IrishClimateDashboard/IrishClimateDashboard" if "GITHUB_ACTIONS_UNITTEST_FLAG" in os.environ else '/home/ubuntu/IrishClimateDashboard'
+root_dir_re_match = re.findall(string=os.getcwd(), pattern="^.+IrishClimateDashboard")
+root_dir = root_dir_re_match[0] if len(root_dir_re_match) > 0 else os.path.join(".", "IrishClimateDashboard")
 sys.path.append(root_dir)
 # set directories
 data_dir = os.path.join(root_dir, 'data')
