@@ -64,7 +64,7 @@ def gen_map_data(
         agg_dict = [getattr(pl.col(col), stat)().replace({None:np.nan}).alias(col) for col in cons.col_options]
         tmp_agg_data = tmp_master_data.group_by(group_cols).agg(agg_dict)
         tmp_agg_data_list.append(tmp_agg_data)
-    agg_data = pl.concat(items=tmp_agg_data_list,how="vertical")
+    agg_data = pl.concat(items=tmp_agg_data_list,how="vertical").sort(by=["stat","county","year"])
     # join county level data to map data
     map_geodata = gpd.GeoDataFrame(
         data=pd.merge(left=counties, right=agg_data.to_pandas(), on="county", how="left"),
